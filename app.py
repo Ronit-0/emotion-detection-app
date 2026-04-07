@@ -1,3 +1,5 @@
+import os
+import urllib.request
 import streamlit as st
 import cv2
 import numpy as np
@@ -5,120 +7,98 @@ from tensorflow.keras.models import load_model
 from PIL import Image
 
 # --- PAGE CONFIGURATION ---
-st.set_page_config(page_title="Emotion Detector", page_icon="🎭", layout="wide")
+st.set_page_config(page_title="Emotion Detector", page_icon="🎭", layout="centered")
 
-# --- LOAD MODELS ---
+# --- LOAD MODELS (HUGGING FACE) ---
+# Your exact raw download link
+MODEL_URL = "https://huggingface.co/Ronit-0/fer2013-emotion-model/resolve/main/final_emotion_model.h5?download=true"
+MODEL_PATH = "final_emotion_model.h5"
+
 @st.cache_resource
 def load_emotion_model():
+    # If the model isn't on the Streamlit server yet, download it!
+    if not os.path.exists(MODEL_PATH):
+        with st.spinner("Downloading Deep Learning Model (approx. 66MB)... This only happens once!"):
+            try:
+                urllib.request.urlretrieve(MODEL_URL, MODEL_PATH)
+                st.success("Model downloaded successfully!")
+            except Exception as e:
+                st.error(f"Failed to download model: {e}")
+                return None
+    
+    # Load the model into memory
     try:
-        model = load_model("final_emotion_model.h5")
+        model = load_model(MODEL_PATH)
         return model
     except:
         return None
 
+# Load the model and face tracker
 model = load_emotion_model()
 face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
 emotion_dict = {0: "Angry 😠", 1: "Disgusted 🤢", 2: "Fearful 😨", 3: "Happy 😄", 4: "Neutral 😐", 5: "Sad 😢", 6: "Surprised 😲"}
 
-# --- SIDEBAR NAVIGATION ---
-st.sidebar.title("🎭 Navigation")
-app_mode = st.sidebar.radio("Choose a Mode:", ["Live Camera", "Upload Image"])
-
-st.sidebar.markdown("---")
-st.sidebar.info("CNN trained on FER-2013 Dataset.\n\nDeveloped by the project group.")
+# --- UI DESIGN ---
+st.title("🎭 Human Emotion Detection")
+st.markdown("Developed by the team. Upload an image or take a picture to analyze facial expressions!")
 
 if model is None:
-    st.error("⚠️ Model not found! Please place 'final_emotion_model.h5' in the folder.")
+    st.error("⚠️ Model failed to load. Check the Hugging Face link.")
 
-# ==========================================
-# MODE 1: LIVE CAMERA
-# ==========================================
-if app_mode == "Live Camera":
-    st.title("🎥 Real-Time Emotion Detection")
-    st.write("Click the checkbox below to turn on your webcam. Ensure no other apps (like Zoom) are using it!")
-    
-    # Checkbox to start/stop the camera
-    run_camera = st.checkbox("Turn On Webcam")
-    
-    # Create an empty placeholder to display the video frames
-    FRAME_WINDOW = st.image([])
-    
-    if run_camera:
-        # 0 is the default laptop camera
-        cap = cv2.VideoCapture(0)
-        
-        while run_camera:
-            ret, frame = cap.read()
-            if not ret:
-                st.error("Could not read frame from camera. Is it blocked?")
-                break
-            
-            # Streamlit expects RGB colors, but OpenCV uses BGR
-            frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-            gray = cv2.cvtColor(frame, cv2.COLOR_RGB2GRAY)
-            
-            # Detect Faces
-            faces = face_cascade.detectMultiScale(gray, scaleFactor=1.3, minNeighbors=5)
-            
-            for (x, y, w, h) in faces:
-                cv2.rectangle(frame, (x, y), (x+w, y+h), (0, 255, 0), 2)
-                
-                # Crop and Predict
-                roi_gray = gray[y:y+h, x:x+w]
-                roi_gray = cv2.resize(roi_gray, (48, 48)) / 255.0
-                roi_gray = np.reshape(roi_gray, (1, 48, 48, 1))
-                
-                if model:
-                    prediction = model.predict(roi_gray, verbose=0)
-                    max_index = int(np.argmax(prediction))
-                    predicted_emotion = emotion_dict[max_index]
-                    
-                    cv2.putText(frame, predicted_emotion, (x, y-10), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (0, 255, 0), 2)
-            
-            # Display the frame in the Streamlit placeholder
-            FRAME_WINDOW.image(frame)
-            
-        # Release the camera if the checkbox is unchecked
-        cap.release()
+# Options for user input
+option = st.radio("Choose Input Method:", ("Take a Picture", "Upload Image"))
 
-# ==========================================
-# MODE 2: UPLOAD IMAGE
-# ==========================================
-elif app_mode == "Upload Image":
-    st.title("🖼️ Image Analysis")
-    st.write("Upload a static photo to analyze the facial expressions.")
-    
+image_file = None
+if option == "Upload Image":
     image_file = st.file_uploader("Upload a face image", type=["jpg", "png", "jpeg"])
+elif option == "Take a Picture":
+    # This automatically triggers the selfie camera on mobile and the webcam on desktop!
+    image_file = st.camera_input("Take a picture")
+
+# --- PROCESSING ---
+if image_file is not None:
+    # 1. Read the image from the UI
+    image = Image.open(image_file)
+    img_array = np.array(image)
     
-    if image_file is not None:
-        image = Image.open(image_file)
-        img_array = np.array(image)
-        
-        # Convert to RGB (Streamlit display) and Grayscale (Processing)
-        if len(img_array.shape) == 3:
-            gray = cv2.cvtColor(img_array, cv2.COLOR_RGB2GRAY)
-        else:
-            gray = img_array
-            img_array = cv2.cvtColor(gray, cv2.COLOR_GRAY2RGB)
+    # Fix for PNG images with transparency (RGBA to RGB)
+    if len(img_array.shape) == 3 and img_array.shape[2] == 4:
+         img_array = cv2.cvtColor(img_array, cv2.COLOR_RGBA2RGB)
+         
+    # Convert to grayscale for OpenCV face detection
+    if len(img_array.shape) == 3:
+        gray = cv2.cvtColor(img_array, cv2.COLOR_RGB2GRAY)
+    else:
+        gray = img_array
+        img_array = cv2.cvtColor(gray, cv2.COLOR_GRAY2RGB)
 
-        faces = face_cascade.detectMultiScale(gray, scaleFactor=1.3, minNeighbors=5)
+    # 2. Detect Faces
+    faces = face_cascade.detectMultiScale(gray, scaleFactor=1.3, minNeighbors=5)
 
-        if len(faces) == 0:
-            st.warning("No face detected! Try a clearer image.")
-            st.image(image, use_column_width=True)
-        else:
-            for (x, y, w, h) in faces:
-                roi_gray = gray[y:y+h, x:x+w]
-                roi_gray = cv2.resize(roi_gray, (48, 48)) / 255.0
-                roi_gray = np.reshape(roi_gray, (1, 48, 48, 1))
+    if len(faces) == 0:
+        st.warning("No face detected! Please try an image with a clearer face.")
+        st.image(image, caption="Original Image", use_column_width=True)
+    else:
+        # 3. Draw rectangles and predict
+        for (x, y, w, h) in faces:
+            # Crop the face and resize to 48x48
+            roi_gray = gray[y:y+h, x:x+w]
+            roi_gray = cv2.resize(roi_gray, (48, 48))
+            
+            # Normalize pixel values to 0-1
+            roi_gray = roi_gray / 255.0 
+            roi_gray = np.reshape(roi_gray, (1, 48, 48, 1))
 
-                if model:
-                    prediction = model.predict(roi_gray, verbose=0)
-                    max_index = int(np.argmax(prediction))
-                    predicted_emotion = emotion_dict[max_index]
-                    
-                    cv2.rectangle(img_array, (x, y), (x+w, y+h), (0, 255, 0), 3)
-                    cv2.putText(img_array, predicted_emotion, (x, y-10), cv2.FONT_HERSHEY_SIMPLEX, 1.2, (0, 255, 0), 3)
+            # Make Prediction
+            if model:
+                prediction = model.predict(roi_gray, verbose=0)
+                max_index = int(np.argmax(prediction))
+                predicted_emotion = emotion_dict[max_index]
+                
+                # Draw Box and Text on the colored image
+                cv2.rectangle(img_array, (x, y), (x+w, y+h), (0, 255, 0), 3)
+                cv2.putText(img_array, predicted_emotion, (x, y-15), cv2.FONT_HERSHEY_SIMPLEX, 1.0, (0, 255, 0), 3)
 
-            st.success("Analysis Complete!")
-            st.image(img_array, caption="Processed Image", use_column_width=True)
+        # 4. Display the Result
+        st.success("Analysis Complete!")
+        st.image(img_array, caption="Detected Emotion", use_column_width=True)
