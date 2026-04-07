@@ -1,14 +1,26 @@
 import os
+
+# --- 🚨 CRITICAL SERVER FIX: MUST BE AT THE VERY TOP 🚨 ---
+# This forces the Linux server to restrict CPU threads before libraries load
+os.environ['OMP_NUM_THREADS'] = '1'
+os.environ['OPENBLAS_NUM_THREADS'] = '1'
+os.environ['MKL_NUM_THREADS'] = '1'
+os.environ['TF_NUM_INTEROP_THREADS'] = '1'
+os.environ['TF_NUM_INTRAOP_THREADS'] = '1'
+
 import urllib.request
 import streamlit as st
 import cv2
 import numpy as np
 import av
+import tensorflow as tf
 from tensorflow.keras.models import load_model
 from streamlit_webrtc import webrtc_streamer, WebRtcMode, RTCConfiguration
 
-# --- 🚨 CRITICAL FIX FOR SEGMENTATION FAULT 🚨 ---
-# This prevents OpenCV from fighting WebRTC for memory/threads on the cloud server
+# --- 🚨 SECONDARY LIMITERS 🚨 ---
+# Force TensorFlow and OpenCV to use minimum resources
+tf.config.threading.set_inter_op_parallelism_threads(1)
+tf.config.threading.set_intra_op_parallelism_threads(1)
 cv2.setNumThreads(0)
 cv2.ocl.setUseOpenCL(False)
 
@@ -44,22 +56,18 @@ class EmotionProcessor:
         img = frame.to_ndarray(format="bgr24")
         gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
         
-        # Detect faces
         faces = face_cascade.detectMultiScale(gray, scaleFactor=1.3, minNeighbors=5)
         
         for (x, y, w, h) in faces:
-            # Crop, resize, and normalize
             roi_gray = gray[y:y+h, x:x+w]
             roi_gray = cv2.resize(roi_gray, (48, 48)) / 255.0
             roi_gray = np.reshape(roi_gray, (1, 48, 48, 1))
             
-            # Predict
             if model:
                 prediction = model.predict(roi_gray, verbose=0)
                 max_index = int(np.argmax(prediction))
                 predicted_emotion = emotion_dict[max_index]
                 
-                # Draw box and text
                 cv2.rectangle(img, (x, y), (x+w, y+h), (0, 255, 0), 2)
                 cv2.putText(img, predicted_emotion, (x, y-10), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (0, 255, 0), 2)
                 
@@ -67,7 +75,7 @@ class EmotionProcessor:
 
 # --- UI DESIGN ---
 st.title("🎭 Live Emotion Detection")
-st.markdown("Click **START** to open your camera and see live emotion tracking!")
+st.markdown("Click **START** below to initialize the live camera feed!")
 
 if model is None:
     st.error("⚠️ Model failed to load.")
@@ -86,5 +94,3 @@ webrtc_streamer(
     media_stream_constraints={"video": True, "audio": False},
     async_processing=True
 )
-
-st.info("💡 Tip: Make sure you are in a well-lit room and looking directly at the camera.")
