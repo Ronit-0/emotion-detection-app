@@ -22,89 +22,81 @@ if "messages" not in st.session_state:
 if "current_emotion" not in st.session_state:
     st.session_state.current_emotion = "Neutral"
 
-# --- 🎨 ADVANCED CUSTOM CSS & HTML 🎨 ---
+# --- 🎨 BULLETPROOF CUSTOM CSS 🎨 ---
 st.markdown("""
     <style>
-    /* 1. HIDE STREAMLIT HEADER, FOOTER, AND MENU */
-    header {visibility: hidden;}
-    #MainMenu {visibility: hidden;}
-    footer {visibility: hidden;}
-    .stDeployButton {display: none;}
-
-    /* 2. PREMIUM MIDNIGHT MESH BACKGROUND */
+    /* 1. HIDE HEADER & FOOTER */
+    header {visibility: hidden !important;}
+    footer {visibility: hidden !important;}
+    
+    /* 2. THE BACKGROUND (Forcing Streamlit's inner container to be transparent) */
     .stApp {
-        background-color: #0B0F19;
+        background-color: #0B0F19 !important;
+    }
+    [data-testid="stAppViewContainer"] {
+        background-color: transparent !important;
         background-image: 
-            radial-gradient(at 0% 0%, rgba(17, 24, 39, 1) 0, transparent 50%), 
-            radial-gradient(at 50% 0%, rgba(30, 58, 138, 0.15) 0, transparent 50%), 
-            radial-gradient(at 100% 100%, rgba(15, 23, 42, 1) 0, transparent 50%);
-        background-attachment: fixed;
+            radial-gradient(at 10% 10%, rgba(30, 58, 138, 0.4) 0px, transparent 50%),
+            radial-gradient(at 90% 90%, rgba(88, 28, 135, 0.3) 0px, transparent 50%) !important;
+        background-attachment: fixed !important;
         color: #F8FAFC;
     }
 
     /* 3. PILL-SHAPED TABS */
-    div[data-baseweb="tab-list"] {
-        gap: 15px;
-        background-color: transparent;
+    /* The container holding the tabs */
+    .stTabs [data-baseweb="tab-list"] {
+        gap: 10px;
+        background-color: rgba(255, 255, 255, 0.05);
+        border-radius: 50px;
+        padding: 5px 15px;
+        display: flex;
         justify-content: center;
+        border: 1px solid rgba(255, 255, 255, 0.1);
         margin-bottom: 20px;
     }
-    div[data-baseweb="tab"] {
-        height: 45px;
-        background-color: #1E293B;
-        border-radius: 25px; /* Creates the Pill Shape */
-        padding: 0px 25px;
+    /* The individual tabs */
+    .stTabs [data-baseweb="tab"] {
+        border-radius: 50px !important;
+        padding: 10px 24px !important;
+        background-color: transparent;
         color: #94A3B8;
-        border: 1px solid #334155;
-        transition: all 0.3s ease-in-out;
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        border: none !important;
+        transition: all 0.3s ease;
     }
-    div[data-baseweb="tab"]:hover {
-        background-color: #334155;
+    .stTabs [data-baseweb="tab"]:hover {
+        background-color: rgba(255, 255, 255, 0.1);
         color: #F8FAFC;
-        transform: translateY(-2px);
     }
-    div[data-baseweb="tab"][aria-selected="true"] {
-        background-color: #3B82F6; /* Active Blue Color */
-        color: white;
-        border: none;
-        box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
+    /* The active tab */
+    .stTabs [aria-selected="true"] {
+        background-color: #3B82F6 !important;
+        color: white !important;
+        box-shadow: 0 4px 15px rgba(59, 130, 246, 0.5) !important;
     }
-    /* Hide the default underline Streamlit uses for tabs */
-    div[data-baseweb="tab-highlight"] {
-        display: none;
-    }
-
-    /* 4. FROSTED GLASS CONTAINERS */
-    div[data-testid="stVerticalBlock"] > div[style*="flex-direction: column;"] {
-        background: rgba(15, 23, 42, 0.6);
-        border-radius: 20px;
-        padding: 25px;
-        backdrop-filter: blur(12px);
-        border: 1px solid rgba(255, 255, 255, 0.05);
-        box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    /* Hide the annoying blue underline */
+    .stTabs [data-baseweb="tab-highlight"] {
+        display: none !important;
     }
 
-    /* 5. TYPOGRAPHY POLISH */
+    /* 4. TYPOGRAPHY */
     .main-title { 
-        font-size: 3.5rem; 
+        font-size: 3rem; 
         font-weight: 800; 
         text-align: center; 
-        margin-top: -40px; /* Pulls title up since header is hidden */
-        margin-bottom: 0px; 
+        margin-top: -50px; 
+        margin-bottom: 5px; 
         background: linear-gradient(to right, #60a5fa, #c084fc); 
         -webkit-background-clip: text; 
         -webkit-text-fill-color: transparent; 
-        text-shadow: 0px 4px 20px rgba(96, 165, 250, 0.2);
     }
     .sub-title { 
         text-align: center; 
         font-size: 1.1rem; 
         color: #94a3b8; 
-        margin-bottom: 30px; 
+        margin-bottom: 20px; 
     }
     img { 
-        border-radius: 15px; 
+        border-radius: 12px; 
     }
     </style>
 """, unsafe_allow_html=True)
@@ -153,7 +145,7 @@ st.write("")
 
 # --- THE AI ENGINE ---
 def run_analysis(image_file, file_name="Captured Image"):
-    with st.container():
+    with st.container(border=True): # Adds a clean built-in Streamlit border
         st.markdown(f"#### 📄 Analyzing: `{file_name}`")
         with st.spinner("Processing facial features..."):
             image = Image.open(image_file) 
@@ -194,7 +186,7 @@ def run_analysis(image_file, file_name="Captured Image"):
                                 
                             predicted_emotion_ui = f"{base_emotion} {emoji_map.get(base_emotion, '')}"
                             model_used_text = "Gemini Vision"
-                            color = (255, 200, 0) # Gold
+                            color = (255, 200, 0)
                             
                         except Exception as e:
                             error_msg = str(e).lower()
@@ -208,7 +200,6 @@ def run_analysis(image_file, file_name="Captured Image"):
                             confidence_display = "N/A"
                             model_used_text = "API Limit Exceeded"
                             color = (0, 0, 255)
-
                     else:
                         roi_gray = gray[y:y+h, x:x+w]
                         roi_gray = cv2.resize(roi_gray, (48, 48)) / 255.0 
@@ -222,7 +213,7 @@ def run_analysis(image_file, file_name="Captured Image"):
                             predicted_emotion_ui = f"{base_emotion} {emoji_map.get(base_emotion, '')}"
                             confidence_display = f"{(np.max(prediction) * 100):.2f}%"
                             model_used_text = "Custom CNN"
-                            color = (0, 255, 150) # Green
+                            color = (0, 255, 150)
                     
                     st.session_state.current_emotion = base_emotion
                     
@@ -237,7 +228,7 @@ def run_analysis(image_file, file_name="Captured Image"):
                     st.write("") 
                     st.metric(label="Primary Emotion", value=predicted_emotion_ui)
                     st.metric(label=f"Confidence ({model_used_text})", value=confidence_display)
-        st.markdown("---")
+        st.write("") # Spacer
 
 # --- 3-TABBED INTERFACE ---
 tab1, tab2, tab3 = st.tabs(["📸 Camera", "🖼️ Upload Images", "💬 AI Assistant"])
@@ -254,24 +245,30 @@ with tab2:
         for img in uploaded_imgs:
             run_analysis(img, img.name)
 
+# --- RE-DESIGNED CHATBOT UI ---
 with tab3:
     current_mood = st.session_state.current_emotion
-    st.markdown(f"### Current Mood: {current_mood} {emoji_map.get(current_mood, '')}")
+    emoji = emoji_map.get(current_mood, '')
+    
+    # Stylish Mood Header
+    st.info(f"### Detected Mood: **{current_mood}** {emoji}")
     
     if chatbot_model is None:
         st.error("⚠️ Gemini API Key missing or invalid! Please check your Streamlit Secrets.")
     else:
-        st.write("💡 **Quick Suggestions:**")
+        st.write("✨ **What would you like to do?**")
         suggestions = suggestion_dict.get(current_mood, suggestion_dict["Neutral"])
         
         suggestion_clicked = None
-        sug_col1, sug_col2, sug_col3 = st.columns(3)
-        if sug_col1.button(suggestions[0], use_container_width=True): suggestion_clicked = suggestions[0]
-        if sug_col2.button(suggestions[1], use_container_width=True): suggestion_clicked = suggestions[1]
-        if sug_col3.button(suggestions[2], use_container_width=True): suggestion_clicked = suggestions[2]
+        # Tighter column layout for buttons
+        sug_col1, sug_col2, sug_col3 = st.columns(3, gap="small")
+        if sug_col1.button(suggestions[0]): suggestion_clicked = suggestions[0]
+        if sug_col2.button(suggestions[1]): suggestion_clicked = suggestions[1]
+        if sug_col3.button(suggestions[2]): suggestion_clicked = suggestions[2]
         
-        st.markdown("---")
+        st.divider() # Clean horizontal line
 
+        # Chat history
         for message in st.session_state.messages:
             with st.chat_message(message["role"]):
                 st.markdown(message["content"])
