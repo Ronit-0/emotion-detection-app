@@ -34,7 +34,7 @@ st.markdown("""
     /* Expand container & Fix Title Clipping */
     .block-container {
         max-width: 950px !important;
-        padding-top: 4rem !important; /* Increased to stop title cutoff */
+        padding-top: 2rem !important; 
         padding-bottom: 6rem !important;
     }
 
@@ -50,6 +50,7 @@ st.markdown("""
     /* 3. HORIZONTAL STRETCHED TABS FIX */
     [data-testid="stRadio"] {
         width: 100% !important;
+        max-width: 100% !important;
         margin: 0 auto 30px auto !important;
     }
     [data-testid="stRadio"] > div {
@@ -57,9 +58,9 @@ st.markdown("""
     }
     div[role="radiogroup"] {
         display: flex !important;
-        flex-direction: row !important; /* Forces horizontal alignment */
-        flex-wrap: nowrap !important; /* Prevents stacking */
-        justify-content: center !important;
+        flex-direction: row !important; 
+        flex-wrap: nowrap !important; /* CRITICAL: Prevents stacking */
+        justify-content: space-between !important;
         background-color: rgba(255, 255, 255, 0.03) !important;
         border-radius: 50px !important;
         padding: 8px !important;
@@ -72,7 +73,8 @@ st.markdown("""
         display: none !important;
     }
     div[role="radiogroup"] > label {
-        flex: 1 1 0% !important; /* Forces equal width stretching */
+        flex: 1 1 auto !important; /* CRITICAL: Forces equal width stretching */
+        width: 100% !important;
         text-align: center !important;
         justify-content: center !important;
         background-color: transparent !important;
@@ -85,7 +87,6 @@ st.markdown("""
         cursor: pointer !important;
         border: 1px solid transparent !important;
         margin: 0 5px !important;
-        min-width: fit-content !important; /* Prevents squishing */
     }
     div[role="radiogroup"] > label:hover {
         background-color: rgba(255, 255, 255, 0.1) !important;
@@ -130,7 +131,6 @@ st.markdown("""
     }
 
     /* 5. TRANSPARENT UPLOAD BOX FIX */
-    /* Target all possible Streamlit upload containers */
     [data-testid="stFileUploader"] {
         background-color: transparent !important;
     }
@@ -173,23 +173,14 @@ st.markdown("""
     img { border-radius: 12px; }
 
     /* 8. KILL THE BLACK CHAT DIVIDER / BOTTOM CONTAINER */
-    .stBottom {
-        background-color: transparent !important;
-        background: transparent !important;
-    }
-    .stBottom > div {
-        background-color: transparent !important;
-        background: transparent !important;
-    }
-    [data-testid="stBottom"] {
+    /* Erase the solid background from Streamlit's bottom container */
+    [data-testid="stBottom"], 
+    [data-testid="stBottom"] > div,
+    .stApp > header + div > div > div > div:last-of-type {
         background-color: transparent !important;
         background: transparent !important;
         border: none !important;
-    }
-    [data-testid="stBottom"] > div {
-        background-color: transparent !important;
-        background: transparent !important;
-        border: none !important;
+        box-shadow: none !important;
     }
     
     /* Floating chat input bar */
