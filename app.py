@@ -18,86 +18,115 @@ except Exception as e:
     chatbot_model = None
 
 if "messages" not in st.session_state:
-    st.session_state.messages = [{"role": "assistant", "content": "Hi! Analyze an image first, and I can give you advice, quotes, or music recommendations based on your mood!"}]
+    st.session_state.messages = [{"role": "assistant", "content": "Hello! I am your AI Emotion Assistant. Scan an image first, and I will tailor my responses, quotes, and advice to your current mood!"}]
 if "current_emotion" not in st.session_state:
     st.session_state.current_emotion = "Neutral"
 
-# --- 🎨 BULLETPROOF CUSTOM CSS 🎨 ---
+# 3D Animated Avatar for the AI Chat
+AI_AVATAR = "https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Smilies/Robot.png"
+
+# --- 🎨 ADVANCED UI & ANIMATION CSS 🎨 ---
 st.markdown("""
     <style>
     /* 1. HIDE HEADER & FOOTER */
     header {visibility: hidden !important;}
     footer {visibility: hidden !important;}
     
-    /* 2. THE BACKGROUND (Forcing Streamlit's inner container to be transparent) */
+    /* 2. DYNAMIC FLOWING BACKGROUND */
     .stApp {
-        background-color: #0B0F19 !important;
+        background: linear-gradient(45deg, #0B0F19, #1e1b4b, #0f172a, #020617) !important;
+        background-size: 400% 400% !important;
+        animation: flowingBG 12s ease-in-out infinite !important;
     }
     [data-testid="stAppViewContainer"] {
         background-color: transparent !important;
-        background-image: 
-            radial-gradient(at 10% 10%, rgba(30, 58, 138, 0.4) 0px, transparent 50%),
-            radial-gradient(at 90% 90%, rgba(88, 28, 135, 0.3) 0px, transparent 50%) !important;
-        background-attachment: fixed !important;
-        color: #F8FAFC;
+    }
+    @keyframes flowingBG {
+        0% {background-position: 0% 50%;}
+        50% {background-position: 100% 50%;}
+        100% {background-position: 0% 50%;}
     }
 
-    /* 3. PILL-SHAPED TABS */
-    /* The container holding the tabs */
-    .stTabs [data-baseweb="tab-list"] {
-        gap: 10px;
+    /* 3. RADIO-ROUTER DISGUISED AS ANIMATED PILL TABS */
+    div[role="radiogroup"] {
+        display: flex;
+        flex-direction: row;
+        gap: 15px;
+        justify-content: center;
         background-color: rgba(255, 255, 255, 0.05);
         border-radius: 50px;
-        padding: 5px 15px;
-        display: flex;
-        justify-content: center;
+        padding: 8px 15px;
         border: 1px solid rgba(255, 255, 255, 0.1);
         margin-bottom: 20px;
+        box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+        backdrop-filter: blur(10px);
     }
-    /* The individual tabs */
-    .stTabs [data-baseweb="tab"] {
-        border-radius: 50px !important;
-        padding: 10px 24px !important;
-        background-color: transparent;
-        color: #94A3B8;
-        border: none !important;
-        transition: all 0.3s ease;
-    }
-    .stTabs [data-baseweb="tab"]:hover {
-        background-color: rgba(255, 255, 255, 0.1);
-        color: #F8FAFC;
-    }
-    /* The active tab */
-    .stTabs [aria-selected="true"] {
-        background-color: #3B82F6 !important;
-        color: white !important;
-        box-shadow: 0 4px 15px rgba(59, 130, 246, 0.5) !important;
-    }
-    /* Hide the annoying blue underline */
-    .stTabs [data-baseweb="tab-highlight"] {
+    /* Hide the actual radio circles */
+    [data-testid="stRadio"] div[role="radiogroup"] > label > div:first-of-type {
         display: none !important;
     }
+    /* Style the labels as pill buttons */
+    div[role="radiogroup"] > label {
+        background-color: transparent;
+        padding: 10px 25px;
+        border-radius: 50px;
+        color: #94A3B8 !important;
+        font-weight: 600;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        cursor: pointer;
+        border: 1px solid transparent;
+    }
+    /* Hover Animation */
+    div[role="radiogroup"] > label:hover {
+        background-color: rgba(255, 255, 255, 0.1);
+        color: #F8FAFC !important;
+        transform: translateY(-3px) scale(1.02);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    }
+    /* Active/Selected Tab Animation */
+    div[role="radiogroup"] > label[data-checked="true"] {
+        background-color: #3B82F6 !important;
+        color: white !important;
+        border: 1px solid #60A5FA;
+        box-shadow: 0 0 20px rgba(59, 130, 246, 0.6);
+        transform: scale(1.05);
+    }
 
-    /* 4. TYPOGRAPHY */
+    /* 4. CONTENT FADE-IN ANIMATION & GLASS CONTAINERS */
+    @keyframes fadeInSlideUp {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    div[data-testid="stVerticalBlock"] > div[style*="flex-direction: column;"] {
+        background: rgba(15, 23, 42, 0.6);
+        border-radius: 20px;
+        padding: 25px;
+        backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+        animation: fadeInSlideUp 0.6s ease-out forwards;
+    }
+
+    /* 5. PHONE CAMERA MIRROR FIX */
+    [data-testid="stCameraInput"] video {
+        transform: scaleX(-1) !important;
+        border-radius: 15px;
+    }
+
+    /* 6. TYPOGRAPHY */
     .main-title { 
-        font-size: 3rem; 
+        font-size: 3.2rem; 
         font-weight: 800; 
         text-align: center; 
-        margin-top: -50px; 
+        margin-top: -60px; 
         margin-bottom: 5px; 
-        background: linear-gradient(to right, #60a5fa, #c084fc); 
+        background: linear-gradient(to right, #4facfe, #00f2fe, #c084fc); 
         -webkit-background-clip: text; 
         -webkit-text-fill-color: transparent; 
+        text-shadow: 0px 4px 20px rgba(96, 165, 250, 0.2);
     }
-    .sub-title { 
-        text-align: center; 
-        font-size: 1.1rem; 
-        color: #94a3b8; 
-        margin-bottom: 20px; 
-    }
-    img { 
-        border-radius: 12px; 
-    }
+    .sub-title { text-align: center; font-size: 1.1rem; color: #94a3b8; margin-bottom: 20px; }
+    img { border-radius: 12px; }
     </style>
 """, unsafe_allow_html=True)
 
@@ -124,28 +153,37 @@ face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_fronta
 emoji_map = {"Angry": "😠", "Disgusted": "🤢", "Fearful": "😨", "Happy": "😄", "Neutral": "😐", "Sad": "😢", "Surprised": "😲"}
 cnn_emotion_list = ["Angry", "Disgusted", "Fearful", "Happy", "Sad", "Surprised", "Neutral"]
 
+# Expanded Dynamic Suggestions
 suggestion_dict = {
-    "Happy": ["Give me a happy quote! ☀️", "Recommend an upbeat song 🎵", "Tell me a joke! 😂"],
-    "Sad": ["Give me a comforting quote 🌧️", "How can I cheer up?", "Recommend a calming song 🎧"],
-    "Angry": ["How to calm down? 🧘", "Give me a peaceful quote 🍃", "Recommend relaxing music 🎶"],
-    "Fearful": ["Give me a courageous quote 🦁", "How to overcome anxiety?", "Recommend a soothing song 🎹"],
-    "Surprised": ["Tell me a mind-blowing fact! 🤯", "Recommend an exciting movie 🍿", "Give me a fun trivia question 🎲"],
-    "Disgusted": ["Tell me a funny story! 🤣", "How to clear my mind?", "Give me a random fun fact 💡"],
-    "Neutral": ["Tell me a fun fact! 🧠", "Give me a motivational quote 🚀", "Recommend a good book 📚"]
+    "Happy": ["Give me a happy quote! ☀️", "Recommend an upbeat song 🎵", "Tell me a joke! 😂", "What's a fun fact about happiness?"],
+    "Sad": ["Give me a comforting quote 🌧️", "How can I cheer up? 🫂", "Recommend a calming song 🎧", "Write me a short uplifting poem ✨"],
+    "Angry": ["How to calm down? 🧘", "Give me a peaceful quote 🍃", "Recommend relaxing ambient music 🎶", "Guide me through a breathing exercise 🌬️"],
+    "Fearful": ["Give me a courageous quote 🦁", "How to overcome anxiety? 🛡️", "Recommend a soothing song 🎹", "Tell me an inspiring story of bravery 🦸"],
+    "Surprised": ["Tell me a mind-blowing fact! 🤯", "Recommend an unpredictable movie 🍿", "Give me a fun trivia question 🎲", "What is the universe's biggest mystery? 🌌"],
+    "Disgusted": ["Tell me a funny story to clear my mind! 🤣", "Give me a random weird fact 💡", "Recommend a wholesome video topic 🐶", "How to reset my mood? 🔄"],
+    "Neutral": ["Tell me a fun fact! 🧠", "Give me a motivational quote 🚀", "Recommend a good book 📚", "Teach me something new today 🎓"]
 }
 
 # --- MAIN UI HEADER ---
 st.markdown('<div class="main-title">Facial Emotion Analysis AI</div>', unsafe_allow_html=True)
-st.markdown('<div class="sub-title">Detect emotional states and chat with an AI assistant.</div>', unsafe_allow_html=True)
+st.markdown('<div class="sub-title">Advanced Emotion Recognition & Real-Time AI Companion</div>', unsafe_allow_html=True)
 
 colA, colB, colC = st.columns([1, 2, 1])
 with colB:
     use_gemini = st.toggle("🚀 Enable High-Accuracy Mode (Gemini Vision AI)", value=False)
 st.write("") 
 
+# --- THE CUSTOM "ROUTER" TABS (Fixes Camera Staying On) ---
+selected_tab = st.radio(
+    "Navigation", 
+    ["📸 Camera", "🖼️ Upload Images", "💬 AI Assistant"], 
+    horizontal=True, 
+    label_visibility="collapsed"
+)
+
 # --- THE AI ENGINE ---
 def run_analysis(image_file, file_name="Captured Image"):
-    with st.container(border=True): # Adds a clean built-in Streamlit border
+    with st.container(border=True): 
         st.markdown(f"#### 📄 Analyzing: `{file_name}`")
         with st.spinner("Processing facial features..."):
             image = Image.open(image_file) 
@@ -228,29 +266,26 @@ def run_analysis(image_file, file_name="Captured Image"):
                     st.write("") 
                     st.metric(label="Primary Emotion", value=predicted_emotion_ui)
                     st.metric(label=f"Confidence ({model_used_text})", value=confidence_display)
-        st.write("") # Spacer
+        st.write("") 
 
-# --- 3-TABBED INTERFACE ---
-tab1, tab2, tab3 = st.tabs(["📸 Camera", "🖼️ Upload Images", "💬 AI Assistant"])
 
-with tab1:
+# --- ROUTER LOGIC (Executes only the selected tab) ---
+if selected_tab == "📸 Camera":
     camera_img = st.camera_input("Smile for the camera!", label_visibility="collapsed")
     if camera_img is not None:
         run_analysis(camera_img, "Webcam Capture")
 
-with tab2:
+elif selected_tab == "🖼️ Upload Images":
     uploaded_imgs = st.file_uploader("Upload images", type=["jpg", "png", "jpeg"], accept_multiple_files=True, label_visibility="collapsed")
     if uploaded_imgs:
         st.success(f"Successfully loaded {len(uploaded_imgs)} image(s) into the pipeline.")
         for img in uploaded_imgs:
             run_analysis(img, img.name)
 
-# --- RE-DESIGNED CHATBOT UI ---
-with tab3:
+elif selected_tab == "💬 AI Assistant":
     current_mood = st.session_state.current_emotion
     emoji = emoji_map.get(current_mood, '')
     
-    # Stylish Mood Header
     st.info(f"### Detected Mood: **{current_mood}** {emoji}")
     
     if chatbot_model is None:
@@ -260,17 +295,20 @@ with tab3:
         suggestions = suggestion_dict.get(current_mood, suggestion_dict["Neutral"])
         
         suggestion_clicked = None
-        # Tighter column layout for buttons
-        sug_col1, sug_col2, sug_col3 = st.columns(3, gap="small")
-        if sug_col1.button(suggestions[0]): suggestion_clicked = suggestions[0]
-        if sug_col2.button(suggestions[1]): suggestion_clicked = suggestions[1]
-        if sug_col3.button(suggestions[2]): suggestion_clicked = suggestions[2]
+        sug_col1, sug_col2 = st.columns(2, gap="small")
+        if sug_col1.button(suggestions[0], use_container_width=True): suggestion_clicked = suggestions[0]
+        if sug_col2.button(suggestions[1], use_container_width=True): suggestion_clicked = suggestions[1]
         
-        st.divider() # Clean horizontal line
+        sug_col3, sug_col4 = st.columns(2, gap="small")
+        if sug_col3.button(suggestions[2], use_container_width=True): suggestion_clicked = suggestions[2]
+        if sug_col4.button(suggestions[3], use_container_width=True): suggestion_clicked = suggestions[3]
+        
+        st.divider() 
 
-        # Chat history
+        # Chat history rendering with the new 3D Avatar!
         for message in st.session_state.messages:
-            with st.chat_message(message["role"]):
+            avatar = AI_AVATAR if message["role"] == "assistant" else "👤"
+            with st.chat_message(message["role"], avatar=avatar):
                 st.markdown(message["content"])
 
         prompt = st.chat_input(f"Ask me something about feeling {current_mood}...")
@@ -280,11 +318,11 @@ with tab3:
 
         if prompt:
             st.session_state.messages.append({"role": "user", "content": prompt})
-            with st.chat_message("user"):
+            with st.chat_message("user", avatar="👤"):
                 st.markdown(prompt)
 
-            with st.chat_message("assistant"):
-                with st.spinner("Thinking..."):
+            with st.chat_message("assistant", avatar=AI_AVATAR):
+                with st.spinner("Processing..."):
                     try:
                         system_prompt = f"The user's face was scanned by an AI and they look {current_mood}. Keep this in mind when answering: {prompt}"
                         response = chatbot_model.generate_content(system_prompt)
