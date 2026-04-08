@@ -24,7 +24,7 @@ if "current_emotion" not in st.session_state:
 
 AI_AVATAR = "https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Smilies/Robot.png"
 
-# --- 🎨 WILDCARD UI OVERRIDE CSS 🎨 ---
+# --- 🎨 FINAL STRETCHED TABS UI CSS 🎨 ---
 st.markdown("""
     <style>
     /* 1. HIDE HEADER & FOOTER */
@@ -47,32 +47,38 @@ st.markdown("""
         background-color: transparent !important;
     }
 
-    /* 3. HORIZONTAL TAB STRETCHING (Using Flex-Basis 0) */
-    [data-testid="stRadio"] {
-        width: 100% !important;
-        margin: 0 auto 30px auto !important;
-    }
+    /* 3. 🔥 THE FIX: TRUE HORIZONTAL TAB STRETCHING 🔥 */
+    /* Force every wrapper Streamlit uses to 100% width */
+    [data-testid="stRadio"], 
     [data-testid="stRadio"] > div {
         width: 100% !important;
+        max-width: 100% !important;
+        display: flex !important;
+        justify-content: center !important;
     }
     div[role="radiogroup"] {
         display: flex !important;
         flex-direction: row !important; 
-        width: 100% !important;
+        width: 100% !important; /* Forces the box to span the screen */
+        justify-content: space-between !important;
+        gap: 10px !important;
         background-color: rgba(255, 255, 255, 0.03) !important;
         border-radius: 50px !important;
-        padding: 8px !important;
+        padding: 10px !important;
         border: 1px solid rgba(255, 255, 255, 0.05) !important;
         box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3) !important;
         backdrop-filter: blur(10px) !important;
+        margin-bottom: 30px !important;
     }
     [data-testid="stRadio"] div[role="radiogroup"] > label > div:first-of-type {
-        display: none !important;
+        display: none !important; /* Hides the native radio circle */
     }
     div[role="radiogroup"] > label {
-        flex-grow: 1 !important;     /* Force elements to grow equally */
-        flex-basis: 0 !important;    /* Force elements to start from the same size */
+        flex: 1 1 0px !important; /* Forces tabs to stretch equally */
+        width: 100% !important;
         text-align: center !important;
+        display: flex !important;
+        align-items: center !important;
         justify-content: center !important;
         background-color: transparent !important;
         padding: 12px 0px !important;
@@ -83,7 +89,7 @@ st.markdown("""
         transition: all 0.3s ease !important;
         cursor: pointer !important;
         border: 1px solid transparent !important;
-        margin: 0 5px !important;
+        margin: 0 !important;
     }
     div[role="radiogroup"] > label:hover {
         background-color: rgba(255, 255, 255, 0.1) !important;
@@ -95,16 +101,13 @@ st.markdown("""
         box-shadow: 0 0 20px rgba(59, 130, 246, 0.4) !important;
     }
 
-    /* 4. KILL THE CHAT BLACK BOX (Wildcard Method) */
-    /* Target the bottom container and strip ALL backgrounds from its children */
+    /* 4. KILL THE CHAT BLACK BOX */
     [data-testid="stBottom"],
     [data-testid="stBottom"] * {
         background-color: transparent !important;
         background: transparent !important;
         border: none !important;
     }
-    
-    /* Paint the frosted glass effect BACK onto just the input pill */
     [data-testid="stChatInput"] {
         padding-bottom: 20px !important;
     }
@@ -114,19 +117,11 @@ st.markdown("""
         border-radius: 30px !important;
         backdrop-filter: blur(15px) !important;
         box-shadow: 0 8px 30px rgba(0,0,0,0.5) !important;
-        padding: 5px 10px !important; /* Fix spacing inside the pill */
+        padding: 5px 10px !important;
     }
-    /* Ensure text and icons inside the input remain visible */
-    [data-testid="stChatInputTextArea"] { 
-        color: #F8FAFC !important; 
-        background-color: transparent !important;
-    }
-    [data-testid="stChatInputSubmitButton"] { 
-        color: #3B82F6 !important; 
-    }
-    [data-testid="stChatInputSubmitButton"] svg { 
-        fill: #3B82F6 !important; 
-    }
+    [data-testid="stChatInputTextArea"] { color: #F8FAFC !important; background-color: transparent !important;}
+    [data-testid="stChatInputSubmitButton"] { color: #3B82F6 !important; }
+    [data-testid="stChatInputSubmitButton"] svg { fill: #3B82F6 !important; }
 
     /* 5. CAMERA UI TRANSPARENCY */
     [data-testid="stCameraInput"] {
