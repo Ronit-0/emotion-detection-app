@@ -40,7 +40,7 @@ st.markdown("""
         background-color: transparent !important;
     }
 
-    /* 3. PERFECTLY SYMMETRICAL PILL TABS */
+    /* 3. WIDE SYMMETRICAL PILL TABS */
     div[role="radiogroup"] {
         display: flex;
         flex-direction: row;
@@ -49,8 +49,8 @@ st.markdown("""
         border-radius: 50px;
         padding: 8px;
         border: 1px solid rgba(255, 255, 255, 0.05);
-        margin: 0 auto 30px auto;
-        max-width: 600px; /* Forces center symmetry */
+        margin: 0 auto 40px auto;
+        max-width: 850px; /* Made the tabs much wider! */
         box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
         backdrop-filter: blur(10px);
     }
@@ -58,14 +58,15 @@ st.markdown("""
         display: none !important;
     }
     div[role="radiogroup"] > label {
-        flex: 1; /* Makes all tabs the EXACT same width */
+        flex: 1; 
         text-align: center;
         justify-content: center;
         background-color: transparent;
-        padding: 10px 0px;
+        padding: 12px 0px;
         border-radius: 50px;
         color: #94A3B8 !important;
         font-weight: 600;
+        font-size: 1.1rem;
         transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         cursor: pointer;
         border: 1px solid transparent;
@@ -96,13 +97,53 @@ st.markdown("""
         animation: fadeIn 0.4s ease-out forwards;
     }
 
-    /* 5. PHONE CAMERA MIRROR FIX */
+    /* 5. CAMERA UI HACK (Transparent & Circular Shutter) */
+    [data-testid="stCameraInput"] {
+        background-color: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
+    }
     [data-testid="stCameraInput"] video {
-        transform: scaleX(-1) !important;
-        border-radius: 15px;
+        transform: scaleX(-1) !important; /* Phone Camera Mirror Fix */
+        border-radius: 20px;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+    }
+    /* Transform the "Take Photo" button into a Circular Shutter */
+    [data-testid="stCameraInput"] button {
+        width: 75px !important;
+        height: 75px !important;
+        border-radius: 50% !important;
+        background-color: transparent !important;
+        border: 6px solid #e2e8f0 !important;
+        box-shadow: 0 0 0 4px rgba(255,255,255,0.2) !important;
+        color: transparent !important; /* Hides the text */
+        margin: 20px auto 0 auto !important;
+        display: block !important;
+        transition: all 0.2s;
+    }
+    [data-testid="stCameraInput"] button:hover {
+        background-color: white !important;
+        transform: scale(1.05) !important;
+    }
+    [data-testid="stCameraInput"] button:active {
+        transform: scale(0.95) !important;
     }
 
-    /* 6. TYPOGRAPHY SYMMETRY */
+    /* 6. TRANSPARENT UPLOAD BOX */
+    [data-testid="stFileUploader"] {
+        background-color: rgba(255, 255, 255, 0.03) !important;
+        border: 2px dashed rgba(255, 255, 255, 0.15) !important;
+        border-radius: 20px !important;
+        backdrop-filter: blur(10px);
+        padding: 30px !important;
+        transition: all 0.3s ease;
+    }
+    [data-testid="stFileUploader"]:hover {
+        border-color: rgba(255, 255, 255, 0.4) !important;
+        background-color: rgba(255, 255, 255, 0.08) !important;
+    }
+
+    /* 7. TYPOGRAPHY SYMMETRY */
     .main-title { 
         font-size: 3.2rem; 
         font-weight: 800; 
@@ -116,7 +157,7 @@ st.markdown("""
     .sub-title { text-align: center; font-size: 1.1rem; color: #94a3b8; margin-bottom: 20px; }
     img { border-radius: 12px; }
 
-    /* 7. CHAT INPUT BAR POLISH (The Mood Saver) */
+    /* 8. CHAT INPUT BAR POLISH */
     [data-testid="stChatInput"] {
         padding-bottom: 20px;
     }
@@ -127,12 +168,8 @@ st.markdown("""
         backdrop-filter: blur(15px);
         box-shadow: 0 8px 30px rgba(0,0,0,0.5) !important;
     }
-    [data-testid="stChatInputTextArea"] {
-        color: #F8FAFC !important;
-    }
-    [data-testid="stChatInputSubmitButton"] {
-        color: #3B82F6 !important;
-    }
+    [data-testid="stChatInputTextArea"] { color: #F8FAFC !important; }
+    [data-testid="stChatInputSubmitButton"] { color: #3B82F6 !important; }
     </style>
 """, unsafe_allow_html=True)
 
@@ -275,12 +312,13 @@ def run_analysis(image_file, file_name="Captured Image"):
 
 # --- ROUTER LOGIC ---
 if selected_tab == "📸 Camera":
+    st.markdown("<h4 style='text-align: center; color: #94A3B8; margin-bottom: 10px;'>Align your face in the center</h4>", unsafe_allow_html=True)
     camera_img = st.camera_input("Smile for the camera!", label_visibility="collapsed")
     if camera_img is not None:
         run_analysis(camera_img, "Webcam Capture")
 
 elif selected_tab == "🖼️ Upload Images":
-    uploaded_imgs = st.file_uploader("Upload images", type=["jpg", "png", "jpeg"], accept_multiple_files=True, label_visibility="collapsed")
+    uploaded_imgs = st.file_uploader("Drag and drop images here", type=["jpg", "png", "jpeg"], accept_multiple_files=True, label_visibility="collapsed")
     if uploaded_imgs:
         st.success(f"Successfully loaded {len(uploaded_imgs)} image(s) into the pipeline.")
         for img in uploaded_imgs:
@@ -307,7 +345,7 @@ elif selected_tab == "💬 AI Assistant":
         if sug_col3.button(suggestions[2], use_container_width=True): suggestion_clicked = suggestions[2]
         if sug_col4.button(suggestions[3], use_container_width=True): suggestion_clicked = suggestions[3]
         
-        st.divider() 
+        st.write("") # Removed st.divider() for a cleaner flow
 
         for message in st.session_state.messages:
             avatar = AI_AVATAR if message["role"] == "assistant" else "👤"
