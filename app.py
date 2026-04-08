@@ -24,7 +24,7 @@ if "current_emotion" not in st.session_state:
 
 AI_AVATAR = "https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Smilies/Robot.png"
 
-# --- 🎨 FINAL AGGRESSIVE UI CSS 🎨 ---
+# --- 🎨 NUCLEAR UI OVERRIDE CSS 🎨 ---
 st.markdown("""
     <style>
     /* 1. HIDE HEADER & FOOTER */
@@ -34,47 +34,44 @@ st.markdown("""
     /* Expand container & Fix Title Clipping */
     .block-container {
         max-width: 950px !important;
-        padding-top: 2rem !important; 
+        padding-top: 3rem !important; 
         padding-bottom: 6rem !important;
     }
 
     /* 2. SYMMETRICAL PREMIUM BACKGROUND */
-    .stApp {
+    .stApp, .stApp > header + div {
         background: radial-gradient(circle at center, #1e293b 0%, #0B0F19 100%) !important;
         background-attachment: fixed !important;
+        background-color: transparent !important;
     }
     [data-testid="stAppViewContainer"] {
         background-color: transparent !important;
     }
 
-    /* 3. HORIZONTAL STRETCHED TABS FIX */
+    /* 3. ABSOLUTE HORIZONTAL TAB STRETCHING */
     [data-testid="stRadio"] {
         width: 100% !important;
-        max-width: 100% !important;
+        max-width: 850px !important;
         margin: 0 auto 30px auto !important;
     }
-    [data-testid="stRadio"] > div {
+    [data-testid="stRadio"] > div, div[role="radiogroup"] {
         width: 100% !important;
-    }
-    div[role="radiogroup"] {
         display: flex !important;
-        flex-direction: row !important; 
-        flex-wrap: nowrap !important; /* CRITICAL: Prevents stacking */
-        justify-content: space-between !important;
+        flex-direction: row !important; /* Force horizontal */
+        flex-wrap: nowrap !important; /* Never stack */
+        gap: 10px !important;
         background-color: rgba(255, 255, 255, 0.03) !important;
         border-radius: 50px !important;
         padding: 8px !important;
         border: 1px solid rgba(255, 255, 255, 0.05) !important;
-        width: 100% !important;
         box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3) !important;
         backdrop-filter: blur(10px) !important;
     }
     [data-testid="stRadio"] div[role="radiogroup"] > label > div:first-of-type {
-        display: none !important;
+        display: none !important; /* Hides the native radio circle */
     }
     div[role="radiogroup"] > label {
-        flex: 1 1 auto !important; /* CRITICAL: Forces equal width stretching */
-        width: 100% !important;
+        width: 33.33% !important; /* FORCES equal stretching */
         text-align: center !important;
         justify-content: center !important;
         background-color: transparent !important;
@@ -86,7 +83,7 @@ st.markdown("""
         transition: all 0.3s ease !important;
         cursor: pointer !important;
         border: 1px solid transparent !important;
-        margin: 0 5px !important;
+        margin: 0 !important;
     }
     div[role="radiogroup"] > label:hover {
         background-color: rgba(255, 255, 255, 0.1) !important;
@@ -98,21 +95,45 @@ st.markdown("""
         box-shadow: 0 0 20px rgba(59, 130, 246, 0.4) !important;
     }
 
-    /* 4. CAMERA UI HACK */
-    [data-testid="stCameraInput"], 
+    /* 4. KILL THE CHAT BLACK BOX */
+    /* Targets the newest Streamlit bottom containers */
+    [data-testid="stBottomBlockContainer"], 
+    .stChatInputContainer,
+    .stChatInputContainer > div {
+        background-color: transparent !important;
+        background: transparent !important;
+        border: none !important;
+    }
+    /* Floating chat input bar */
+    [data-testid="stChatInput"] {
+        padding-bottom: 20px !important;
+        background: transparent !important;
+    }
+    [data-testid="stChatInput"] > div:first-child {
+        background-color: rgba(15, 23, 42, 0.85) !important;
+        border: 1px solid rgba(255,255,255,0.1) !important;
+        border-radius: 30px !important;
+        backdrop-filter: blur(15px) !important;
+        box-shadow: 0 8px 30px rgba(0,0,0,0.5) !important;
+    }
+    [data-testid="stChatInputTextArea"] { color: #F8FAFC !important; }
+    [data-testid="stChatInputSubmitButton"] { color: #3B82F6 !important; }
+
+    /* 5. CAMERA UI TRANSPARENCY */
+    [data-testid="stCameraInput"] {
+        background-color: transparent !important;
+        border: none !important;
+    }
     [data-testid="stCameraInput"] > div, 
     [data-testid="stCameraInput"] > div > div {
         background-color: transparent !important;
-        border: none !important;
-        box-shadow: none !important;
-        overflow: visible !important; 
     }
     [data-testid="stCameraInput"] video {
         transform: scaleX(-1) !important; 
         border-radius: 20px !important;
         box-shadow: 0 10px 40px rgba(0,0,0,0.5) !important;
-        background-color: black !important;
     }
+    /* Circular Shutter */
     [data-testid="stCameraInput"] button {
         width: 65px !important;
         height: 65px !important;
@@ -122,16 +143,12 @@ st.markdown("""
         color: transparent !important; 
         margin: 15px auto !important;
         display: block !important;
-        transition: all 0.2s ease-in-out !important;
+        transition: all 0.2s ease !important;
         box-shadow: 0 4px 15px rgba(0,0,0,0.3) !important;
     }
-    [data-testid="stCameraInput"] button:hover {
-        background-color: white !important;
-        transform: scale(1.1) !important;
-    }
 
-    /* 5. TRANSPARENT UPLOAD BOX FIX */
-    [data-testid="stFileUploader"] {
+    /* 6. TRANSPARENT UPLOAD BOX */
+    [data-testid="stFileUploader"], [data-testid="stFileUploader"] > div {
         background-color: transparent !important;
     }
     [data-testid="stFileUploadDropzone"], 
@@ -140,15 +157,9 @@ st.markdown("""
         border: 2px dashed rgba(255, 255, 255, 0.2) !important;
         border-radius: 20px !important;
         backdrop-filter: blur(10px) !important;
-        transition: all 0.3s ease !important;
-    }
-    [data-testid="stFileUploadDropzone"]:hover,
-    [data-testid="stFileUploaderDropzone"]:hover {
-        border-color: rgba(255, 255, 255, 0.5) !important;
-        background-color: rgba(255, 255, 255, 0.1) !important;
     }
 
-    /* 6. CONTENT FADE-IN & GLASS CONTAINERS FOR RESULTS */
+    /* 7. GLASS CONTAINERS FOR MAIN CONTENT */
     div[data-testid="stVerticalBlock"] > div[style*="flex-direction: column;"] {
         background: rgba(15, 23, 42, 0.5);
         border-radius: 20px;
@@ -158,7 +169,7 @@ st.markdown("""
         box-shadow: 0 10px 30px rgba(0,0,0,0.4);
     }
 
-    /* 7. TYPOGRAPHY SYMMETRY */
+    /* 8. TYPOGRAPHY */
     .main-title { 
         font-size: 3.2rem; 
         font-weight: 800; 
@@ -171,33 +182,6 @@ st.markdown("""
     }
     .sub-title { text-align: center; font-size: 1.1rem; color: #94a3b8; margin-bottom: 30px; }
     img { border-radius: 12px; }
-
-    /* 8. KILL THE BLACK CHAT DIVIDER / BOTTOM CONTAINER */
-    /* Erase the solid background from Streamlit's bottom container */
-    [data-testid="stBottom"], 
-    [data-testid="stBottom"] > div,
-    .stApp > header + div > div > div > div:last-of-type {
-        background-color: transparent !important;
-        background: transparent !important;
-        border: none !important;
-        box-shadow: none !important;
-    }
-    
-    /* Floating chat input bar */
-    [data-testid="stChatInput"] {
-        padding-bottom: 15px !important;
-        background: transparent !important;
-        border: none !important;
-    }
-    [data-testid="stChatInput"] > div {
-        background-color: rgba(15, 23, 42, 0.85) !important;
-        border: 1px solid rgba(255,255,255,0.1) !important;
-        border-radius: 30px !important;
-        backdrop-filter: blur(15px) !important;
-        box-shadow: 0 8px 30px rgba(0,0,0,0.5) !important;
-    }
-    [data-testid="stChatInputTextArea"] { color: #F8FAFC !important; }
-    [data-testid="stChatInputSubmitButton"] { color: #3B82F6 !important; }
     </style>
 """, unsafe_allow_html=True)
 
