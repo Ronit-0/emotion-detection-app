@@ -22,13 +22,63 @@ if "messages" not in st.session_state:
 if "current_emotion" not in st.session_state:
     st.session_state.current_emotion = "Neutral"
 
-# --- CUSTOM CSS ---
+# --- CUSTOM CSS (ANIMATED BACKGROUND & GLASSMORPHISM) ---
 st.markdown("""
     <style>
-    .main-title { font-size: 3rem; font-weight: 700; text-align: center; margin-bottom: 0px; background: -webkit-linear-gradient(#4facfe, #00f2fe); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-    .sub-title { text-align: center; font-size: 1.1rem; color: #A0AEC0; margin-bottom: 20px; }
-    .stTabs [data-baseweb="tab-list"] { justify-content: center; }
-    img { border-radius: 15px; box-shadow: 0 4px 8px rgba(0,0,0,0.5); }
+    /* 1. Animated Gradient Background */
+    .stApp {
+        background: linear-gradient(-45deg, #0f172a, #020617, #1e1b4b, #0f172a);
+        background-size: 400% 400%;
+        animation: gradientBG 15s ease infinite;
+        color: #FAFAFA;
+    }
+    
+    @keyframes gradientBG {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+    }
+
+    /* 2. Frosted Glass Effect for Tabs */
+    .stTabs [data-baseweb="tab-list"] {
+        justify-content: center;
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 10px;
+        padding: 10px;
+        backdrop-filter: blur(10px);
+    }
+    
+    /* 3. Frosted Glass Effect for Main Containers */
+    div[data-testid="stVerticalBlock"] > div[style*="flex-direction: column;"] {
+        background: rgba(15, 23, 42, 0.6);
+        border-radius: 15px;
+        padding: 15px;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    /* 4. Typography & Image Polish */
+    .main-title { 
+        font-size: 3.5rem; 
+        font-weight: 800; 
+        text-align: center; 
+        margin-bottom: 0px; 
+        background: -webkit-linear-gradient(#60a5fa, #c084fc); 
+        -webkit-background-clip: text; 
+        -webkit-text-fill-color: transparent; 
+        text-shadow: 0px 4px 20px rgba(96, 165, 250, 0.3);
+    }
+    .sub-title { 
+        text-align: center; 
+        font-size: 1.1rem; 
+        color: #94a3b8; 
+        margin-bottom: 30px; 
+        letter-spacing: 0.5px;
+    }
+    img { 
+        border-radius: 15px; 
+        box-shadow: 0 8px 25px rgba(0,0,0,0.5); 
+    }
     </style>
 """, unsafe_allow_html=True)
 
@@ -122,7 +172,6 @@ def run_analysis(image_file, file_name="Captured Image"):
                             model_used_text = "Gemini Vision"
                             color = (255, 200, 0) # Gold
                             
-                        # 🚨 GRACEFUL ERROR HANDLING FOR VISION API 🚨
                         except Exception as e:
                             error_msg = str(e).lower()
                             if "429" in error_msg or "quota" in error_msg or "exhausted" in error_msg:
@@ -130,7 +179,6 @@ def run_analysis(image_file, file_name="Captured Image"):
                             else:
                                 st.toast("⚠️ Gemini Vision unavailable. Falling back to Custom CNN.", icon="⚠️")
                             
-                            # Fallback dummy data so it visually switches to error state but doesn't crash
                             base_emotion = "Neutral"
                             predicted_emotion_ui = "Neutral 😐"
                             confidence_display = "N/A"
@@ -218,8 +266,6 @@ with tab3:
 
             with st.chat_message("assistant"):
                 with st.spinner("Thinking..."):
-                    
-                    # 🚨 GRACEFUL ERROR HANDLING FOR CHATBOT API 🚨
                     try:
                         system_prompt = f"The user's face was scanned by an AI and they look {current_mood}. Keep this in mind when answering: {prompt}"
                         response = chatbot_model.generate_content(system_prompt)
