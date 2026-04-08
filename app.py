@@ -50,8 +50,6 @@ def load_emotion_model():
         return None
 
 model = load_emotion_model()
-
-# 🚨 FIX: Using OpenCV's internal cascade path to prevent corruption issues
 face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
 
 emoji_map = {"Angry": "😠", "Disgusted": "🤢", "Fearful": "😨", "Happy": "😄", "Neutral": "😐", "Sad": "😢", "Surprised": "😲"}
@@ -93,20 +91,11 @@ def run_analysis(image_file, file_name="Captured Image"):
                 gray = img_array
                 img_array = cv2.cvtColor(gray, cv2.COLOR_GRAY2RGB)
 
-            # 🚨 FIX: Auto-Lighting balance
             gray = cv2.equalizeHist(gray)
-
-            # 🚨 FIX: High-Sensitivity Face Detection
-            faces = face_cascade.detectMultiScale(
-                gray, 
-                scaleFactor=1.1, 
-                minNeighbors=4,
-                minSize=(50, 50)
-            )
+            faces = face_cascade.detectMultiScale(gray, scaleFactor=1.1, minNeighbors=4, minSize=(50, 50))
 
             if len(faces) == 0:
                 st.warning("No face detected! Please try an image with a clearer face.")
-                # Show the image anyway so you can see what it looked like
                 st.image(image, use_container_width=True)
             else:
                 for (x, y, w, h) in faces:
@@ -132,12 +121,20 @@ def run_analysis(image_file, file_name="Captured Image"):
                             predicted_emotion_ui = f"{base_emotion} {emoji_map.get(base_emotion, '')}"
                             model_used_text = "Gemini Vision"
                             color = (255, 200, 0) # Gold
+                            
+                        # 🚨 GRACEFUL ERROR HANDLING FOR VISION API 🚨
                         except Exception as e:
-                            st.error("Gemini Vision failed. Fallback to CNN.")
+                            error_msg = str(e).lower()
+                            if "429" in error_msg or "quota" in error_msg or "exhausted" in error_msg:
+                                st.toast("⏳ Server overload! Gemini AI limit reached. Temporarily using Custom CNN.", icon="⚠️")
+                            else:
+                                st.toast("⚠️ Gemini Vision unavailable. Falling back to Custom CNN.", icon="⚠️")
+                            
+                            # Fallback dummy data so it visually switches to error state but doesn't crash
                             base_emotion = "Neutral"
                             predicted_emotion_ui = "Neutral 😐"
                             confidence_display = "N/A"
-                            model_used_text = "Error"
+                            model_used_text = "API Limit Exceeded"
                             color = (0, 0, 255)
 
                     # --- BRANCH 2: CUSTOM CNN ---
@@ -221,10 +218,16 @@ with tab3:
 
             with st.chat_message("assistant"):
                 with st.spinner("Thinking..."):
+                    
+                    # 🚨 GRACEFUL ERROR HANDLING FOR CHATBOT API 🚨
                     try:
                         system_prompt = f"The user's face was scanned by an AI and they look {current_mood}. Keep this in mind when answering: {prompt}"
                         response = chatbot_model.generate_content(system_prompt)
                         st.markdown(response.text)
                         st.session_state.messages.append({"role": "assistant", "content": response.text})
                     except Exception as e:
-                        st.error(f"Chat error: {e}")
+                        error_msg = str(e).lower()
+                        if "429" in error_msg or "quota" in error_msg or "exhausted" in error_msg:
+                            st.warning("⏳ **Server Overload:** The AI has reached its rate limit. Please wait a minute and try again!")
+                        else:
+                            st.error("⚠️ Oops! The chatbot encountered a slight issue. Please try again.")
