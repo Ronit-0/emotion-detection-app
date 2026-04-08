@@ -24,18 +24,18 @@ if "current_emotion" not in st.session_state:
 
 AI_AVATAR = "https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Smilies/Robot.png"
 
-# --- 🎨 AGGRESSIVE UI OVERRIDE CSS 🎨 ---
+# --- 🎨 FINAL AGGRESSIVE UI CSS 🎨 ---
 st.markdown("""
     <style>
     /* 1. HIDE HEADER & FOOTER */
     header {visibility: hidden !important;}
     footer {visibility: hidden !important;}
     
-    /* Expand the main container & Fix Title Clipping */
+    /* Expand container & Fix Title Clipping */
     .block-container {
         max-width: 950px !important;
-        padding-top: 3rem !important; /* Gives the title room to breathe */
-        padding-bottom: 5rem !important;
+        padding-top: 4rem !important; /* Increased to stop title cutoff */
+        padding-bottom: 6rem !important;
     }
 
     /* 2. SYMMETRICAL PREMIUM BACKGROUND */
@@ -47,25 +47,23 @@ st.markdown("""
         background-color: transparent !important;
     }
 
-    /* 3. WIDE SYMMETRICAL PILL TABS */
-    /* Force the Streamlit radio wrapper to take full width */
+    /* 3. HORIZONTAL STRETCHED TABS FIX */
     [data-testid="stRadio"] {
         width: 100% !important;
-        max-width: 850px !important;
-        margin: 0 auto !important;
+        margin: 0 auto 30px auto !important;
     }
     [data-testid="stRadio"] > div {
         width: 100% !important;
     }
     div[role="radiogroup"] {
         display: flex !important;
-        flex-direction: row !important;
-        justify-content: space-between !important;
+        flex-direction: row !important; /* Forces horizontal alignment */
+        flex-wrap: nowrap !important; /* Prevents stacking */
+        justify-content: center !important;
         background-color: rgba(255, 255, 255, 0.03) !important;
         border-radius: 50px !important;
         padding: 8px !important;
         border: 1px solid rgba(255, 255, 255, 0.05) !important;
-        margin: 0 auto 40px auto !important;
         width: 100% !important;
         box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3) !important;
         backdrop-filter: blur(10px) !important;
@@ -74,8 +72,7 @@ st.markdown("""
         display: none !important;
     }
     div[role="radiogroup"] > label {
-        flex: 1 1 100% !important; /* Stretches tabs equally */
-        width: 100% !important;
+        flex: 1 1 0% !important; /* Forces equal width stretching */
         text-align: center !important;
         justify-content: center !important;
         background-color: transparent !important;
@@ -84,15 +81,15 @@ st.markdown("""
         color: #94A3B8 !important;
         font-weight: 600 !important;
         font-size: 1.1rem !important;
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        transition: all 0.3s ease !important;
         cursor: pointer !important;
         border: 1px solid transparent !important;
         margin: 0 5px !important;
+        min-width: fit-content !important; /* Prevents squishing */
     }
     div[role="radiogroup"] > label:hover {
         background-color: rgba(255, 255, 255, 0.1) !important;
         color: #F8FAFC !important;
-        transform: translateY(-2px) !important;
     }
     div[role="radiogroup"] > label[data-checked="true"] {
         background-color: #3B82F6 !important;
@@ -100,7 +97,7 @@ st.markdown("""
         box-shadow: 0 0 20px rgba(59, 130, 246, 0.4) !important;
     }
 
-    /* 4. CAMERA UI HACK (Transparent Box & Fixed Circular Shutter) */
+    /* 4. CAMERA UI HACK */
     [data-testid="stCameraInput"], 
     [data-testid="stCameraInput"] > div, 
     [data-testid="stCameraInput"] > div > div {
@@ -131,14 +128,13 @@ st.markdown("""
         background-color: white !important;
         transform: scale(1.1) !important;
     }
-    [data-testid="stCameraInput"] button:active {
-        transform: scale(0.9) !important;
-    }
 
     /* 5. TRANSPARENT UPLOAD BOX FIX */
+    /* Target all possible Streamlit upload containers */
     [data-testid="stFileUploader"] {
         background-color: transparent !important;
     }
+    [data-testid="stFileUploadDropzone"], 
     [data-testid="stFileUploaderDropzone"] {
         background-color: rgba(255, 255, 255, 0.05) !important;
         border: 2px dashed rgba(255, 255, 255, 0.2) !important;
@@ -146,16 +142,13 @@ st.markdown("""
         backdrop-filter: blur(10px) !important;
         transition: all 0.3s ease !important;
     }
+    [data-testid="stFileUploadDropzone"]:hover,
     [data-testid="stFileUploaderDropzone"]:hover {
         border-color: rgba(255, 255, 255, 0.5) !important;
         background-color: rgba(255, 255, 255, 0.1) !important;
     }
 
     /* 6. CONTENT FADE-IN & GLASS CONTAINERS FOR RESULTS */
-    @keyframes fadeIn {
-        from { opacity: 0; transform: scale(0.98); }
-        to { opacity: 1; transform: scale(1); }
-    }
     div[data-testid="stVerticalBlock"] > div[style*="flex-direction: column;"] {
         background: rgba(15, 23, 42, 0.5);
         border-radius: 20px;
@@ -163,7 +156,6 @@ st.markdown("""
         backdrop-filter: blur(15px);
         border: 1px solid rgba(255, 255, 255, 0.08);
         box-shadow: 0 10px 30px rgba(0,0,0,0.4);
-        animation: fadeIn 0.4s ease-out forwards;
     }
 
     /* 7. TYPOGRAPHY SYMMETRY */
@@ -171,13 +163,13 @@ st.markdown("""
         font-size: 3.2rem; 
         font-weight: 800; 
         text-align: center; 
-        margin-top: -10px; /* Reduced negative margin */
+        margin-top: 0px; 
         margin-bottom: 5px; 
         background: linear-gradient(to right, #4facfe, #00f2fe); 
         -webkit-background-clip: text; 
         -webkit-text-fill-color: transparent; 
     }
-    .sub-title { text-align: center; font-size: 1.1rem; color: #94a3b8; margin-bottom: 20px; }
+    .sub-title { text-align: center; font-size: 1.1rem; color: #94a3b8; margin-bottom: 30px; }
     img { border-radius: 12px; }
 
     /* 8. KILL THE BLACK CHAT DIVIDER / BOTTOM CONTAINER */
@@ -192,16 +184,19 @@ st.markdown("""
     [data-testid="stBottom"] {
         background-color: transparent !important;
         background: transparent !important;
+        border: none !important;
     }
     [data-testid="stBottom"] > div {
         background-color: transparent !important;
         background: transparent !important;
+        border: none !important;
     }
     
     /* Floating chat input bar */
     [data-testid="stChatInput"] {
         padding-bottom: 15px !important;
         background: transparent !important;
+        border: none !important;
     }
     [data-testid="stChatInput"] > div {
         background-color: rgba(15, 23, 42, 0.85) !important;
@@ -336,7 +331,6 @@ def run_analysis(image_file, file_name="Captured Image"):
                     cv2.rectangle(img_array, (x, y), (x+w, y+h), color, 3)
                     cv2.putText(img_array, base_emotion, (x, y-15), cv2.FONT_HERSHEY_SIMPLEX, 0.9, color, 2)
 
-                # Draw the final results
                 col1, col2 = st.columns([1.5, 1], gap="large")
                 with col1:
                     st.image(img_array, use_container_width=True)
