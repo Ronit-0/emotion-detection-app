@@ -50,7 +50,9 @@ def load_emotion_model():
         return None
 
 model = load_emotion_model()
-face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
+
+# 🚨 FIX: Using OpenCV's internal cascade path to prevent corruption issues
+face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
 
 emoji_map = {"Angry": "😠", "Disgusted": "🤢", "Fearful": "😨", "Happy": "😄", "Neutral": "😐", "Sad": "😢", "Surprised": "😲"}
 cnn_emotion_list = ["Angry", "Disgusted", "Fearful", "Happy", "Sad", "Surprised", "Neutral"]
@@ -91,17 +93,27 @@ def run_analysis(image_file, file_name="Captured Image"):
                 gray = img_array
                 img_array = cv2.cvtColor(gray, cv2.COLOR_GRAY2RGB)
 
-            faces = face_cascade.detectMultiScale(gray, scaleFactor=1.3, minNeighbors=5)
+            # 🚨 FIX: Auto-Lighting balance
+            gray = cv2.equalizeHist(gray)
+
+            # 🚨 FIX: High-Sensitivity Face Detection
+            faces = face_cascade.detectMultiScale(
+                gray, 
+                scaleFactor=1.1, 
+                minNeighbors=4,
+                minSize=(50, 50)
+            )
 
             if len(faces) == 0:
                 st.warning("No face detected! Please try an image with a clearer face.")
+                # Show the image anyway so you can see what it looked like
+                st.image(image, use_container_width=True)
             else:
                 for (x, y, w, h) in faces:
                     
                     # --- BRANCH 1: GEMINI VISION AI ---
                     if use_gemini and chatbot_model is not None:
                         try:
-                            # Prompt engineered to return exactly "Emotion,Confidence"
                             vision_prompt = "Analyze the facial expression of the primary person in this image. Classify their emotion into exactly one of these words: Angry, Disgusted, Fearful, Happy, Sad, Surprised, Neutral. Also estimate your confidence from 0 to 100. Respond strictly in this format: Emotion,Confidence (Example: Happy,95)"
                             response = chatbot_model.generate_content([vision_prompt, image])
                             
@@ -117,7 +129,7 @@ def run_analysis(image_file, file_name="Captured Image"):
                             if base_emotion not in cnn_emotion_list:
                                 base_emotion = "Neutral"
                                 
-                            predicted_emotion_ui = f"{base_emotion} {emoji_map[base_emotion]}"
+                            predicted_emotion_ui = f"{base_emotion} {emoji_map.get(base_emotion, '')}"
                             model_used_text = "Gemini Vision"
                             color = (255, 200, 0) # Gold
                         except Exception as e:
@@ -139,14 +151,13 @@ def run_analysis(image_file, file_name="Captured Image"):
                             max_index = int(np.argmax(prediction))
                             base_emotion = cnn_emotion_list[max_index]
                             
-                            predicted_emotion_ui = f"{base_emotion} {emoji_map[base_emotion]}"
+                            predicted_emotion_ui = f"{base_emotion} {emoji_map.get(base_emotion, '')}"
                             confidence_display = f"{(np.max(prediction) * 100):.2f}%"
                             model_used_text = "Custom CNN"
                             color = (0, 255, 150) # Green
                     
                     st.session_state.current_emotion = base_emotion
                     
-                    # 🚨 FIX: Draw Box and Text WITHOUT the Emoji 🚨
                     cv2.rectangle(img_array, (x, y), (x+w, y+h), color, 3)
                     cv2.putText(img_array, base_emotion, (x, y-15), cv2.FONT_HERSHEY_SIMPLEX, 0.9, color, 2)
 
@@ -183,11 +194,9 @@ with tab3:
     if chatbot_model is None:
         st.error("⚠️ Gemini API Key missing or invalid! Please check your Streamlit Secrets.")
     else:
-        # 1. Quick Suggestion Buttons
         st.write("💡 **Quick Suggestions:**")
         suggestions = suggestion_dict.get(current_mood, suggestion_dict["Neutral"])
         
-        # We track if a suggestion button was clicked
         suggestion_clicked = None
         sug_col1, sug_col2, sug_col3 = st.columns(3)
         if sug_col1.button(suggestions[0], use_container_width=True): suggestion_clicked = suggestions[0]
@@ -196,15 +205,12 @@ with tab3:
         
         st.markdown("---")
 
-        # 2. Display Chat History
         for message in st.session_state.messages:
             with st.chat_message(message["role"]):
                 st.markdown(message["content"])
 
-        # 3. Handle Chat Input (Either from manual typing OR a suggestion button)
         prompt = st.chat_input(f"Ask me something about feeling {current_mood}...")
         
-        # If they clicked a button, pretend they typed it in the box!
         if suggestion_clicked:
             prompt = suggestion_clicked
 
