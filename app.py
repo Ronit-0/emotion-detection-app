@@ -5,39 +5,34 @@ import cv2
 import numpy as np
 from tensorflow.keras.models import load_model
 from PIL import Image
+import google.generativeai as genai
 
 # --- PAGE CONFIGURATION ---
 st.set_page_config(page_title="Emotion Detector AI", page_icon="🎭", layout="centered")
 
+# --- CONFIGURE CHATBOT & VISION API ---
+try:
+    genai.configure(api_key=st.secrets["GEMINI_API_KEY"])
+    chatbot_model = genai.GenerativeModel('gemini-2.5-flash-lite')
+except Exception as e:
+    chatbot_model = None
+
+if "messages" not in st.session_state:
+    st.session_state.messages = [{"role": "assistant", "content": "Hi! Analyze an image first, and I can give you advice, quotes, or music recommendations based on your mood!"}]
+if "current_emotion" not in st.session_state:
+    st.session_state.current_emotion = "Neutral"
+
 # --- CUSTOM CSS ---
 st.markdown("""
     <style>
-    .main-title {
-        font-size: 3rem;
-        font-weight: 700;
-        text-align: center;
-        margin-bottom: 0px;
-        background: -webkit-linear-gradient(#4facfe, #00f2fe);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-    }
-    .sub-title {
-        text-align: center;
-        font-size: 1.1rem;
-        color: #A0AEC0;
-        margin-bottom: 30px;
-    }
-    .stTabs [data-baseweb="tab-list"] {
-        justify-content: center;
-    }
-    img {
-        border-radius: 15px;
-        box-shadow: 0 4px 8px rgba(0,0,0,0.5);
-    }
+    .main-title { font-size: 3rem; font-weight: 700; text-align: center; margin-bottom: 0px; background: -webkit-linear-gradient(#4facfe, #00f2fe); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .sub-title { text-align: center; font-size: 1.1rem; color: #A0AEC0; margin-bottom: 20px; }
+    .stTabs [data-baseweb="tab-list"] { justify-content: center; }
+    img { border-radius: 15px; box-shadow: 0 4px 8px rgba(0,0,0,0.5); }
     </style>
 """, unsafe_allow_html=True)
 
-# --- LOAD MODELS (HUGGING FACE) ---
+# --- LOAD LOCAL CNN MODEL ---
 MODEL_URL = "https://huggingface.co/Ronit-0/fer2013-emotion-model/resolve/main/final_emotion_model.h5?download=true"
 MODEL_PATH = "final_emotion_model.h5"
 
@@ -47,8 +42,7 @@ def load_emotion_model():
         with st.spinner("📦 Downloading AI Weights (66MB)... Please wait."):
             try:
                 urllib.request.urlretrieve(MODEL_URL, MODEL_PATH)
-            except Exception as e:
-                st.error(f"Failed to download model: {e}")
+            except:
                 return None
     try:
         return load_model(MODEL_PATH)
@@ -57,28 +51,32 @@ def load_emotion_model():
 
 model = load_emotion_model()
 face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
-emotion_dict = {0: "Angry 😠", 1: "Disgusted 🤢", 2: "Fearful 😨", 3: "Happy 😄", 4: "Neutral 😐", 5: "Sad 😢", 6: "Surprised 😲"}
+
+# Dictionary mapping for both models
+emoji_map = {"Angry": "😠", "Disgusted": "🤢", "Fearful": "😨", "Happy": "😄", "Neutral": "😐", "Sad": "😢", "Surprised": "😲"}
+cnn_emotion_list = ["Angry", "Disgusted", "Fearful", "Happy", "Sad", "Surprised", "Neutral"]
 
 # --- MAIN UI HEADER ---
 st.markdown('<div class="main-title">Facial Emotion Analysis AI</div>', unsafe_allow_html=True)
-st.markdown('<div class="sub-title">Upload photos or use your camera to detect emotional states.</div>', unsafe_allow_html=True)
+st.markdown('<div class="sub-title">Detect emotional states and chat with an AI assistant.</div>', unsafe_allow_html=True)
 
-if model is None:
-    st.error("⚠️ Model failed to load. Check the Hugging Face link.")
+# 🚨 THE NEW GEMINI TOGGLE SWITCH 🚨
+colA, colB, colC = st.columns([1, 2, 1])
+with colB:
+    use_gemini = st.toggle("🚀 Enable High-Accuracy Mode (Gemini Vision AI)", value=False)
+st.write("") # Spacing
 
-# --- THE AI ENGINE (Helper Function) ---
+# --- THE AI ENGINE ---
 def run_analysis(image_file, file_name="Captured Image"):
-    # Create a visual container for each image so they don't blend together
     with st.container():
         st.markdown(f"#### 📄 Analyzing: `{file_name}`")
-        
-        with st.spinner("Analyzing facial features..."):
-            image = Image.open(image_file)
+        with st.spinner("Processing facial features..."):
+            image = Image.open(image_file) # Keep the original PIL image for Gemini
             img_array = np.array(image)
             
+            # Format image for OpenCV drawing
             if len(img_array.shape) == 3 and img_array.shape[2] == 4:
                  img_array = cv2.cvtColor(img_array, cv2.COLOR_RGBA2RGB)
-                 
             if len(img_array.shape) == 3:
                 gray = cv2.cvtColor(img_array, cv2.COLOR_RGB2GRAY)
             else:
@@ -91,20 +89,51 @@ def run_analysis(image_file, file_name="Captured Image"):
                 st.warning("No face detected! Please try an image with a clearer face.")
             else:
                 for (x, y, w, h) in faces:
-                    roi_gray = gray[y:y+h, x:x+w]
-                    roi_gray = cv2.resize(roi_gray, (48, 48))
-                    roi_gray = roi_gray / 255.0 
-                    roi_gray = np.reshape(roi_gray, (1, 48, 48, 1))
+                    
+                    # --- BRANCH 1: GEMINI VISION AI (HIGH ACCURACY) ---
+                    if use_gemini and chatbot_model is not None:
+                        try:
+                            vision_prompt = "Analyze the facial expression of the primary person in this image. You must classify their emotion into exactly one of these words: Angry, Disgusted, Fearful, Happy, Sad, Surprised, Neutral. Respond with ONLY the single word."
+                            response = chatbot_model.generate_content([vision_prompt, image])
+                            
+                            # Clean up the response
+                            clean_response = response.text.strip().capitalize()
+                            # Default to Neutral if Gemini gets confused
+                            if clean_response not in cnn_emotion_list:
+                                clean_response = "Neutral"
+                                
+                            predicted_emotion = f"{clean_response} {emoji_map[clean_response]}"
+                            confidence_display = "Gemini AI Engine"
+                            color = (255, 200, 0) # Gold box for Gemini
+                        except Exception as e:
+                            st.error(f"Gemini Vision failed. Fallback to CNN.")
+                            predicted_emotion = "Error"
+                            confidence_display = "N/A"
+                            color = (0, 0, 255)
 
-                    if model:
-                        prediction = model.predict(roi_gray, verbose=0)
-                        max_index = int(np.argmax(prediction))
-                        predicted_emotion = emotion_dict[max_index]
-                        confidence = np.max(prediction) * 100
-                        
-                        cv2.rectangle(img_array, (x, y), (x+w, y+h), (0, 255, 150), 3)
-                        cv2.putText(img_array, predicted_emotion, (x, y-15), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 255, 150), 2)
+                    # --- BRANCH 2: CUSTOM CNN (LOCAL MODEL) ---
+                    else:
+                        roi_gray = gray[y:y+h, x:x+w]
+                        roi_gray = cv2.resize(roi_gray, (48, 48)) / 255.0 
+                        roi_gray = np.reshape(roi_gray, (1, 48, 48, 1))
 
+                        if model:
+                            prediction = model.predict(roi_gray, verbose=0)
+                            max_index = int(np.argmax(prediction))
+                            base_emotion = cnn_emotion_list[max_index]
+                            
+                            predicted_emotion = f"{base_emotion} {emoji_map[base_emotion]}"
+                            confidence_display = f"{(np.max(prediction) * 100):.2f}%"
+                            color = (0, 255, 150) # Green box for CNN
+                    
+                    # Update Chatbot Memory
+                    st.session_state.current_emotion = predicted_emotion
+                    
+                    # Draw Box and Text
+                    cv2.rectangle(img_array, (x, y), (x+w, y+h), color, 3)
+                    cv2.putText(img_array, predicted_emotion, (x, y-15), cv2.FONT_HERSHEY_SIMPLEX, 0.8, color, 2)
+
+                # Display Results
                 col1, col2 = st.columns([1.5, 1], gap="large")
                 with col1:
                     st.image(img_array, use_container_width=True)
@@ -112,26 +141,46 @@ def run_analysis(image_file, file_name="Captured Image"):
                     st.write("") 
                     st.write("") 
                     st.metric(label="Primary Emotion", value=predicted_emotion)
-                    st.metric(label="AI Confidence", value=f"{confidence:.2f}%")
-        
-        st.markdown("---") # Adds a clean dividing line between multiple images
+                    st.metric(label="Model Confidence", value=confidence_display)
+        st.markdown("---")
 
-# --- TABBED INTERFACE ---
-tab1, tab2 = st.tabs(["📸 Take a Picture", "🖼️ Upload Images (Batch)"])
+# --- 3-TABBED INTERFACE ---
+tab1, tab2, tab3 = st.tabs(["📸 Camera", "🖼️ Upload Images", "💬 AI Assistant"])
 
 with tab1:
-    st.write("Use your device's camera to analyze your current expression.")
     camera_img = st.camera_input("Smile for the camera!", label_visibility="collapsed")
     if camera_img is not None:
         run_analysis(camera_img, "Webcam Capture")
 
 with tab2:
-    st.write("Upload one or more clear photos of faces for analysis.")
-    # Notice the new 'accept_multiple_files=True' parameter!
-    uploaded_imgs = st.file_uploader("Drag and drop images here", type=["jpg", "png", "jpeg"], accept_multiple_files=True, label_visibility="collapsed")
-    
-    # If the user uploads files, this loops through every single one dynamically
+    uploaded_imgs = st.file_uploader("Upload images", type=["jpg", "png", "jpeg"], accept_multiple_files=True, label_visibility="collapsed")
     if uploaded_imgs:
         st.success(f"Successfully loaded {len(uploaded_imgs)} image(s) into the pipeline.")
         for img in uploaded_imgs:
             run_analysis(img, img.name)
+
+# --- CHATBOT UI ---
+with tab3:
+    st.markdown(f"### Current Mood: {st.session_state.current_emotion}")
+    
+    if chatbot_model is None:
+        st.error("⚠️ Gemini API Key missing or invalid! Please check your Streamlit Secrets.")
+    else:
+        for message in st.session_state.messages:
+            with st.chat_message(message["role"]):
+                st.markdown(message["content"])
+
+        if prompt := st.chat_input(f"Ask me something about feeling {st.session_state.current_emotion}..."):
+            st.session_state.messages.append({"role": "user", "content": prompt})
+            with st.chat_message("user"):
+                st.markdown(prompt)
+
+            with st.chat_message("assistant"):
+                with st.spinner("Thinking..."):
+                    try:
+                        system_prompt = f"The user's face was just scanned by an AI and they look {st.session_state.current_emotion}. Keep this in mind when answering: {prompt}"
+                        response = chatbot_model.generate_content(system_prompt)
+                        st.markdown(response.text)
+                        st.session_state.messages.append({"role": "assistant", "content": response.text})
+                    except Exception as e:
+                        st.error(f"Chat error: {e}")
