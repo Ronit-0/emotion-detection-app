@@ -52,29 +52,37 @@ def load_emotion_model():
 model = load_emotion_model()
 face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
 
-# Dictionary mapping for both models
 emoji_map = {"Angry": "😠", "Disgusted": "🤢", "Fearful": "😨", "Happy": "😄", "Neutral": "😐", "Sad": "😢", "Surprised": "😲"}
 cnn_emotion_list = ["Angry", "Disgusted", "Fearful", "Happy", "Sad", "Surprised", "Neutral"]
+
+# --- DYNAMIC CHAT SUGGESTIONS ---
+suggestion_dict = {
+    "Happy": ["Give me a happy quote! ☀️", "Recommend an upbeat song 🎵", "Tell me a joke! 😂"],
+    "Sad": ["Give me a comforting quote 🌧️", "How can I cheer up?", "Recommend a calming song 🎧"],
+    "Angry": ["How to calm down? 🧘", "Give me a peaceful quote 🍃", "Recommend relaxing music 🎶"],
+    "Fearful": ["Give me a courageous quote 🦁", "How to overcome anxiety?", "Recommend a soothing song 🎹"],
+    "Surprised": ["Tell me a mind-blowing fact! 🤯", "Recommend an exciting movie 🍿", "Give me a fun trivia question 🎲"],
+    "Disgusted": ["Tell me a funny story! 🤣", "How to clear my mind?", "Give me a random fun fact 💡"],
+    "Neutral": ["Tell me a fun fact! 🧠", "Give me a motivational quote 🚀", "Recommend a good book 📚"]
+}
 
 # --- MAIN UI HEADER ---
 st.markdown('<div class="main-title">Facial Emotion Analysis AI</div>', unsafe_allow_html=True)
 st.markdown('<div class="sub-title">Detect emotional states and chat with an AI assistant.</div>', unsafe_allow_html=True)
 
-# 🚨 THE NEW GEMINI TOGGLE SWITCH 🚨
 colA, colB, colC = st.columns([1, 2, 1])
 with colB:
     use_gemini = st.toggle("🚀 Enable High-Accuracy Mode (Gemini Vision AI)", value=False)
-st.write("") # Spacing
+st.write("") 
 
 # --- THE AI ENGINE ---
 def run_analysis(image_file, file_name="Captured Image"):
     with st.container():
         st.markdown(f"#### 📄 Analyzing: `{file_name}`")
         with st.spinner("Processing facial features..."):
-            image = Image.open(image_file) # Keep the original PIL image for Gemini
+            image = Image.open(image_file) 
             img_array = np.array(image)
             
-            # Format image for OpenCV drawing
             if len(img_array.shape) == 3 and img_array.shape[2] == 4:
                  img_array = cv2.cvtColor(img_array, cv2.COLOR_RGBA2RGB)
             if len(img_array.shape) == 3:
@@ -90,28 +98,37 @@ def run_analysis(image_file, file_name="Captured Image"):
             else:
                 for (x, y, w, h) in faces:
                     
-                    # --- BRANCH 1: GEMINI VISION AI (HIGH ACCURACY) ---
+                    # --- BRANCH 1: GEMINI VISION AI ---
                     if use_gemini and chatbot_model is not None:
                         try:
-                            vision_prompt = "Analyze the facial expression of the primary person in this image. You must classify their emotion into exactly one of these words: Angry, Disgusted, Fearful, Happy, Sad, Surprised, Neutral. Respond with ONLY the single word."
+                            # Prompt engineered to return exactly "Emotion,Confidence"
+                            vision_prompt = "Analyze the facial expression of the primary person in this image. Classify their emotion into exactly one of these words: Angry, Disgusted, Fearful, Happy, Sad, Surprised, Neutral. Also estimate your confidence from 0 to 100. Respond strictly in this format: Emotion,Confidence (Example: Happy,95)"
                             response = chatbot_model.generate_content([vision_prompt, image])
                             
-                            # Clean up the response
-                            clean_response = response.text.strip().capitalize()
-                            # Default to Neutral if Gemini gets confused
-                            if clean_response not in cnn_emotion_list:
-                                clean_response = "Neutral"
+                            response_text = response.text.strip()
+                            if "," in response_text:
+                                parts = response_text.split(",")
+                                base_emotion = parts[0].strip().capitalize()
+                                confidence_display = f"{parts[1].strip().replace('%', '')}%"
+                            else:
+                                base_emotion = response_text.capitalize()
+                                confidence_display = "99.0%"
+
+                            if base_emotion not in cnn_emotion_list:
+                                base_emotion = "Neutral"
                                 
-                            predicted_emotion = f"{clean_response} {emoji_map[clean_response]}"
-                            confidence_display = "Gemini AI Engine"
-                            color = (255, 200, 0) # Gold box for Gemini
+                            predicted_emotion_ui = f"{base_emotion} {emoji_map[base_emotion]}"
+                            model_used_text = "Gemini Vision"
+                            color = (255, 200, 0) # Gold
                         except Exception as e:
-                            st.error(f"Gemini Vision failed. Fallback to CNN.")
-                            predicted_emotion = "Error"
+                            st.error("Gemini Vision failed. Fallback to CNN.")
+                            base_emotion = "Neutral"
+                            predicted_emotion_ui = "Neutral 😐"
                             confidence_display = "N/A"
+                            model_used_text = "Error"
                             color = (0, 0, 255)
 
-                    # --- BRANCH 2: CUSTOM CNN (LOCAL MODEL) ---
+                    # --- BRANCH 2: CUSTOM CNN ---
                     else:
                         roi_gray = gray[y:y+h, x:x+w]
                         roi_gray = cv2.resize(roi_gray, (48, 48)) / 255.0 
@@ -122,26 +139,25 @@ def run_analysis(image_file, file_name="Captured Image"):
                             max_index = int(np.argmax(prediction))
                             base_emotion = cnn_emotion_list[max_index]
                             
-                            predicted_emotion = f"{base_emotion} {emoji_map[base_emotion]}"
+                            predicted_emotion_ui = f"{base_emotion} {emoji_map[base_emotion]}"
                             confidence_display = f"{(np.max(prediction) * 100):.2f}%"
-                            color = (0, 255, 150) # Green box for CNN
+                            model_used_text = "Custom CNN"
+                            color = (0, 255, 150) # Green
                     
-                    # Update Chatbot Memory
-                    st.session_state.current_emotion = predicted_emotion
+                    st.session_state.current_emotion = base_emotion
                     
-                    # Draw Box and Text
+                    # 🚨 FIX: Draw Box and Text WITHOUT the Emoji 🚨
                     cv2.rectangle(img_array, (x, y), (x+w, y+h), color, 3)
-                    cv2.putText(img_array, predicted_emotion, (x, y-15), cv2.FONT_HERSHEY_SIMPLEX, 0.8, color, 2)
+                    cv2.putText(img_array, base_emotion, (x, y-15), cv2.FONT_HERSHEY_SIMPLEX, 0.9, color, 2)
 
-                # Display Results
                 col1, col2 = st.columns([1.5, 1], gap="large")
                 with col1:
                     st.image(img_array, use_container_width=True)
                 with col2:
                     st.write("") 
                     st.write("") 
-                    st.metric(label="Primary Emotion", value=predicted_emotion)
-                    st.metric(label="Model Confidence", value=confidence_display)
+                    st.metric(label="Primary Emotion", value=predicted_emotion_ui)
+                    st.metric(label=f"Confidence ({model_used_text})", value=confidence_display)
         st.markdown("---")
 
 # --- 3-TABBED INTERFACE ---
@@ -159,18 +175,40 @@ with tab2:
         for img in uploaded_imgs:
             run_analysis(img, img.name)
 
-# --- CHATBOT UI ---
+# --- CHATBOT UI WITH QUICK SUGGESTIONS ---
 with tab3:
-    st.markdown(f"### Current Mood: {st.session_state.current_emotion}")
+    current_mood = st.session_state.current_emotion
+    st.markdown(f"### Current Mood: {current_mood} {emoji_map.get(current_mood, '')}")
     
     if chatbot_model is None:
         st.error("⚠️ Gemini API Key missing or invalid! Please check your Streamlit Secrets.")
     else:
+        # 1. Quick Suggestion Buttons
+        st.write("💡 **Quick Suggestions:**")
+        suggestions = suggestion_dict.get(current_mood, suggestion_dict["Neutral"])
+        
+        # We track if a suggestion button was clicked
+        suggestion_clicked = None
+        sug_col1, sug_col2, sug_col3 = st.columns(3)
+        if sug_col1.button(suggestions[0], use_container_width=True): suggestion_clicked = suggestions[0]
+        if sug_col2.button(suggestions[1], use_container_width=True): suggestion_clicked = suggestions[1]
+        if sug_col3.button(suggestions[2], use_container_width=True): suggestion_clicked = suggestions[2]
+        
+        st.markdown("---")
+
+        # 2. Display Chat History
         for message in st.session_state.messages:
             with st.chat_message(message["role"]):
                 st.markdown(message["content"])
 
-        if prompt := st.chat_input(f"Ask me something about feeling {st.session_state.current_emotion}..."):
+        # 3. Handle Chat Input (Either from manual typing OR a suggestion button)
+        prompt = st.chat_input(f"Ask me something about feeling {current_mood}...")
+        
+        # If they clicked a button, pretend they typed it in the box!
+        if suggestion_clicked:
+            prompt = suggestion_clicked
+
+        if prompt:
             st.session_state.messages.append({"role": "user", "content": prompt})
             with st.chat_message("user"):
                 st.markdown(prompt)
@@ -178,7 +216,7 @@ with tab3:
             with st.chat_message("assistant"):
                 with st.spinner("Thinking..."):
                     try:
-                        system_prompt = f"The user's face was just scanned by an AI and they look {st.session_state.current_emotion}. Keep this in mind when answering: {prompt}"
+                        system_prompt = f"The user's face was scanned by an AI and they look {current_mood}. Keep this in mind when answering: {prompt}"
                         response = chatbot_model.generate_content(system_prompt)
                         st.markdown(response.text)
                         st.session_state.messages.append({"role": "assistant", "content": response.text})
