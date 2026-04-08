@@ -24,13 +24,20 @@ if "current_emotion" not in st.session_state:
 
 AI_AVATAR = "https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Smilies/Robot.png"
 
-# --- 🎨 MASTER UI & SYMMETRY CSS 🎨 ---
+# --- 🎨 AGGRESSIVE UI OVERRIDE CSS 🎨 ---
 st.markdown("""
     <style>
     /* 1. HIDE HEADER & FOOTER */
     header {visibility: hidden !important;}
     footer {visibility: hidden !important;}
     
+    /* Expand the main container so tabs can actually stretch */
+    .block-container {
+        max-width: 950px !important;
+        padding-top: 1rem !important;
+        padding-bottom: 5rem !important;
+    }
+
     /* 2. SYMMETRICAL PREMIUM BACKGROUND */
     .stApp {
         background: radial-gradient(circle at center, #1e293b 0%, #0B0F19 100%) !important;
@@ -42,72 +49,75 @@ st.markdown("""
 
     /* 3. WIDE SYMMETRICAL PILL TABS */
     div[role="radiogroup"] {
-        display: flex;
-        flex-direction: row;
-        justify-content: center;
-        background-color: rgba(255, 255, 255, 0.03);
-        border-radius: 50px;
-        padding: 8px;
-        border: 1px solid rgba(255, 255, 255, 0.05);
-        margin: 0 auto 40px auto;
+        display: flex !important;
+        flex-direction: row !important;
+        justify-content: center !important;
+        background-color: rgba(255, 255, 255, 0.03) !important;
+        border-radius: 50px !important;
+        padding: 8px !important;
+        border: 1px solid rgba(255, 255, 255, 0.05) !important;
+        margin: 0 auto 40px auto !important;
         width: 100% !important;
-        max-width: 850px !important; /* Stretches the tabs */
-        box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
-        backdrop-filter: blur(10px);
+        box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3) !important;
+        backdrop-filter: blur(10px) !important;
     }
     [data-testid="stRadio"] div[role="radiogroup"] > label > div:first-of-type {
         display: none !important;
     }
     div[role="radiogroup"] > label {
-        flex: 1 1 0px !important; /* Forces all tabs to be equally wide */
-        text-align: center;
-        justify-content: center;
-        background-color: transparent;
-        padding: 12px 0px;
-        border-radius: 50px;
+        flex: 1 1 0px !important; /* Forces all tabs to stretch equally */
+        text-align: center !important;
+        justify-content: center !important;
+        background-color: transparent !important;
+        padding: 12px 0px !important;
+        border-radius: 50px !important;
         color: #94A3B8 !important;
-        font-weight: 600;
-        font-size: 1.1rem;
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        cursor: pointer;
-        border: 1px solid transparent;
+        font-weight: 600 !important;
+        font-size: 1.1rem !important;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        cursor: pointer !important;
+        border: 1px solid transparent !important;
+        margin: 0 !important;
     }
     div[role="radiogroup"] > label:hover {
-        background-color: rgba(255, 255, 255, 0.1);
+        background-color: rgba(255, 255, 255, 0.1) !important;
         color: #F8FAFC !important;
-        transform: translateY(-2px);
+        transform: translateY(-2px) !important;
     }
     div[role="radiogroup"] > label[data-checked="true"] {
         background-color: #3B82F6 !important;
         color: white !important;
-        box-shadow: 0 0 20px rgba(59, 130, 246, 0.4);
+        box-shadow: 0 0 20px rgba(59, 130, 246, 0.4) !important;
     }
 
-    /* 4. CAMERA UI HACK (Transparent Box & Circular Shutter) */
-    /* Remove dark grey backgrounds from the camera container */
+    /* 4. CAMERA UI HACK (Transparent Box & Fixed Circular Shutter) */
+    /* Strip all backgrounds from the camera container */
     [data-testid="stCameraInput"], 
     [data-testid="stCameraInput"] > div, 
-    [data-testid="stCameraInput"] section {
+    [data-testid="stCameraInput"] > div > div {
         background-color: transparent !important;
         border: none !important;
         box-shadow: none !important;
+        overflow: visible !important; /* Prevents shutter from being cut off */
     }
     [data-testid="stCameraInput"] video {
         transform: scaleX(-1) !important; /* Phone Camera Mirror Fix */
         border-radius: 20px !important;
         box-shadow: 0 10px 40px rgba(0,0,0,0.5) !important;
+        background-color: black !important;
     }
-    /* Transform the "Take Photo" button into a Circular Shutter */
+    /* Circular Shutter */
     [data-testid="stCameraInput"] button {
-        width: 70px !important;
-        height: 70px !important;
+        width: 65px !important;
+        height: 65px !important;
         border-radius: 50% !important;
         background-color: rgba(255,255,255,0.1) !important;
         border: 5px solid #ffffff !important;
-        color: transparent !important; /* Hides the text */
-        margin: 25px auto 0 auto !important;
+        color: transparent !important; /* Hides text */
+        margin: 15px auto !important;
         display: block !important;
-        transition: all 0.2s ease-in-out;
+        transition: all 0.2s ease-in-out !important;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.3) !important;
     }
     [data-testid="stCameraInput"] button:hover {
         background-color: white !important;
@@ -118,14 +128,17 @@ st.markdown("""
     }
 
     /* 5. TRANSPARENT UPLOAD BOX */
-    [data-testid="stFileUploader"] section {
+    [data-testid="stFileUploader"] {
+        background-color: transparent !important;
+    }
+    [data-testid="stFileUploader"] > div > section {
         background-color: rgba(255, 255, 255, 0.05) !important;
         border: 2px dashed rgba(255, 255, 255, 0.2) !important;
         border-radius: 20px !important;
-        backdrop-filter: blur(10px);
-        transition: all 0.3s ease;
+        backdrop-filter: blur(10px) !important;
+        transition: all 0.3s ease !important;
     }
-    [data-testid="stFileUploader"] section:hover {
+    [data-testid="stFileUploader"] > div > section:hover {
         border-color: rgba(255, 255, 255, 0.5) !important;
         background-color: rgba(255, 255, 255, 0.1) !important;
     }
@@ -159,15 +172,25 @@ st.markdown("""
     .sub-title { text-align: center; font-size: 1.1rem; color: #94a3b8; margin-bottom: 20px; }
     img { border-radius: 12px; }
 
-    /* 8. CHAT INPUT BAR POLISH */
+    /* 8. KILL THE BLACK CHAT DIVIDER / BOTTOM CONTAINER */
+    [data-testid="stBottom"] {
+        background-color: transparent !important;
+        background: transparent !important;
+    }
+    [data-testid="stBottom"] > div {
+        background-color: transparent !important;
+        background: transparent !important;
+    }
+    
+    /* Floating chat input bar */
     [data-testid="stChatInput"] {
-        padding-bottom: 20px;
+        padding-bottom: 15px !important;
     }
     [data-testid="stChatInput"] > div {
-        background-color: rgba(15, 23, 42, 0.85) !important;
+        background-color: rgba(15, 23, 42, 0.9) !important;
         border: 1px solid rgba(255,255,255,0.1) !important;
         border-radius: 30px !important;
-        backdrop-filter: blur(15px);
+        backdrop-filter: blur(15px) !important;
         box-shadow: 0 8px 30px rgba(0,0,0,0.5) !important;
     }
     [data-testid="stChatInputTextArea"] { color: #F8FAFC !important; }
@@ -227,7 +250,6 @@ selected_tab = st.radio(
 
 # --- THE AI ENGINE ---
 def run_analysis(image_file, file_name="Captured Image"):
-    # This prevents the camera tab from putting the results in a grey box!
     with st.container(): 
         st.markdown(f"#### 📄 Analyzing: `{file_name}`")
         with st.spinner("Processing facial features..."):
@@ -297,7 +319,6 @@ def run_analysis(image_file, file_name="Captured Image"):
                     cv2.rectangle(img_array, (x, y), (x+w, y+h), color, 3)
                     cv2.putText(img_array, base_emotion, (x, y-15), cv2.FONT_HERSHEY_SIMPLEX, 0.9, color, 2)
 
-                # Draw the final results
                 col1, col2 = st.columns([1.5, 1], gap="large")
                 with col1:
                     st.image(img_array, use_container_width=True)
@@ -343,7 +364,6 @@ elif selected_tab == "💬 AI Assistant":
         if sug_col3.button(suggestions[2], use_container_width=True): suggestion_clicked = suggestions[2]
         if sug_col4.button(suggestions[3], use_container_width=True): suggestion_clicked = suggestions[3]
         
-        # Notice no st.divider() here! The line is gone.
         st.write("") 
 
         for message in st.session_state.messages:
