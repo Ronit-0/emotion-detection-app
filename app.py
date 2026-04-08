@@ -50,7 +50,8 @@ st.markdown("""
         padding: 8px;
         border: 1px solid rgba(255, 255, 255, 0.05);
         margin: 0 auto 40px auto;
-        max-width: 850px; /* Made the tabs much wider! */
+        width: 100% !important;
+        max-width: 850px !important; /* Stretches the tabs */
         box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
         backdrop-filter: blur(10px);
     }
@@ -58,7 +59,7 @@ st.markdown("""
         display: none !important;
     }
     div[role="radiogroup"] > label {
-        flex: 1; 
+        flex: 1 1 0px !important; /* Forces all tabs to be equally wide */
         text-align: center;
         justify-content: center;
         background-color: transparent;
@@ -82,7 +83,54 @@ st.markdown("""
         box-shadow: 0 0 20px rgba(59, 130, 246, 0.4);
     }
 
-    /* 4. CONTENT FADE-IN & GLASS CONTAINERS */
+    /* 4. CAMERA UI HACK (Transparent Box & Circular Shutter) */
+    /* Remove dark grey backgrounds from the camera container */
+    [data-testid="stCameraInput"], 
+    [data-testid="stCameraInput"] > div, 
+    [data-testid="stCameraInput"] section {
+        background-color: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
+    }
+    [data-testid="stCameraInput"] video {
+        transform: scaleX(-1) !important; /* Phone Camera Mirror Fix */
+        border-radius: 20px !important;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.5) !important;
+    }
+    /* Transform the "Take Photo" button into a Circular Shutter */
+    [data-testid="stCameraInput"] button {
+        width: 70px !important;
+        height: 70px !important;
+        border-radius: 50% !important;
+        background-color: rgba(255,255,255,0.1) !important;
+        border: 5px solid #ffffff !important;
+        color: transparent !important; /* Hides the text */
+        margin: 25px auto 0 auto !important;
+        display: block !important;
+        transition: all 0.2s ease-in-out;
+    }
+    [data-testid="stCameraInput"] button:hover {
+        background-color: white !important;
+        transform: scale(1.1) !important;
+    }
+    [data-testid="stCameraInput"] button:active {
+        transform: scale(0.9) !important;
+    }
+
+    /* 5. TRANSPARENT UPLOAD BOX */
+    [data-testid="stFileUploader"] section {
+        background-color: rgba(255, 255, 255, 0.05) !important;
+        border: 2px dashed rgba(255, 255, 255, 0.2) !important;
+        border-radius: 20px !important;
+        backdrop-filter: blur(10px);
+        transition: all 0.3s ease;
+    }
+    [data-testid="stFileUploader"] section:hover {
+        border-color: rgba(255, 255, 255, 0.5) !important;
+        background-color: rgba(255, 255, 255, 0.1) !important;
+    }
+
+    /* 6. CONTENT FADE-IN & GLASS CONTAINERS FOR RESULTS */
     @keyframes fadeIn {
         from { opacity: 0; transform: scale(0.98); }
         to { opacity: 1; transform: scale(1); }
@@ -95,52 +143,6 @@ st.markdown("""
         border: 1px solid rgba(255, 255, 255, 0.08);
         box-shadow: 0 10px 30px rgba(0,0,0,0.4);
         animation: fadeIn 0.4s ease-out forwards;
-    }
-
-    /* 5. CAMERA UI HACK (Transparent & Circular Shutter) */
-    [data-testid="stCameraInput"] {
-        background-color: transparent !important;
-        border: none !important;
-        box-shadow: none !important;
-    }
-    [data-testid="stCameraInput"] video {
-        transform: scaleX(-1) !important; /* Phone Camera Mirror Fix */
-        border-radius: 20px;
-        box-shadow: 0 10px 40px rgba(0,0,0,0.5);
-    }
-    /* Transform the "Take Photo" button into a Circular Shutter */
-    [data-testid="stCameraInput"] button {
-        width: 75px !important;
-        height: 75px !important;
-        border-radius: 50% !important;
-        background-color: transparent !important;
-        border: 6px solid #e2e8f0 !important;
-        box-shadow: 0 0 0 4px rgba(255,255,255,0.2) !important;
-        color: transparent !important; /* Hides the text */
-        margin: 20px auto 0 auto !important;
-        display: block !important;
-        transition: all 0.2s;
-    }
-    [data-testid="stCameraInput"] button:hover {
-        background-color: white !important;
-        transform: scale(1.05) !important;
-    }
-    [data-testid="stCameraInput"] button:active {
-        transform: scale(0.95) !important;
-    }
-
-    /* 6. TRANSPARENT UPLOAD BOX */
-    [data-testid="stFileUploader"] {
-        background-color: rgba(255, 255, 255, 0.03) !important;
-        border: 2px dashed rgba(255, 255, 255, 0.15) !important;
-        border-radius: 20px !important;
-        backdrop-filter: blur(10px);
-        padding: 30px !important;
-        transition: all 0.3s ease;
-    }
-    [data-testid="stFileUploader"]:hover {
-        border-color: rgba(255, 255, 255, 0.4) !important;
-        background-color: rgba(255, 255, 255, 0.08) !important;
     }
 
     /* 7. TYPOGRAPHY SYMMETRY */
@@ -225,7 +227,8 @@ selected_tab = st.radio(
 
 # --- THE AI ENGINE ---
 def run_analysis(image_file, file_name="Captured Image"):
-    with st.container(border=True): 
+    # This prevents the camera tab from putting the results in a grey box!
+    with st.container(): 
         st.markdown(f"#### 📄 Analyzing: `{file_name}`")
         with st.spinner("Processing facial features..."):
             image = Image.open(image_file) 
@@ -269,12 +272,6 @@ def run_analysis(image_file, file_name="Captured Image"):
                             color = (255, 200, 0)
                             
                         except Exception as e:
-                            error_msg = str(e).lower()
-                            if "429" in error_msg or "quota" in error_msg or "exhausted" in error_msg:
-                                st.toast("⏳ Server overload! Gemini AI limit reached. Temporarily using Custom CNN.", icon="⚠️")
-                            else:
-                                st.toast("⚠️ Gemini Vision unavailable. Falling back to Custom CNN.", icon="⚠️")
-                            
                             base_emotion = "Neutral"
                             predicted_emotion_ui = "Neutral 😐"
                             confidence_display = "N/A"
@@ -300,6 +297,7 @@ def run_analysis(image_file, file_name="Captured Image"):
                     cv2.rectangle(img_array, (x, y), (x+w, y+h), color, 3)
                     cv2.putText(img_array, base_emotion, (x, y-15), cv2.FONT_HERSHEY_SIMPLEX, 0.9, color, 2)
 
+                # Draw the final results
                 col1, col2 = st.columns([1.5, 1], gap="large")
                 with col1:
                     st.image(img_array, use_container_width=True)
@@ -312,7 +310,7 @@ def run_analysis(image_file, file_name="Captured Image"):
 
 # --- ROUTER LOGIC ---
 if selected_tab == "📸 Camera":
-    st.markdown("<h4 style='text-align: center; color: #94A3B8; margin-bottom: 10px;'>Align your face in the center</h4>", unsafe_allow_html=True)
+    st.markdown("<h5 style='text-align: center; color: #94A3B8; font-weight: normal; margin-bottom: 10px;'>Align your face in the center</h5>", unsafe_allow_html=True)
     camera_img = st.camera_input("Smile for the camera!", label_visibility="collapsed")
     if camera_img is not None:
         run_analysis(camera_img, "Webcam Capture")
@@ -345,7 +343,8 @@ elif selected_tab == "💬 AI Assistant":
         if sug_col3.button(suggestions[2], use_container_width=True): suggestion_clicked = suggestions[2]
         if sug_col4.button(suggestions[3], use_container_width=True): suggestion_clicked = suggestions[3]
         
-        st.write("") # Removed st.divider() for a cleaner flow
+        # Notice no st.divider() here! The line is gone.
+        st.write("") 
 
         for message in st.session_state.messages:
             avatar = AI_AVATAR if message["role"] == "assistant" else "👤"
@@ -370,8 +369,4 @@ elif selected_tab == "💬 AI Assistant":
                         st.markdown(response.text)
                         st.session_state.messages.append({"role": "assistant", "content": response.text})
                     except Exception as e:
-                        error_msg = str(e).lower()
-                        if "429" in error_msg or "quota" in error_msg or "exhausted" in error_msg:
-                            st.warning("⏳ **Server Overload:** The AI has reached its rate limit. Please wait a minute and try again!")
-                        else:
-                            st.error("⚠️ Oops! The chatbot encountered a slight issue. Please try again.")
+                        st.error("⚠️ Oops! The chatbot encountered a slight issue. Please try again.")
