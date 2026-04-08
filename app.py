@@ -31,10 +31,10 @@ st.markdown("""
     header {visibility: hidden !important;}
     footer {visibility: hidden !important;}
     
-    /* Expand the main container so tabs can actually stretch */
+    /* Expand the main container & Fix Title Clipping */
     .block-container {
         max-width: 950px !important;
-        padding-top: 1rem !important;
+        padding-top: 3rem !important; /* Gives the title room to breathe */
         padding-bottom: 5rem !important;
     }
 
@@ -48,10 +48,19 @@ st.markdown("""
     }
 
     /* 3. WIDE SYMMETRICAL PILL TABS */
+    /* Force the Streamlit radio wrapper to take full width */
+    [data-testid="stRadio"] {
+        width: 100% !important;
+        max-width: 850px !important;
+        margin: 0 auto !important;
+    }
+    [data-testid="stRadio"] > div {
+        width: 100% !important;
+    }
     div[role="radiogroup"] {
         display: flex !important;
         flex-direction: row !important;
-        justify-content: center !important;
+        justify-content: space-between !important;
         background-color: rgba(255, 255, 255, 0.03) !important;
         border-radius: 50px !important;
         padding: 8px !important;
@@ -65,7 +74,8 @@ st.markdown("""
         display: none !important;
     }
     div[role="radiogroup"] > label {
-        flex: 1 1 0px !important; /* Forces all tabs to stretch equally */
+        flex: 1 1 100% !important; /* Stretches tabs equally */
+        width: 100% !important;
         text-align: center !important;
         justify-content: center !important;
         background-color: transparent !important;
@@ -77,7 +87,7 @@ st.markdown("""
         transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
         cursor: pointer !important;
         border: 1px solid transparent !important;
-        margin: 0 !important;
+        margin: 0 5px !important;
     }
     div[role="radiogroup"] > label:hover {
         background-color: rgba(255, 255, 255, 0.1) !important;
@@ -91,29 +101,27 @@ st.markdown("""
     }
 
     /* 4. CAMERA UI HACK (Transparent Box & Fixed Circular Shutter) */
-    /* Strip all backgrounds from the camera container */
     [data-testid="stCameraInput"], 
     [data-testid="stCameraInput"] > div, 
     [data-testid="stCameraInput"] > div > div {
         background-color: transparent !important;
         border: none !important;
         box-shadow: none !important;
-        overflow: visible !important; /* Prevents shutter from being cut off */
+        overflow: visible !important; 
     }
     [data-testid="stCameraInput"] video {
-        transform: scaleX(-1) !important; /* Phone Camera Mirror Fix */
+        transform: scaleX(-1) !important; 
         border-radius: 20px !important;
         box-shadow: 0 10px 40px rgba(0,0,0,0.5) !important;
         background-color: black !important;
     }
-    /* Circular Shutter */
     [data-testid="stCameraInput"] button {
         width: 65px !important;
         height: 65px !important;
         border-radius: 50% !important;
         background-color: rgba(255,255,255,0.1) !important;
         border: 5px solid #ffffff !important;
-        color: transparent !important; /* Hides text */
+        color: transparent !important; 
         margin: 15px auto !important;
         display: block !important;
         transition: all 0.2s ease-in-out !important;
@@ -127,18 +135,18 @@ st.markdown("""
         transform: scale(0.9) !important;
     }
 
-    /* 5. TRANSPARENT UPLOAD BOX */
+    /* 5. TRANSPARENT UPLOAD BOX FIX */
     [data-testid="stFileUploader"] {
         background-color: transparent !important;
     }
-    [data-testid="stFileUploader"] > div > section {
+    [data-testid="stFileUploaderDropzone"] {
         background-color: rgba(255, 255, 255, 0.05) !important;
         border: 2px dashed rgba(255, 255, 255, 0.2) !important;
         border-radius: 20px !important;
         backdrop-filter: blur(10px) !important;
         transition: all 0.3s ease !important;
     }
-    [data-testid="stFileUploader"] > div > section:hover {
+    [data-testid="stFileUploaderDropzone"]:hover {
         border-color: rgba(255, 255, 255, 0.5) !important;
         background-color: rgba(255, 255, 255, 0.1) !important;
     }
@@ -163,7 +171,7 @@ st.markdown("""
         font-size: 3.2rem; 
         font-weight: 800; 
         text-align: center; 
-        margin-top: -60px; 
+        margin-top: -10px; /* Reduced negative margin */
         margin-bottom: 5px; 
         background: linear-gradient(to right, #4facfe, #00f2fe); 
         -webkit-background-clip: text; 
@@ -173,6 +181,14 @@ st.markdown("""
     img { border-radius: 12px; }
 
     /* 8. KILL THE BLACK CHAT DIVIDER / BOTTOM CONTAINER */
+    .stBottom {
+        background-color: transparent !important;
+        background: transparent !important;
+    }
+    .stBottom > div {
+        background-color: transparent !important;
+        background: transparent !important;
+    }
     [data-testid="stBottom"] {
         background-color: transparent !important;
         background: transparent !important;
@@ -185,9 +201,10 @@ st.markdown("""
     /* Floating chat input bar */
     [data-testid="stChatInput"] {
         padding-bottom: 15px !important;
+        background: transparent !important;
     }
     [data-testid="stChatInput"] > div {
-        background-color: rgba(15, 23, 42, 0.9) !important;
+        background-color: rgba(15, 23, 42, 0.85) !important;
         border: 1px solid rgba(255,255,255,0.1) !important;
         border-radius: 30px !important;
         backdrop-filter: blur(15px) !important;
@@ -319,6 +336,7 @@ def run_analysis(image_file, file_name="Captured Image"):
                     cv2.rectangle(img_array, (x, y), (x+w, y+h), color, 3)
                     cv2.putText(img_array, base_emotion, (x, y-15), cv2.FONT_HERSHEY_SIMPLEX, 0.9, color, 2)
 
+                # Draw the final results
                 col1, col2 = st.columns([1.5, 1], gap="large")
                 with col1:
                     st.image(img_array, use_container_width=True)
