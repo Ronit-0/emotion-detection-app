@@ -22,62 +22,89 @@ if "messages" not in st.session_state:
 if "current_emotion" not in st.session_state:
     st.session_state.current_emotion = "Neutral"
 
-# --- CUSTOM CSS (ANIMATED BACKGROUND & GLASSMORPHISM) ---
+# --- 🎨 ADVANCED CUSTOM CSS & HTML 🎨 ---
 st.markdown("""
     <style>
-    /* 1. Animated Gradient Background */
+    /* 1. HIDE STREAMLIT HEADER, FOOTER, AND MENU */
+    header {visibility: hidden;}
+    #MainMenu {visibility: hidden;}
+    footer {visibility: hidden;}
+    .stDeployButton {display: none;}
+
+    /* 2. PREMIUM MIDNIGHT MESH BACKGROUND */
     .stApp {
-        background: linear-gradient(-45deg, #0f172a, #020617, #1e1b4b, #0f172a);
-        background-size: 400% 400%;
-        animation: gradientBG 15s ease infinite;
-        color: #FAFAFA;
-    }
-    
-    @keyframes gradientBG {
-        0% { background-position: 0% 50%; }
-        50% { background-position: 100% 50%; }
-        100% { background-position: 0% 50%; }
+        background-color: #0B0F19;
+        background-image: 
+            radial-gradient(at 0% 0%, rgba(17, 24, 39, 1) 0, transparent 50%), 
+            radial-gradient(at 50% 0%, rgba(30, 58, 138, 0.15) 0, transparent 50%), 
+            radial-gradient(at 100% 100%, rgba(15, 23, 42, 1) 0, transparent 50%);
+        background-attachment: fixed;
+        color: #F8FAFC;
     }
 
-    /* 2. Frosted Glass Effect for Tabs */
-    .stTabs [data-baseweb="tab-list"] {
+    /* 3. PILL-SHAPED TABS */
+    div[data-baseweb="tab-list"] {
+        gap: 15px;
+        background-color: transparent;
         justify-content: center;
-        background: rgba(255, 255, 255, 0.05);
-        border-radius: 10px;
-        padding: 10px;
-        backdrop-filter: blur(10px);
+        margin-bottom: 20px;
     }
-    
-    /* 3. Frosted Glass Effect for Main Containers */
+    div[data-baseweb="tab"] {
+        height: 45px;
+        background-color: #1E293B;
+        border-radius: 25px; /* Creates the Pill Shape */
+        padding: 0px 25px;
+        color: #94A3B8;
+        border: 1px solid #334155;
+        transition: all 0.3s ease-in-out;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    }
+    div[data-baseweb="tab"]:hover {
+        background-color: #334155;
+        color: #F8FAFC;
+        transform: translateY(-2px);
+    }
+    div[data-baseweb="tab"][aria-selected="true"] {
+        background-color: #3B82F6; /* Active Blue Color */
+        color: white;
+        border: none;
+        box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
+    }
+    /* Hide the default underline Streamlit uses for tabs */
+    div[data-baseweb="tab-highlight"] {
+        display: none;
+    }
+
+    /* 4. FROSTED GLASS CONTAINERS */
     div[data-testid="stVerticalBlock"] > div[style*="flex-direction: column;"] {
         background: rgba(15, 23, 42, 0.6);
-        border-radius: 15px;
-        padding: 15px;
-        backdrop-filter: blur(10px);
-        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 20px;
+        padding: 25px;
+        backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        box-shadow: 0 10px 30px rgba(0,0,0,0.3);
     }
 
-    /* 4. Typography & Image Polish */
+    /* 5. TYPOGRAPHY POLISH */
     .main-title { 
         font-size: 3.5rem; 
         font-weight: 800; 
         text-align: center; 
+        margin-top: -40px; /* Pulls title up since header is hidden */
         margin-bottom: 0px; 
-        background: -webkit-linear-gradient(#60a5fa, #c084fc); 
+        background: linear-gradient(to right, #60a5fa, #c084fc); 
         -webkit-background-clip: text; 
         -webkit-text-fill-color: transparent; 
-        text-shadow: 0px 4px 20px rgba(96, 165, 250, 0.3);
+        text-shadow: 0px 4px 20px rgba(96, 165, 250, 0.2);
     }
     .sub-title { 
         text-align: center; 
         font-size: 1.1rem; 
         color: #94a3b8; 
         margin-bottom: 30px; 
-        letter-spacing: 0.5px;
     }
     img { 
         border-radius: 15px; 
-        box-shadow: 0 8px 25px rgba(0,0,0,0.5); 
     }
     </style>
 """, unsafe_allow_html=True)
@@ -105,7 +132,6 @@ face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_fronta
 emoji_map = {"Angry": "😠", "Disgusted": "🤢", "Fearful": "😨", "Happy": "😄", "Neutral": "😐", "Sad": "😢", "Surprised": "😲"}
 cnn_emotion_list = ["Angry", "Disgusted", "Fearful", "Happy", "Sad", "Surprised", "Neutral"]
 
-# --- DYNAMIC CHAT SUGGESTIONS ---
 suggestion_dict = {
     "Happy": ["Give me a happy quote! ☀️", "Recommend an upbeat song 🎵", "Tell me a joke! 😂"],
     "Sad": ["Give me a comforting quote 🌧️", "How can I cheer up?", "Recommend a calming song 🎧"],
@@ -149,8 +175,6 @@ def run_analysis(image_file, file_name="Captured Image"):
                 st.image(image, use_container_width=True)
             else:
                 for (x, y, w, h) in faces:
-                    
-                    # --- BRANCH 1: GEMINI VISION AI ---
                     if use_gemini and chatbot_model is not None:
                         try:
                             vision_prompt = "Analyze the facial expression of the primary person in this image. Classify their emotion into exactly one of these words: Angry, Disgusted, Fearful, Happy, Sad, Surprised, Neutral. Also estimate your confidence from 0 to 100. Respond strictly in this format: Emotion,Confidence (Example: Happy,95)"
@@ -185,7 +209,6 @@ def run_analysis(image_file, file_name="Captured Image"):
                             model_used_text = "API Limit Exceeded"
                             color = (0, 0, 255)
 
-                    # --- BRANCH 2: CUSTOM CNN ---
                     else:
                         roi_gray = gray[y:y+h, x:x+w]
                         roi_gray = cv2.resize(roi_gray, (48, 48)) / 255.0 
@@ -231,7 +254,6 @@ with tab2:
         for img in uploaded_imgs:
             run_analysis(img, img.name)
 
-# --- CHATBOT UI WITH QUICK SUGGESTIONS ---
 with tab3:
     current_mood = st.session_state.current_emotion
     st.markdown(f"### Current Mood: {current_mood} {emoji_map.get(current_mood, '')}")
