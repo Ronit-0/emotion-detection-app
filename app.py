@@ -30,7 +30,8 @@ if "current_emotion" not in st.session_state:
 
 AI_AVATAR = "https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Smilies/Robot.png"
 
-# --- 🎨 THE ULTIMATE DYNAMIC CSS OVERRIDE 🎨 ---
+# --- 🎨 PNEUMONIALENS DYNAMIC CSS (CRASH-PROOF) 🎨 ---
+# Note: No 'f' before the triple quotes, meaning single braces are fine for CSS properties!
 st.markdown("""
 <style>
 
@@ -38,91 +39,72 @@ st.markdown("""
 header {visibility: hidden;}
 footer {visibility: hidden;}
 
-/* --- CYBERPUNK SCROLLBAR --- */
-::-webkit-scrollbar { width: 6px; height: 6px; }
-::-webkit-scrollbar-track { background: rgba(2, 6, 23, 0.9); }
-::-webkit-scrollbar-thumb { background: rgba(0, 255, 255, 0.3); border-radius: 10px; }
+/* --- THE CYBERPUNK SCROLLBAR --- */
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: rgba(5, 10, 15, 0.9); }
+::-webkit-scrollbar-thumb { background: rgba(0, 255, 255, 0.4); border-radius: 10px; }
 ::-webkit-scrollbar-thumb:hover { background: rgba(0, 255, 255, 0.8); }
 
-/* ============================= */
-/* 🚀 ADVANCED KEYFRAME ANIMATIONS 🚀 */
-/* ============================= */
-
-/* 1. Liquid Gradient Background */
-@keyframes gradientBG {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
-}
-
-/* 2. Sonar Pulse for Upload */
-@keyframes sonarPulse {
-    0% { box-shadow: 0 0 0 0 rgba(0, 255, 255, 0.4); }
-    70% { box-shadow: 0 0 0 15px rgba(0, 255, 255, 0); }
-    100% { box-shadow: 0 0 0 0 rgba(0, 255, 255, 0); }
-}
-
-/* 3. Zero-Gravity Float */
-@keyframes floatIdle {
-    0% { transform: translateY(0px); }
-    50% { transform: translateY(-8px); }
-    100% { transform: translateY(0px); }
-}
-
-/* 4. Neon Title Breathing */
-@keyframes textGlow {
-    0% { text-shadow: 0 0 10px rgba(0, 255, 255, 0.2), 0 0 20px rgba(0, 255, 255, 0.2); }
-    50% { text-shadow: 0 0 20px rgba(0, 255, 255, 0.6), 0 0 30px rgba(0, 255, 255, 0.4); }
-    100% { text-shadow: 0 0 10px rgba(0, 255, 255, 0.2), 0 0 20px rgba(0, 255, 255, 0.2); }
-}
-
-/* 5. Smooth Load-in */
-@keyframes fadeSlideUp {
-    0% { opacity: 0; transform: translateY(20px); }
-    100% { opacity: 1; transform: translateY(0); }
-}
-
-/* --- ANIMATED LIQUID BACKGROUND & SCANLINES --- */
+/* --- BACKGROUND (Deep Medical AI Dark Theme) --- */
 .stApp {
-    background: linear-gradient(-45deg, #020617, #0f172a, #001219, #050810) !important;
-    background-size: 400% 400% !important;
-    animation: gradientBG 15s ease infinite !important;
+    background: radial-gradient(circle at top center, #0f172a 0%, #020617 100%) !important;
+    background-attachment: fixed !important;
     color: #f8fafc;
 }
-.stApp::before {
-    content: " ";
-    display: block;
-    position: absolute;
-    top: 0; left: 0; bottom: 0; right: 0;
-    background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
-    z-index: 999;
-    background-size: 100% 4px, 3px 100%;
-    pointer-events: none; /* Lets you click through the scanlines */
+[data-testid="stAppViewContainer"] {
+    background-color: transparent !important;
 }
-[data-testid="stAppViewContainer"] { background-color: transparent !important; }
 
 /* Page Width & Main Container */
 .block-container {
     max-width: 900px !important;
     padding-top: 3rem !important;
     padding-bottom: 5rem !important;
-    z-index: 1;
-}
-
-/* Apply smooth load-in to content blocks */
-[data-testid="stCameraInput"], 
-[data-testid="stFileUploader"], 
-.stChatInputContainer {
-    animation: fadeSlideUp 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards !important;
 }
 
 /* ============================= */
-/* 🔥 CENTERED MAGNETIC TAB BAR 🔥 */
+/* 🚀 DYNAMIC KEYFRAME ANIMATIONS 🚀 */
+/* ============================= */
+
+/* 1. Breathing Glow for selected tab */
+@keyframes tabActiveGlow {
+    0% { box-shadow: 0 0 10px rgba(0, 255, 255, 0.2); }
+    100% { box-shadow: 0 0 20px rgba(0, 255, 255, 0.6); }
+}
+
+/* 2. Content Slide-Up and Fade-In on tab switch */
+@keyframes slideUpFade {
+    0% { opacity: 0; transform: translateY(25px) scale(0.98); }
+    100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* 3. Infinite Floating for Alert Box */
+@keyframes float {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-5px); }
+    100% { transform: translateY(0px); }
+}
+
+/* 4. Chat Message Pop-In */
+@keyframes popIn {
+    0% { opacity: 0; transform: scale(0.9); }
+    100% { opacity: 1; transform: scale(1); }
+}
+
+/* Apply smooth content transitions to dynamic blocks */
+[data-testid="stCameraInput"], 
+[data-testid="stFileUploader"], 
+[data-testid="stChatMessage"],
+div:has(> [data-testid="stAlert"]) {
+    animation: slideUpFade 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards !important;
+}
+
+/* ============================= */
+/* 🔥 YOUR CENTERED GLASS TAB BAR 🔥 */
 /* ============================= */
 [data-testid="stRadio"] {
     display: flex !important;
     justify-content: center !important;
-    align-items: center !important;
     width: 100% !important;
     margin: 10px auto 40px auto !important;
     background: transparent !important;
@@ -140,21 +122,23 @@ div[role="radiogroup"] {
     flex-direction: row !important;
     width: 100% !important;
     gap: 10px !important;
-    background: rgba(15, 23, 42, 0.4) !important;
-    backdrop-filter: blur(16px) !important;
-    -webkit-backdrop-filter: blur(16px) !important;
+    background: rgba(15, 23, 42, 0.6) !important;
+    backdrop-filter: blur(12px) !important;
+    -webkit-backdrop-filter: blur(12px) !important;
     border-radius: 50px !important;
     padding: 8px !important;
-    border: 1px solid rgba(0, 255, 255, 0.1) !important;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5), inset 0 0 20px rgba(0,255,255,0.05) !important;
+    border: 1px solid rgba(0, 255, 255, 0.15) !important;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5) !important;
 }
 
 /* Hide radio dot */
-[data-testid="stRadio"] div[role="radiogroup"] > label > div:first-of-type { display: none !important; }
+[data-testid="stRadio"] div[role="radiogroup"] > label > div:first-of-type {
+    display: none !important;
+}
 
 /* Tabs Base */
 div[role="radiogroup"] > label {
-    flex: 1 1 0px !important;
+    flex: 1 1 0px !important; /* Force equal stretching */
     background-color: transparent !important; 
     text-align: center !important;
     padding: 12px 0px !important;
@@ -162,7 +146,7 @@ div[role="radiogroup"] > label {
     font-weight: 600 !important;
     font-size: 1.05rem !important;
     color: #94A3B8 !important;
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
     white-space: nowrap !important;
     margin: 0 !important;
     display: flex !important;
@@ -170,116 +154,125 @@ div[role="radiogroup"] > label {
     justify-content: center !important;
 }
 
-/* Hover Physics */
+/* Tab Hover Physics */
 div[role="radiogroup"] > label:hover {
     background: rgba(0, 255, 255, 0.08) !important;
     color: #e2e8f0 !important;
-    transform: translateY(-3px);
+    transform: translateY(-2px) !important;
 }
 
-/* Active Tab */
+/* Tab Active State (Pop out and Breathing Glow) */
 div[role="radiogroup"] > label[data-checked="true"],
 div[role="radiogroup"] > label:has(input:checked) {
-    background: linear-gradient(135deg, #00ced1, #005c5c) !important;
-    color: #ffffff !important; 
-    transform: scale(1.05); 
+    background: linear-gradient(135deg, #00ced1, #008080) !important;
+    color: #000000 !important; /* Dark text on bright cyan background */
+    transform: scale(1.05) !important; /* Pop out */
+    z-index: 10 !important;
     font-weight: 700 !important;
-    box-shadow: 0 5px 20px rgba(0, 255, 255, 0.4) !important;
+    animation: tabActiveGlow 2.5s infinite alternate !important; /* Dynamic pulse */
 }
 
 /* ============================= */
-/* 🔥 FLOATING CAMERA & PULSING UPLOAD 🔥 */
+/* 🔥 TRANSPARENT CAMERA & SHUTTER 🔥 */
 /* ============================= */
-[data-testid="stCameraInput"] button {
-    width: 70px !important;
-    height: 70px !important;
-    border-radius: 50% !important;
-    background-color: rgba(0, 255, 255, 0.05) !important;
-    border: 3px solid #00FFFF !important;
-    box-shadow: 0 0 15px rgba(0, 255, 255, 0.3) !important;
-    color: transparent !important; 
-    margin: 20px auto !important;
-    display: block !important;
-    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
-    animation: floatIdle 4s ease-in-out infinite !important; /* Floating effect */
-}
-[data-testid="stCameraInput"] button:hover {
-    background-color: rgba(0, 255, 255, 0.3) !important;
-    transform: scale(1.15) !important;
-    box-shadow: 0 0 30px rgba(0, 255, 255, 0.8) !important;
-    animation-play-state: paused !important;
+/* The core request: transparency on the containers */
+[data-testid="stCameraInput"], 
+[data-testid="stCameraInput"] > div, 
+[data-testid="stCameraInput"] > div > div {
+    background-color: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
 }
 [data-testid="stCameraInput"] video {
-    border-radius: 15px !important;
+    border-radius: 18px !important;
     transform: scaleX(-1) !important;
     border: 1px solid rgba(0, 255, 255, 0.2);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5) !important;
 }
 
-/* File Upload Dropzone */
-[data-testid="stFileUploader"] > div,
-[data-testid="stFileUploadDropzone"] {
-    background: rgba(15, 23, 42, 0.3) !important;
+/* Shutter Button Hover Physics */
+[data-testid="stCameraInput"] button {
+    width: 65px !important;
+    height: 65px !important;
+    border-radius: 50% !important;
+    background-color: rgba(0, 255, 255, 0.05) !important;
+    border: 5px solid #00FFFF !important;
+    box-shadow: 0 0 15px rgba(0, 255, 255, 0.3) !important;
+    color: transparent !important; 
+    margin: 15px auto !important;
+    display: block !important;
+    transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+}
+[data-testid="stCameraInput"] button:hover {
+    background-color: rgba(0, 255, 255, 0.2) !important;
+    transform: scale(1.1) !important;
+    box-shadow: 0 0 25px rgba(0, 255, 255, 0.6) !important;
+}
+
+/* ============================= */
+/* 🔥 TRANSPARENT UPLOAD BOX 🔥 */
+/* ============================= */
+/* Transparency on the upload containers */
+[data-testid="stFileUploader"], 
+[data-testid="stFileUploader"] > div {
+    background-color: transparent !important;
+}
+/* Style the dropzone itself as a glass element */
+[data-testid="stFileUploadDropzone"], 
+[data-testid="stFileUploaderDropzone"] {
+    background: rgba(15, 23, 42, 0.4) !important;
     backdrop-filter: blur(8px) !important;
-    border-radius: 15px !important;
-    border: 2px dashed rgba(0, 255, 255, 0.4) !important;
-    transition: all 0.3s ease;
-    animation: sonarPulse 3s infinite !important; /* Emits a radar pulse */
+    border-radius: 18px !important;
+    border: 2px dashed rgba(0, 255, 255, 0.3) !important;
+    transition: all 0.3s ease !important;
 }
-[data-testid="stFileUploader"] > div:hover {
-    border-color: rgba(0, 255, 255, 1) !important;
-    background: rgba(0, 255, 255, 0.1) !important;
-    transform: translateY(-4px);
-    animation-play-state: paused !important;
+[data-testid="stFileUploadDropzone"]:hover {
+    border-color: rgba(0, 255, 255, 0.8) !important;
+    background: rgba(15, 23, 42, 0.6) !important;
+    box-shadow: 0 10px 30px rgba(0, 255, 255, 0.2) !important;
+    transform: translateY(-2px) !important;
 }
 
 /* ============================= */
-/* 🔥 SHIMMERING SUGGESTION CARDS 🔥 */
+/* 🔥 CHAT & SUGGESTION CARDS 🔥 */
 /* ============================= */
+/* Suggestion Buttons Hover Physics */
 div.stButton > button {
-    background: rgba(15, 23, 42, 0.5) !important;
+    background: rgba(15, 23, 42, 0.6) !important;
     border: 1px solid rgba(0, 255, 255, 0.2) !important;
     backdrop-filter: blur(10px) !important;
     color: #e2e8f0 !important;
     border-radius: 12px !important;
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
     padding: 10px !important;
-    position: relative;
-    overflow: hidden;
-}
-/* Glass Shimmer Beam */
-div.stButton > button::after {
-    content: '';
-    position: absolute;
-    top: 0; left: -100%; width: 50%; height: 100%;
-    background: linear-gradient(to right, transparent, rgba(0, 255, 255, 0.2), transparent);
-    transform: skewX(-25deg);
-    transition: all 0.5s ease;
 }
 div.stButton > button:hover {
-    background: rgba(0, 255, 255, 0.1) !important;
+    background: rgba(0, 255, 255, 0.15) !important;
     border-color: #00FFFF !important;
     color: #ffffff !important;
-    transform: translateY(-4px) scale(1.02); 
-    box-shadow: 0 8px 20px rgba(0, 255, 255, 0.2) !important;
-}
-div.stButton > button:hover::after {
-    left: 200%; /* Shimmer slides across */
+    transform: translateY(-2px) !important; 
+    box-shadow: 0 8px 25px rgba(0, 255, 255, 0.3) !important;
 }
 
-/* Mood Info Box */
+/* Mood Info Box with Floating Effect */
 [data-testid="stAlert"] {
-    background: rgba(15, 23, 42, 0.6) !important;
-    backdrop-filter: blur(15px) !important;
+    background: rgba(15, 23, 42, 0.8) !important;
+    backdrop-filter: blur(10px) !important;
     border: 1px solid rgba(0, 255, 255, 0.2) !important;
     border-left: 5px solid #00FFFF !important;
     color: #f8fafc !important;
-    border-radius: 12px !important;
+    border-radius: 8px !important;
     box-shadow: 0 10px 30px rgba(0,0,0,0.5) !important;
+    animation: float 6s ease-in-out infinite !important; /* Gentle floating */
 }
 
-/* ============================= */
-/* 🔥 CHAT & INPUT GLASS 🔥 */
-/* ============================= */
+/* Chat Message Bubbles Pop-in */
+[data-testid="stChatMessage"] {
+    background-color: transparent !important;
+    animation: popIn 0.3s cubic-bezier(0.25, 1, 0.5, 1) forwards !important;
+}
+
+/* Chat Input Bar Transparency */
 [data-testid="stBottom"],
 [data-testid="stBottom"] > div,
 [data-testid="stBottomBlockContainer"],
@@ -288,19 +281,21 @@ div.stButton > button:hover::after {
     background: transparent !important;
     border: none !important;
 }
-
+[data-testid="stChatInput"] {
+    padding-bottom: 20px !important;
+    background-color: transparent !important;
+}
 [data-testid="stChatInput"] > div:first-child {
-    background: rgba(10, 15, 25, 0.85) !important;
-    backdrop-filter: blur(15px) !important;
+    background: rgba(15, 23, 42, 0.85) !important;
+    backdrop-filter: blur(12px) !important;
     border-radius: 30px !important;
-    border: 1px solid rgba(0, 255, 255, 0.15) !important;
-    box-shadow: 0 15px 35px rgba(0,0,0,0.8), inset 0 0 15px rgba(0,255,255,0.05) !important;
-    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    border: 1px solid rgba(0, 255, 255, 0.2) !important;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.5) !important;
+    transition: all 0.3s ease !important;
 }
 [data-testid="stChatInput"] > div:first-child:focus-within {
     border-color: #00FFFF !important;
-    box-shadow: 0 15px 35px rgba(0,0,0,0.9), 0 0 25px rgba(0, 255, 255, 0.3) !important;
-    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(0, 255, 255, 0.2) !important;
 }
 [data-testid="stChatInputTextArea"],
 [data-testid="stChatInputTextArea"] > div,
@@ -309,34 +304,25 @@ div.stButton > button:hover::after {
     background-color: transparent !important;
     background: transparent !important;
 }
-[data-testid="stChatInputSubmitButton"] { color: #00FFFF !important; transition: transform 0.2s; }
-[data-testid="stChatInputSubmitButton"]:hover { transform: scale(1.2) rotate(10deg); }
-
-/* Chat Message Bubbles */
-[data-testid="stChatMessage"] {
-    background-color: transparent !important;
-    animation: fadeSlideUp 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards !important;
-}
+[data-testid="stChatInputSubmitButton"] { color: #00FFFF !important; }
 
 /* ============================= */
-/* Typography */
+/* Typography (Cyan Glow) */
 /* ============================= */
 .main-title {
-    font-size: 3.2rem;
+    font-size: 3rem;
     font-weight: 800;
     text-align: center;
     color: #00FFFF !important;
-    animation: textGlow 3s ease-in-out infinite !important; /* Breathing Neon */
+    text-shadow: 0 0 10px rgba(0, 255, 255, 0.4);
     margin-top: 0px;
     margin-bottom: 5px;
-    letter-spacing: 1px;
 }
 .sub-title {
     text-align: center;
     color: #94a3b8;
     margin-bottom: 30px;
     font-size: 1.1rem;
-    font-weight: 300;
 }
 img {
     border-radius: 12px;
