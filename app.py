@@ -41,7 +41,7 @@ footer {visibility: hidden;}
 /* Page Width */
 .block-container {
     max-width: 950px !important;
-    padding-top: 2.5rem !important;
+    padding-top: 2rem !important;
 }
 
 /* Background */
@@ -63,7 +63,7 @@ footer {visibility: hidden;}
 
 [data-testid="stRadio"] > div {
     width: 100% !important;
-    max-width: 750px !important;
+    max-width: 650px !important;
     margin: 0 auto !important;
 }
 
@@ -99,7 +99,6 @@ div[role="radiogroup"] > label {
 div[role="radiogroup"] > label:hover {
     background: rgba(255,255,255,0.06) !important;
     color: #E2E8F0 !important;
-    transform: translateY(-1px);
 }
 
 /* Active */
@@ -110,7 +109,7 @@ div[role="radiogroup"] > label[data-checked="true"] {
 }
 
 /* ============================= */
-/* Chat Input Glass UI */
+/* Chat Input */
 /* ============================= */
 
 [data-testid="stChatInput"] > div {
@@ -120,7 +119,7 @@ div[role="radiogroup"] > label[data-checked="true"] {
     border: 1px solid rgba(255,255,255,0.08);
 }
 
-/* Remove Bottom Block */
+/* Remove bottom black area */
 [data-testid="stBottom"] {
     background: transparent !important;
 }
@@ -135,19 +134,9 @@ div[role="radiogroup"] > label[data-checked="true"] {
     transform: scaleX(-1);
 }
 
-[data-testid="stCameraInput"] button {
-    width: 65px !important;
-    height: 65px !important;
-    border-radius: 50% !important;
-}
-
 /* ============================= */
 /* Upload UI */
 /* ============================= */
-
-[data-testid="stFileUploader"] {
-    background: transparent !important;
-}
 
 [data-testid="stFileUploadDropzone"] {
     border-radius: 18px !important;
@@ -156,19 +145,7 @@ div[role="radiogroup"] > label[data-checked="true"] {
 }
 
 /* ============================= */
-/* Glass Cards */
-/* ============================= */
-
-div[data-testid="stVerticalBlock"] > div {
-    background: rgba(15,23,42,0.4);
-    backdrop-filter: blur(12px);
-    border-radius: 18px;
-    padding: 20px;
-    border: 1px solid rgba(255,255,255,0.05);
-}
-
-/* ============================= */
-/* Title Styling */
+/* Typography */
 /* ============================= */
 
 .main-title {
@@ -186,12 +163,6 @@ div[data-testid="stVerticalBlock"] > div {
     margin-bottom: 25px;
 }
 
-/* Buttons */
-button[kind="secondary"] {
-    border-radius: 12px !important;
-}
-
-/* Images */
 img {
     border-radius: 12px;
 }
