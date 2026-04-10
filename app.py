@@ -46,29 +46,25 @@ footer {visibility: hidden;}
 
 /* Background */
 .stApp {
-    background: radial-gradient(circle at center, #1e293b 0%, #0B0F19 100%) !important;
-    background-attachment: fixed !important;
-}
-[data-testid="stAppViewContainer"] {
-    background-color: transparent !important;
+    background: radial-gradient(circle at center, #1e293b 0%, #0B0F19 100%);
+    background-attachment: fixed;
 }
 
 /* ============================= */
-/* 🔥 YOUR CENTERED GLASS TAB BAR 🔥 */
+/* 🔥 GLASS TAB BAR */
 /* ============================= */
+
 [data-testid="stRadio"] {
     display: flex !important;
     justify-content: center !important;
     width: 100% !important;
     margin: 25px auto !important;
-    background: transparent !important;
 }
 
 [data-testid="stRadio"] > div {
     width: 100% !important;
     max-width: 650px !important;
     margin: 0 auto !important;
-    background: transparent !important;
 }
 
 div[role="radiogroup"] {
@@ -84,6 +80,7 @@ div[role="radiogroup"] {
     border-radius: 40px !important;
     padding: 8px !important;
     border: 1px solid rgba(255,255,255,0.08) !important;
+    
     box-shadow: 0 8px 30px rgba(0,0,0,0.35) !important;
 }
 
@@ -94,7 +91,6 @@ div[role="radiogroup"] {
 
 /* Tabs */
 div[role="radiogroup"] > label {
-    background-color: transparent !important; /* CRITICAL: Keeps tabs from becoming black boxes */
     text-align: center !important;
     padding: 12px 10px !important;
     border-radius: 30px !important;
@@ -103,10 +99,6 @@ div[role="radiogroup"] > label {
     color: #94A3B8 !important;
     transition: all 0.25s ease !important;
     white-space: nowrap !important;
-    margin: 0 !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
 }
 
 /* Hover */
@@ -123,104 +115,84 @@ div[role="radiogroup"] > label[data-checked="true"] {
 }
 
 /* ============================= */
-/* 🔥 TRANSPARENT CAMERA & CIRCLE SHUTTER 🔥 */
+/* CAMERA GLASS */
 /* ============================= */
-[data-testid="stCameraInput"], 
-[data-testid="stCameraInput"] > div, 
-[data-testid="stCameraInput"] > div > div {
+
+[data-testid="stCameraInput"] {
+    background: rgba(255,255,255,0.03) !important;
+    backdrop-filter: blur(12px);
+    border-radius: 20px;
+    padding: 15px;
+    border: 1px solid rgba(255,255,255,0.05);
+}
+
+/* Camera Video */
+[data-testid="stCameraInput"] video {
+    border-radius: 18px;
+    transform: scaleX(-1);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+}
+
+/* ============================= */
+/* UPLOAD GLASS */
+/* ============================= */
+
+[data-testid="stFileUploadDropzone"] {
+    background: rgba(255,255,255,0.03) !important;
+    backdrop-filter: blur(10px);
+    border-radius: 18px !important;
+    border: 1px dashed rgba(255,255,255,0.15) !important;
+}
+
+/* ============================= */
+/* 🔥 CHAT GLASS (PERFECTLY TRANSPARENT) 🔥 */
+/* ============================= */
+
+/* 1. Kill the edge-to-edge bottom black bar */
+[data-testid="stBottom"], 
+[data-testid="stBottom"] > div,
+[data-testid="stBottomBlockContainer"] {
     background-color: transparent !important;
+    background: transparent !important;
+    border: none !important;
+}
+
+/* 2. Kill the outer wrapper block */
+[data-testid="stChatInput"] {
+    background-color: transparent !important;
+    background: transparent !important;
+}
+
+/* 3. The actual Glass Pill */
+[data-testid="stChatInput"] > div:first-child {
+    background: rgba(30, 41, 59, 0.7) !important; /* Elegant dark glass */
+    backdrop-filter: blur(12px) !important;
+    -webkit-backdrop-filter: blur(12px) !important;
+    border-radius: 30px !important;
+    border: 1px solid rgba(255,255,255,0.1) !important;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.5) !important;
+    padding: 5px 10px !important;
+}
+
+/* 4. Kill the inner black box inside the pill (the text area) */
+[data-testid="stChatInputTextArea"],
+[data-testid="stChatInputTextArea"]:focus,
+[data-testid="stChatInput"] textarea,
+[data-testid="stChatInput"] > div:first-child > div {
+    background-color: transparent !important;
+    background: transparent !important;
+    color: white !important;
     border: none !important;
     box-shadow: none !important;
 }
-[data-testid="stCameraInput"] video {
-    border-radius: 18px !important;
-    transform: scaleX(-1) !important;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.4) !important;
-}
-[data-testid="stCameraInput"] button {
-    width: 65px !important;
-    height: 65px !important;
-    border-radius: 50% !important;
-    background-color: rgba(255,255,255,0.1) !important;
-    border: 5px solid #ffffff !important;
-    color: transparent !important; /* Hides "Take Photo" text */
-    margin: 15px auto !important;
-    display: block !important;
-    transition: all 0.2s ease !important;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.3) !important;
-}
-[data-testid="stCameraInput"] button:hover {
-    background-color: white !important;
-    transform: scale(1.05) !important;
-}
 
-/* ============================= */
-/* 🔥 TRANSPARENT UPLOAD BOX 🔥 */
-/* ============================= */
-[data-testid="stFileUploader"], 
-[data-testid="stFileUploader"] > div {
-    background-color: transparent !important;
-}
-[data-testid="stFileUploadDropzone"], 
-[data-testid="stFileUploaderDropzone"] {
-    background: rgba(255,255,255,0.03) !important;
-    backdrop-filter: blur(10px) !important;
-    border-radius: 18px !important;
-    border: 2px dashed rgba(255,255,255,0.15) !important;
-}
-
-/* ============================= */
-/* 🔥 CHAT GLASS & TRANSPARENT SUGGESTIONS 🔥 */
-/* ============================= */
-
-/* 1. Transparent Suggestion Buttons */
-div.stButton > button {
-    background: rgba(255, 255, 255, 0.05) !important;
-    border: 1px solid rgba(255, 255, 255, 0.15) !important;
-    backdrop-filter: blur(10px) !important;
-    color: white !important;
-    border-radius: 15px !important;
-    transition: all 0.3s ease !important;
-}
-div.stButton > button:hover {
-    background: rgba(255, 255, 255, 0.15) !important;
-    border-color: rgba(255, 255, 255, 0.3) !important;
-}
-
-/* 2. Transparent Mood Info Box */
-[data-testid="stAlert"] {
-    background: rgba(255, 255, 255, 0.05) !important;
-    backdrop-filter: blur(10px) !important;
-    border: 1px solid rgba(255, 255, 255, 0.1) !important;
-    color: white !important;
-    border-radius: 15px !important;
-}
-
-/* 3. Transparent Chat Message Bubbles */
-[data-testid="stChatMessage"] {
-    background-color: transparent !important;
-}
-
-/* 4. Chat Input Bar */
-[data-testid="stChatInput"] > div {
-    background: rgba(15,23,42,0.65) !important;
-    backdrop-filter: blur(12px);
-    border-radius: 25px;
-    border: 1px solid rgba(255,255,255,0.08);
-}
-[data-testid="stChatInputTextArea"] { 
-    color: white !important; 
-    background-color: transparent !important;
-}
-
-/* Remove bottom black area */
-[data-testid="stBottom"] {
-    background: transparent !important;
-}
+[data-testid="stChatInputSubmitButton"] { color: #3B82F6 !important; }
+[data-testid="stChatInputSubmitButton"] svg { fill: #3B82F6 !important; }
 
 /* ============================= */
 /* Typography */
 /* ============================= */
+
 .main-title {
     font-size: 3rem;
     font-weight: 800;
@@ -229,11 +201,13 @@ div.stButton > button:hover {
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 }
+
 .sub-title {
     text-align: center;
     color: #94a3b8;
     margin-bottom: 25px;
 }
+
 img {
     border-radius: 12px;
 }
