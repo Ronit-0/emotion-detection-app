@@ -30,8 +30,7 @@ if "current_emotion" not in st.session_state:
 
 AI_AVATAR = "https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Smilies/Robot.png"
 
-# --- 🎨 PNEUMONIALENS DYNAMIC CSS (CRASH-PROOF) 🎨 ---
-# Note: No 'f' before the triple quotes, meaning no brace escaping is needed!
+# --- 🎨 FINAL CSS WITH DYNAMIC ANIMATIONS 🎨 ---
 st.markdown("""
 <style>
 
@@ -39,42 +38,39 @@ st.markdown("""
 header {visibility: hidden;}
 footer {visibility: hidden;}
 
-/* --- THE CYBERPUNK SCROLLBAR --- */
-::-webkit-scrollbar { width: 10px; height: 10px; }
-::-webkit-scrollbar-track { background: rgba(10, 10, 10, 0.9); border-left: 1px solid rgba(0, 255, 255, 0.1); }
-::-webkit-scrollbar-thumb { background: rgba(0, 255, 255, 0.3); border-radius: 10px; border: 1px solid rgba(10, 10, 10, 0.9); }
-::-webkit-scrollbar-thumb:hover { background: rgba(0, 255, 255, 0.8); box-shadow: 0 0 15px rgba(0, 255, 255, 0.5); }
+/* Page Width */
+.block-container {
+    max-width: 950px !important;
+    padding-top: 2rem !important;
+}
 
-/* --- BACKGROUND IMAGE (Dark Abstract Tech) --- */
+/* Background */
 .stApp {
-    background-color: #050810;
-    background-image: url("https://images.unsplash.com/photo-1620641788421-7a1c342ea42e?q=80&w=1974&auto=format&fit=crop");
-    background-size: cover;
-    background-attachment: fixed;
-    background-position: center;
+    background: radial-gradient(circle at center, #1e293b 0%, #0B0F19 100%) !important;
+    background-attachment: fixed !important;
 }
 [data-testid="stAppViewContainer"] {
     background-color: transparent !important;
 }
 
 /* ============================= */
-/* 🚀 DYNAMIC ANIMATIONS 🚀 */
+/* 🚀 DYNAMIC KEYFRAME ANIMATIONS */
 /* ============================= */
-
-@keyframes containerBreathe {
-    0% { box-shadow: 0 0 20px rgba(0, 255, 255, 0.05); border: 1px solid rgba(0, 255, 255, 0.1); }
-    50% { box-shadow: 0 0 45px rgba(0, 206, 209, 0.25); border: 1px solid rgba(0, 255, 255, 0.3); }
-    100% { box-shadow: 0 0 20px rgba(0, 255, 255, 0.05); border: 1px solid rgba(0, 255, 255, 0.1); }
-}
-
-@keyframes tabActiveGlow {
-    0% { box-shadow: 0 0 10px rgba(0, 255, 255, 0.3); }
-    100% { box-shadow: 0 0 25px rgba(0, 255, 255, 0.7); }
-}
-
 @keyframes slideUpFade {
     0% { opacity: 0; transform: translateY(25px) scale(0.98); }
     100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes breathingGlow {
+    0% { box-shadow: 0 0 15px rgba(59,130,246,0.3); }
+    50% { box-shadow: 0 0 35px rgba(59,130,246,0.8); }
+    100% { box-shadow: 0 0 15px rgba(59,130,246,0.3); }
+}
+
+@keyframes floatIdle {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-6px); }
+    100% { transform: translateY(0px); }
 }
 
 @keyframes popIn {
@@ -90,28 +86,13 @@ footer {visibility: hidden;}
 }
 
 /* ============================= */
-/* 🔥 BREATHING MAIN CONTAINER 🔥 */
-/* ============================= */
-.block-container {
-    max-width: 950px !important;
-    background-color: rgba(5, 8, 15, 0.85) !important; 
-    backdrop-filter: blur(15px);
-    -webkit-backdrop-filter: blur(15px);
-    padding: 3rem !important;
-    border-radius: 20px;
-    animation: containerBreathe 6s infinite ease-in-out;
-    margin-top: 2rem;
-    margin-bottom: 2rem;
-}
-
-/* ============================= */
-/* 🔥 YOUR CENTERED MAGNETIC TAB BAR 🔥 */
+/* 🔥 YOUR CENTERED GLASS TAB BAR 🔥 */
 /* ============================= */
 [data-testid="stRadio"] {
     display: flex !important;
     justify-content: center !important;
     width: 100% !important;
-    margin: 30px auto !important;
+    margin: 25px auto !important;
     background: transparent !important;
 }
 
@@ -126,12 +107,16 @@ div[role="radiogroup"] {
     display: grid !important;
     grid-template-columns: 1fr 1fr 1fr !important;
     gap: 8px !important;
-    background: rgba(255,255,255,0.02) !important;
+    
+    /* Glass Effect */
+    background: rgba(255,255,255,0.04) !important;
     backdrop-filter: blur(14px) !important;
+    -webkit-backdrop-filter: blur(14px) !important;
+    
     border-radius: 40px !important;
     padding: 8px !important;
-    border: 1px solid rgba(0,255,255,0.15) !important;
-    box-shadow: 0 10px 40px rgba(0,0,0,0.5) !important;
+    border: 1px solid rgba(255,255,255,0.08) !important;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.35) !important;
 }
 
 /* Hide radio dot */
@@ -139,118 +124,134 @@ div[role="radiogroup"] {
     display: none !important;
 }
 
-/* Tabs */
+/* Tabs Base */
 div[role="radiogroup"] > label {
     background-color: transparent !important; 
     text-align: center !important;
     padding: 12px 10px !important;
     border-radius: 30px !important;
-    font-weight: 700 !important;
+    font-weight: 600 !important;
     font-size: 1rem !important;
     color: #94A3B8 !important;
-    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important; /* Smooth bouncy transition */
     white-space: nowrap !important;
     margin: 0 !important;
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
-    letter-spacing: 0.5px;
 }
 
-/* Hover Physics */
+/* Tab Hover Physics */
 div[role="radiogroup"] > label:hover {
-    background: rgba(0,255,255,0.1) !important;
+    background: rgba(255,255,255,0.08) !important;
     color: #E2E8F0 !important;
-    transform: translateY(-4px) scale(1.02);
-    box-shadow: 0 5px 15px rgba(0,255,255,0.2);
+    transform: translateY(-3px) scale(1.02) !important; /* Lift up */
 }
 
-/* Active State (Breathing Cyan Glow) */
-div[role="radiogroup"] > label[data-checked="true"],
-div[role="radiogroup"] > label:has(input:checked) {
-    background: linear-gradient(135deg, #00FFFF, #008080) !important;
-    color: black !important;
-    transform: scale(1.05); 
+/* Tab Active State (Breathing Glow) */
+div[role="radiogroup"] > label:has(input:checked),
+div[role="radiogroup"] > label[aria-checked="true"],
+div[role="radiogroup"] > label[data-checked="true"] {
+    background: linear-gradient(135deg,#3B82F6,#2563EB) !important;
+    color: white !important;
+    transform: scale(1.05) !important; /* Pop out */
     z-index: 10 !important;
-    animation: tabActiveGlow 2s infinite alternate !important;
+    animation: breathingGlow 2.5s infinite alternate !important; /* Dynamic pulse */
 }
 
 /* ============================= */
-/* 🔥 TRANSPARENT CAMERA & UPLOAD 🔥 */
+/* 🔥 TRANSPARENT CAMERA & SHUTTER 🔥 */
 /* ============================= */
+[data-testid="stCameraInput"], 
+[data-testid="stCameraInput"] > div, 
+[data-testid="stCameraInput"] > div > div {
+    background-color: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+}
+[data-testid="stCameraInput"] video {
+    border-radius: 18px !important;
+    transform: scaleX(-1) !important;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.4) !important;
+}
+/* Shutter Button Hover Physics */
 [data-testid="stCameraInput"] button {
     width: 65px !important;
     height: 65px !important;
     border-radius: 50% !important;
-    background-color: rgba(0,255,255,0.05) !important;
-    border: 5px solid #00FFFF !important;
-    box-shadow: 0 0 15px rgba(0, 255, 255, 0.3) !important;
+    background-color: rgba(255,255,255,0.1) !important;
+    border: 5px solid #ffffff !important;
     color: transparent !important; 
     margin: 15px auto !important;
     display: block !important;
     transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3) !important;
 }
 [data-testid="stCameraInput"] button:hover {
-    background-color: #00FFFF !important;
-    transform: scale(1.15);
-    box-shadow: 0 0 25px rgba(0, 255, 255, 0.6) !important;
-}
-[data-testid="stCameraInput"] video {
-    border-radius: 20px !important;
-    transform: scaleX(-1) !important;
-    border: 1px solid rgba(0,255,255,0.2);
+    background-color: white !important;
+    transform: scale(1.15) !important; /* Pop scale */
+    box-shadow: 0 10px 25px rgba(255,255,255,0.4) !important;
 }
 
-/* File Upload Dropzone */
-[data-testid="stFileUploader"] > div,
-[data-testid="stFileUploadDropzone"] {
-    background: rgba(0,255,255,0.02) !important;
+/* ============================= */
+/* 🔥 TRANSPARENT UPLOAD BOX 🔥 */
+/* ============================= */
+[data-testid="stFileUploader"], 
+[data-testid="stFileUploader"] > div {
+    background-color: transparent !important;
+}
+[data-testid="stFileUploadDropzone"], 
+[data-testid="stFileUploaderDropzone"] {
+    background: rgba(255,255,255,0.03) !important;
     backdrop-filter: blur(10px) !important;
     border-radius: 18px !important;
-    border: 2px dashed rgba(0,255,255,0.3) !important;
-    transition: all 0.3s ease;
+    border: 2px dashed rgba(255,255,255,0.15) !important;
+    transition: all 0.3s ease !important;
 }
-[data-testid="stFileUploader"] > div:hover {
-    border-color: rgba(0,255,255,1) !important;
-    background: rgba(0,255,255,0.08) !important;
-    transform: translateY(-2px);
-    box-shadow: 0 10px 30px rgba(0,255,255,0.2) !important;
+[data-testid="stFileUploadDropzone"]:hover {
+    background: rgba(255,255,255,0.08) !important;
+    border-color: #3B82F6 !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3) !important;
 }
 
 /* ============================= */
-/* 🔥 SUGGESTION CARDS (LIKE PNEUMONIALENS) 🔥 */
+/* 🔥 CHAT & SUGGESTION BOXES 🔥 */
 /* ============================= */
+/* Suggestion Buttons Hover Physics */
 div.stButton > button {
-    background: rgba(15, 20, 30, 0.6) !important;
-    border: 1px solid rgba(0, 255, 255, 0.2) !important;
+    background: rgba(255, 255, 255, 0.05) !important;
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
     backdrop-filter: blur(10px) !important;
-    color: #E2E8F0 !important;
-    border-radius: 12px !important;
+    color: #F8FAFC !important;
+    border-radius: 15px !important;
     transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
-    padding: 10px !important;
 }
 div.stButton > button:hover {
-    background: rgba(0, 255, 255, 0.15) !important;
-    border-color: #00FFFF !important;
+    background: rgba(59, 130, 246, 0.2) !important;
+    border-color: #3B82F6 !important;
     color: #ffffff !important;
-    transform: translateY(-4px) scale(1.02) !important; 
-    box-shadow: 0 8px 25px rgba(0, 255, 255, 0.3) !important;
+    transform: translateY(-4px) scale(1.02) !important; /* Lift and grow */
+    box-shadow: 0 8px 25px rgba(59, 130, 246, 0.4) !important;
 }
 
-/* Mood Info Box (Glowing Alert) */
+/* Floating Mood Alert Box */
 [data-testid="stAlert"] {
-    background: rgba(10, 15, 25, 0.8) !important;
+    background: rgba(255, 255, 255, 0.05) !important;
     backdrop-filter: blur(10px) !important;
-    border: 1px solid rgba(0, 255, 255, 0.3) !important;
-    border-left: 5px solid #00FFFF !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
     color: #F8FAFC !important;
-    border-radius: 10px !important;
-    box-shadow: 0 5px 20px rgba(0,255,255,0.15) !important;
+    border-radius: 15px !important;
+    animation: floatIdle 5s ease-in-out infinite !important; /* Floating effect */
 }
 
-/* ============================= */
-/* 🔥 CHAT & INPUT GLASS 🔥 */
-/* ============================= */
+/* Chat Message Pop-in */
+[data-testid="stChatMessage"] {
+    background-color: transparent !important;
+    animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards !important;
+}
+
+/* Chat Input Bar Transparency */
 [data-testid="stBottom"],
 [data-testid="stBottom"] > div,
 [data-testid="stBottomBlockContainer"] {
@@ -263,57 +264,49 @@ div.stButton > button:hover {
     background-color: transparent !important;
 }
 [data-testid="stChatInput"] > div:first-child {
-    background: rgba(10, 15, 25, 0.95) !important;
-    backdrop-filter: blur(15px) !important;
+    background: rgba(15,23,42,0.85) !important;
+    backdrop-filter: blur(12px) !important;
     border-radius: 30px !important;
-    border: 1px solid rgba(0,255,255,0.2) !important;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.8), 0 0 15px rgba(0,255,255,0.1) !important;
-    transition: all 0.3s ease;
+    border: 1px solid rgba(255,255,255,0.08) !important;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.5) !important;
+    transition: all 0.3s ease !important;
 }
 [data-testid="stChatInput"] > div:first-child:focus-within {
-    border-color: #00FFFF !important;
-    box-shadow: 0 10px 40px rgba(0,0,0,0.8), 0 0 25px rgba(0,255,255,0.4) !important;
-    transform: translateY(-2px);
+    border-color: #3B82F6 !important;
+    box-shadow: 0 0 20px rgba(59,130,246,0.4) !important;
 }
+
+/* Inner Text Area */
 [data-testid="stChatInputTextArea"],
 [data-testid="stChatInputTextArea"] > div,
 [data-testid="stChatInputTextArea"] textarea,
 [data-testid="stChatInputDynamicTextarea"] { 
-    color: #FFFFFF !important; 
+    color: #F8FAFC !important; 
     background-color: transparent !important;
     background: transparent !important;
 }
-[data-testid="stChatInputSubmitButton"] { color: #00FFFF !important; }
-
-/* Chat Message Bubbles */
-[data-testid="stChatMessage"] {
-    background-color: transparent !important;
-    animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards !important;
-}
+[data-testid="stChatInputSubmitButton"] { color: #3B82F6 !important; }
 
 /* ============================= */
-/* Typography (Glowing Neon Titles) */
+/* Typography */
 /* ============================= */
 .main-title {
-    font-size: 3.5rem;
+    font-size: 3rem;
     font-weight: 800;
     text-align: center;
-    color: #00FFFF !important;
-    text-shadow: 0 0 15px rgba(0, 255, 255, 0.5), 0 0 30px rgba(0, 255, 255, 0.3);
-    margin-top: 0px;
-    margin-bottom: 5px;
-    letter-spacing: 1px;
+    background: linear-gradient(to right, #4facfe, #00f2fe);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 .sub-title {
     text-align: center;
     color: #94a3b8;
-    margin-bottom: 30px;
-    font-weight: 300;
-    letter-spacing: 1.5px;
+    margin-bottom: 25px;
 }
 img {
     border-radius: 12px;
 }
+
 </style>
 """, unsafe_allow_html=True)
 
