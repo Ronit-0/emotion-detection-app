@@ -30,7 +30,7 @@ if "current_emotion" not in st.session_state:
 
 AI_AVATAR = "https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Smilies/Robot.png"
 
-# --- 🎨 FINAL PRECISE CSS OVERRIDE 🎨 ---
+# --- 🎨 FINAL CSS GRID UI OVERRIDE 🎨 ---
 st.markdown("""
 <style>
 
@@ -170,31 +170,53 @@ div[role="radiogroup"] > label[data-checked="true"] {
 }
 
 /* ============================= */
-/* 🔥 TRANSPARENT CHAT (NO BLACK BOX) 🔥 */
+/* 🔥 CHAT GLASS & TRANSPARENT SUGGESTIONS 🔥 */
 /* ============================= */
-[data-testid="stBottom"],
-[data-testid="stBottom"] > div,
-[data-testid="stBottomBlockContainer"] {
-    background-color: transparent !important;
-    background: transparent !important;
-    border: none !important;
+
+/* 1. Transparent Suggestion Buttons */
+div.stButton > button {
+    background: rgba(255, 255, 255, 0.05) !important;
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
+    backdrop-filter: blur(10px) !important;
+    color: white !important;
+    border-radius: 15px !important;
+    transition: all 0.3s ease !important;
 }
-[data-testid="stChatInput"] {
-    padding-bottom: 20px !important;
+div.stButton > button:hover {
+    background: rgba(255, 255, 255, 0.15) !important;
+    border-color: rgba(255, 255, 255, 0.3) !important;
+}
+
+/* 2. Transparent Mood Info Box */
+[data-testid="stAlert"] {
+    background: rgba(255, 255, 255, 0.05) !important;
+    backdrop-filter: blur(10px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    color: white !important;
+    border-radius: 15px !important;
+}
+
+/* 3. Transparent Chat Message Bubbles */
+[data-testid="stChatMessage"] {
     background-color: transparent !important;
 }
-[data-testid="stChatInput"] > div:first-child {
-    background: rgba(15,23,42,0.85) !important;
-    backdrop-filter: blur(12px) !important;
-    border-radius: 30px !important;
-    border: 1px solid rgba(255,255,255,0.08) !important;
-    box-shadow: 0 8px 30px rgba(0,0,0,0.5) !important;
+
+/* 4. Chat Input Bar */
+[data-testid="stChatInput"] > div {
+    background: rgba(15,23,42,0.65) !important;
+    backdrop-filter: blur(12px);
+    border-radius: 25px;
+    border: 1px solid rgba(255,255,255,0.08);
 }
 [data-testid="stChatInputTextArea"] { 
-    color: #F8FAFC !important; 
+    color: white !important; 
     background-color: transparent !important;
 }
-[data-testid="stChatInputSubmitButton"] { color: #3B82F6 !important; }
+
+/* Remove bottom black area */
+[data-testid="stBottom"] {
+    background: transparent !important;
+}
 
 /* ============================= */
 /* Typography */
