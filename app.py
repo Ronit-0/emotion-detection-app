@@ -30,7 +30,7 @@ if "current_emotion" not in st.session_state:
 
 AI_AVATAR = "https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Smilies/Robot.png"
 
-# --- 🎨 FINAL STRETCHED TABS UI CSS 🎨 ---
+# --- 🎨 FINAL CSS GRID UI OVERRIDE 🎨 ---
 st.markdown("""
     <style>
     /* 1. HIDE HEADER & FOOTER */
@@ -53,21 +53,19 @@ st.markdown("""
         background-color: transparent !important;
     }
 
-    /* 3. 🔥 THE FIX: TRUE HORIZONTAL TAB STRETCHING 🔥 */
+    /* 3. 🔥 THE FIX: CSS GRID FOR PERFECT STRETCHING 🔥 */
     [data-testid="stRadio"] {
         width: 100% !important;
         max-width: 850px !important;
         margin: 0 auto 30px auto !important;
     }
-    /* Force every wrapper Streamlit uses to 100% width */
     [data-testid="stRadio"] > div {
         width: 100% !important;
     }
     div[role="radiogroup"] {
-        display: flex !important;
-        flex-direction: row !important; 
+        display: grid !important;
+        grid-template-columns: repeat(3, 1fr) !important; /* Forces 3 equal columns */
         width: 100% !important; 
-        justify-content: stretch !important; /* CRITICAL: Allows stretching */
         gap: 15px !important;
         background-color: rgba(255, 255, 255, 0.03) !important;
         border-radius: 50px !important;
@@ -77,10 +75,9 @@ st.markdown("""
         backdrop-filter: blur(10px) !important;
     }
     [data-testid="stRadio"] div[role="radiogroup"] > label > div:first-of-type {
-        display: none !important; /* Hides the native radio circle */
+        display: none !important; 
     }
     div[role="radiogroup"] > label {
-        flex: 1 1 0 !important; /* CRITICAL: Forces tabs to divide space equally */
         width: 100% !important;
         text-align: center !important;
         display: flex !important;
@@ -244,7 +241,7 @@ selected_tab = st.radio(
     label_visibility="collapsed"
 )
 
-# --- THE VISION ENGINE (Powered by CNN or Gemini) ---
+# --- THE VISION ENGINE ---
 def run_analysis(image_file, file_name="Captured Image"):
     with st.container(): 
         st.markdown(f"#### 📄 Analyzing: `{file_name}`")
@@ -339,7 +336,7 @@ elif selected_tab == "🖼️ Upload Images":
         for img in uploaded_imgs:
             run_analysis(img, img.name)
 
-# --- THE CHAT ENGINE (Powered by Groq's Llama 3) ---
+# --- THE CHAT ENGINE (Powered by Groq's Llama 3.1) ---
 elif selected_tab == "💬 AI Assistant":
     current_mood = st.session_state.current_emotion
     emoji = emoji_map.get(current_mood, '')
@@ -381,9 +378,9 @@ elif selected_tab == "💬 AI Assistant":
             with st.chat_message("assistant", avatar=AI_AVATAR):
                 with st.spinner("Processing..."):
                     try:
-                        # Using Groq's blazing fast Llama 3 model!
+                        # 🚨 UPDATED: Using Groq's new Llama 3.1 model!
                         completion = groq_client.chat.completions.create(
-                            model="llama3-8b-8192", # You can also try "llama3-70b-8192" or "mixtral-8x7b-32768"
+                            model="llama-3.1-8b-instant", 
                             messages=[
                                 {"role": "system", "content": f"You are a helpful, empathetic AI assistant. The user's face was just scanned by an emotion detection model, and they are currently feeling: {current_mood}. Keep this mood in mind and tailor your responses, tone, and advice accordingly."},
                                 {"role": "user", "content": prompt}
@@ -397,4 +394,3 @@ elif selected_tab == "💬 AI Assistant":
                         st.session_state.messages.append({"role": "assistant", "content": response_text})
                     except Exception as e:
                         st.error(f"⚠️ Oops! The Groq chatbot encountered an issue: {e}")
-                        
