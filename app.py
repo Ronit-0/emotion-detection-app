@@ -30,7 +30,7 @@ if "current_emotion" not in st.session_state:
 
 AI_AVATAR = "https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Smilies/Robot.png"
 
-# --- 🎨 FINAL CSS TAB FIX 🎨 ---
+# --- 🎨 FINAL CSS UI OVERRIDE 🎨 ---
 st.markdown("""
     <style>
     /* 1. HIDE HEADER & FOOTER */
@@ -53,17 +53,19 @@ st.markdown("""
         background-color: transparent !important;
     }
 
-    /* 3. 🔥 PERFECT CENTERED, STRETCHED, SINGLE-LINE TABS 🔥 */
+    /* 3. 🔥 THE ULTIMATE STRETCHED & CENTERED TABS 🔥 */
     [data-testid="stRadio"] {
         display: flex !important;
         justify-content: center !important;
+        align-items: center !important;
         width: 100% !important;
         margin: 0 auto 40px auto !important;
     }
+    /* This specific div controls the maximum width of the tab bar */
     [data-testid="stRadio"] > div {
         width: 100% !important;
-        max-width: 850px !important; /* Stretches the box wide */
-        margin: 0 auto !important; /* Centers the box */
+        max-width: 800px !important; /* The exact width of the stretched tabs */
+        margin: 0 auto !important;
     }
     div[role="radiogroup"] {
         display: flex !important;
@@ -81,14 +83,14 @@ st.markdown("""
         display: none !important; 
     }
     div[role="radiogroup"] > label {
-        flex: 1 1 0px !important; /* Forces equal width */
-        white-space: nowrap !important; /* CRITICAL: Keeps text on one line! */
+        flex: 1 1 0px !important; /* Forces equal width stretching */
+        white-space: nowrap !important; /* Stops text from wrapping */
         text-align: center !important;
         display: flex !important;
         align-items: center !important;
         justify-content: center !important;
         background-color: transparent !important;
-        padding: 12px 20px !important;
+        padding: 12px 0px !important;
         border-radius: 50px !important;
         color: #94A3B8 !important;
         font-weight: 600 !important;
@@ -237,7 +239,7 @@ with colB:
     use_gemini = st.toggle("🚀 Enable High-Accuracy Mode (Gemini Vision AI)", value=False)
 st.write("") 
 
-# --- THE CUSTOM "ROUTER" TABS (No column wrappers needed!) ---
+# --- THE CUSTOM "ROUTER" TABS (NO st.columns wrapper!) ---
 selected_tab = st.radio(
     "Navigation", 
     ["📸 Camera", "🖼️ Upload Images", "💬 AI Assistant"], 
@@ -340,7 +342,7 @@ elif selected_tab == "🖼️ Upload Images":
         for img in uploaded_imgs:
             run_analysis(img, img.name)
 
-# --- THE CHAT ENGINE ---
+# --- THE CHAT ENGINE (Powered by Groq's Llama 3.1) ---
 elif selected_tab == "💬 AI Assistant":
     current_mood = st.session_state.current_emotion
     emoji = emoji_map.get(current_mood, '')
@@ -397,4 +399,3 @@ elif selected_tab == "💬 AI Assistant":
                         st.session_state.messages.append({"role": "assistant", "content": response_text})
                     except Exception as e:
                         st.error(f"⚠️ Oops! The Groq chatbot encountered an issue: {e}")
-                        
