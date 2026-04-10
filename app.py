@@ -51,7 +51,7 @@ footer {visibility: hidden;}
 }
 
 /* ============================= */
-/* 🔥 PERFECT CENTERED TAB BAR */
+/* 🔥 GLASS TAB BAR */
 /* ============================= */
 
 [data-testid="stRadio"] {
@@ -71,11 +71,17 @@ div[role="radiogroup"] {
     display: grid !important;
     grid-template-columns: 1fr 1fr 1fr !important;
     gap: 8px !important;
-    background: rgba(255,255,255,0.03) !important;
+    
+    /* Glass Effect */
+    background: rgba(255,255,255,0.04) !important;
+    backdrop-filter: blur(14px) !important;
+    -webkit-backdrop-filter: blur(14px) !important;
+    
     border-radius: 40px !important;
     padding: 8px !important;
-    border: 1px solid rgba(255,255,255,0.05) !important;
-    backdrop-filter: blur(12px) !important;
+    border: 1px solid rgba(255,255,255,0.08) !important;
+    
+    box-shadow: 0 8px 30px rgba(0,0,0,0.35) !important;
 }
 
 /* Hide radio dot */
@@ -83,7 +89,7 @@ div[role="radiogroup"] {
     display: none !important;
 }
 
-/* Tab Style */
+/* Tabs */
 div[role="radiogroup"] > label {
     text-align: center !important;
     padding: 12px 10px !important;
@@ -97,7 +103,7 @@ div[role="radiogroup"] > label {
 
 /* Hover */
 div[role="radiogroup"] > label:hover {
-    background: rgba(255,255,255,0.06) !important;
+    background: rgba(255,255,255,0.08) !important;
     color: #E2E8F0 !important;
 }
 
@@ -109,11 +115,41 @@ div[role="radiogroup"] > label[data-checked="true"] {
 }
 
 /* ============================= */
-/* Chat Input */
+/* CAMERA GLASS */
+/* ============================= */
+
+[data-testid="stCameraInput"] {
+    background: rgba(255,255,255,0.03) !important;
+    backdrop-filter: blur(12px);
+    border-radius: 20px;
+    padding: 15px;
+    border: 1px solid rgba(255,255,255,0.05);
+}
+
+/* Camera Video */
+[data-testid="stCameraInput"] video {
+    border-radius: 18px;
+    transform: scaleX(-1);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+}
+
+/* ============================= */
+/* UPLOAD GLASS */
+/* ============================= */
+
+[data-testid="stFileUploadDropzone"] {
+    background: rgba(255,255,255,0.03) !important;
+    backdrop-filter: blur(10px);
+    border-radius: 18px !important;
+    border: 1px dashed rgba(255,255,255,0.15) !important;
+}
+
+/* ============================= */
+/* CHAT GLASS */
 /* ============================= */
 
 [data-testid="stChatInput"] > div {
-    background: rgba(15,23,42,0.7) !important;
+    background: rgba(15,23,42,0.65) !important;
     backdrop-filter: blur(12px);
     border-radius: 25px;
     border: 1px solid rgba(255,255,255,0.08);
@@ -122,26 +158,6 @@ div[role="radiogroup"] > label[data-checked="true"] {
 /* Remove bottom black area */
 [data-testid="stBottom"] {
     background: transparent !important;
-}
-
-/* ============================= */
-/* Camera UI */
-/* ============================= */
-
-[data-testid="stCameraInput"] video {
-    border-radius: 18px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.4);
-    transform: scaleX(-1);
-}
-
-/* ============================= */
-/* Upload UI */
-/* ============================= */
-
-[data-testid="stFileUploadDropzone"] {
-    border-radius: 18px !important;
-    background: rgba(255,255,255,0.03) !important;
-    border: 1px dashed rgba(255,255,255,0.15) !important;
 }
 
 /* ============================= */
