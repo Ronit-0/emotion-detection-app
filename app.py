@@ -53,22 +53,22 @@ st.markdown("""
         background-color: transparent !important;
     }
 
-    /* 3. 🔥 THE FIX: 100% WIDTH TAB STRETCHING 🔥 */
-    /* Because we center it with st.columns, we just tell CSS to fill the space */
+    /* 3. 🔥 THE FIX: CENTERED CSS GRID FOR PERFECT STRETCHING 🔥 */
     [data-testid="stRadio"] {
-        display: block !important;
+        display: flex !important;
+        justify-content: center !important; /* Centers the whole block */
         width: 100% !important;
         margin: 0 auto 30px auto !important;
     }
     [data-testid="stRadio"] > div {
         width: 100% !important;
-        display: block !important;
+        max-width: 800px !important; /* Keeps it wide, but stops it from touching screen edges */
+        margin: 0 auto !important; /* Perfect centering */
     }
     div[role="radiogroup"] {
-        display: flex !important;
-        flex-direction: row !important;
+        display: grid !important;
+        grid-template-columns: repeat(3, 1fr) !important; /* Forces 3 equal columns */
         width: 100% !important; 
-        justify-content: space-between !important;
         gap: 15px !important;
         background-color: rgba(255, 255, 255, 0.03) !important;
         border-radius: 50px !important;
@@ -76,13 +76,12 @@ st.markdown("""
         border: 1px solid rgba(255, 255, 255, 0.05) !important;
         box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3) !important;
         backdrop-filter: blur(10px) !important;
-        margin: 0 auto !important;
+        margin: 0 auto !important; /* Double-layered centering */
     }
     [data-testid="stRadio"] div[role="radiogroup"] > label > div:first-of-type {
         display: none !important; 
     }
     div[role="radiogroup"] > label {
-        flex: 1 1 0 !important; /* Forces equal stretching */
         width: 100% !important;
         text-align: center !important;
         display: flex !important;
@@ -238,17 +237,13 @@ with colB:
     use_gemini = st.toggle("🚀 Enable High-Accuracy Mode (Gemini Vision AI)", value=False)
 st.write("") 
 
-# --- 🔥 PYTHON LAYOUT TRICK FOR PERFECT CENTERING 🔥 ---
-# We use Streamlit's layout columns to mathematically trap the radio buttons in the center
-_, tab_col, _ = st.columns([1, 10, 1])
-
-with tab_col:
-    selected_tab = st.radio(
-        "Navigation", 
-        ["📸 Camera", "🖼️ Upload Images", "💬 AI Assistant"], 
-        horizontal=True, 
-        label_visibility="collapsed"
-    )
+# --- THE CUSTOM "ROUTER" TABS ---
+selected_tab = st.radio(
+    "Navigation", 
+    ["📸 Camera", "🖼️ Upload Images", "💬 AI Assistant"], 
+    horizontal=True, 
+    label_visibility="collapsed"
+)
 
 # --- THE VISION ENGINE ---
 def run_analysis(image_file, file_name="Captured Image"):
