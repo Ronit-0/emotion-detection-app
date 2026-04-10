@@ -30,7 +30,7 @@ if "current_emotion" not in st.session_state:
 
 AI_AVATAR = "https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Smilies/Robot.png"
 
-# --- 🎨 FINAL PRECISE CSS OVERRIDE 🎨 ---
+# --- 🎨 FINAL PRECISE CSS OVERRIDE WITH ANIMATIONS 🎨 ---
 st.markdown("""
 <style>
 
@@ -51,6 +51,34 @@ footer {visibility: hidden;}
 }
 [data-testid="stAppViewContainer"] {
     background-color: transparent !important;
+}
+
+/* ============================= */
+/* 🚀 DYNAMIC ANIMATIONS (KEYFRAMES) */
+/* ============================= */
+@keyframes slideUpFade {
+    0% { opacity: 0; transform: translateY(25px) scale(0.98); }
+    100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes breathingGlow {
+    0% { box-shadow: 0 0 15px rgba(59,130,246,0.3); }
+    50% { box-shadow: 0 0 30px rgba(59,130,246,0.7); }
+    100% { box-shadow: 0 0 15px rgba(59,130,246,0.3); }
+}
+
+@keyframes float {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-5px); }
+    100% { transform: translateY(0px); }
+}
+
+/* Apply Slide-up transition to dynamic blocks when switching tabs */
+[data-testid="stCameraInput"], 
+[data-testid="stFileUploader"], 
+[data-testid="stChatMessage"],
+div:has(> [data-testid="stAlert"]) {
+    animation: slideUpFade 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards !important;
 }
 
 /* ============================= */
@@ -94,14 +122,14 @@ div[role="radiogroup"] {
 
 /* Tabs */
 div[role="radiogroup"] > label {
-    background-color: transparent !important; /* CRITICAL: Keeps tabs from becoming black boxes */
+    background-color: transparent !important;
     text-align: center !important;
     padding: 12px 10px !important;
     border-radius: 30px !important;
     font-weight: 600 !important;
     font-size: 1rem !important;
     color: #94A3B8 !important;
-    transition: all 0.25s ease !important;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important; /* Smooth animation timing */
     white-space: nowrap !important;
     margin: 0 !important;
     display: flex !important;
@@ -109,17 +137,20 @@ div[role="radiogroup"] > label {
     justify-content: center !important;
 }
 
-/* Hover */
+/* Tab Hover Physics */
 div[role="radiogroup"] > label:hover {
     background: rgba(255,255,255,0.08) !important;
     color: #E2E8F0 !important;
+    transform: translateY(-2px) scale(1.02) !important; /* Hover Lift */
 }
 
-/* Active */
+/* Tab Active Physics */
 div[role="radiogroup"] > label[data-checked="true"] {
     background: linear-gradient(135deg,#3B82F6,#2563EB) !important;
     color: white !important;
-    box-shadow: 0 0 20px rgba(59,130,246,0.35) !important;
+    transform: scale(1.05) !important; /* Pop out effect */
+    z-index: 10 !important;
+    animation: breathingGlow 2.5s infinite alternate !important; /* Dynamic pulse */
 }
 
 /* ============================= */
@@ -143,15 +174,16 @@ div[role="radiogroup"] > label[data-checked="true"] {
     border-radius: 50% !important;
     background-color: rgba(255,255,255,0.1) !important;
     border: 5px solid #ffffff !important;
-    color: transparent !important; /* Hides "Take Photo" text */
+    color: transparent !important;
     margin: 15px auto !important;
     display: block !important;
-    transition: all 0.2s ease !important;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important; /* Bouncy transition */
     box-shadow: 0 4px 15px rgba(0,0,0,0.3) !important;
 }
 [data-testid="stCameraInput"] button:hover {
     background-color: white !important;
-    transform: scale(1.05) !important;
+    transform: scale(1.15) !important; /* Bouncy scale */
+    box-shadow: 0 10px 25px rgba(255,255,255,0.4) !important;
 }
 
 /* ============================= */
@@ -167,72 +199,70 @@ div[role="radiogroup"] > label[data-checked="true"] {
     backdrop-filter: blur(10px) !important;
     border-radius: 18px !important;
     border: 2px dashed rgba(255,255,255,0.15) !important;
+    transition: all 0.3s ease !important;
+}
+[data-testid="stFileUploadDropzone"]:hover {
+    background: rgba(255,255,255,0.08) !important;
+    border-color: #3B82F6 !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3) !important;
 }
 
 /* ============================= */
-/* 🔥 TRANSPARENT SUGGESTION BOXES 🔥 */
+/* 🔥 CHAT GLASS & TRANSPARENT SUGGESTIONS 🔥 */
 /* ============================= */
-/* Make suggestion buttons transparent glass */
+
+/* Suggestion Buttons Hover Pop */
 div.stButton > button {
     background: rgba(255, 255, 255, 0.05) !important;
     border: 1px solid rgba(255, 255, 255, 0.15) !important;
     backdrop-filter: blur(10px) !important;
-    color: #F8FAFC !important;
+    color: white !important;
     border-radius: 15px !important;
-    transition: all 0.3s ease !important;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
 }
 div.stButton > button:hover {
-    background: rgba(255, 255, 255, 0.15) !important;
-    border-color: rgba(255, 255, 255, 0.3) !important;
-    color: #ffffff !important;
+    background: rgba(59, 130, 246, 0.2) !important;
+    border-color: #3B82F6 !important;
+    transform: translateY(-4px) scale(1.02) !important; /* Lift and grow */
+    box-shadow: 0 8px 25px rgba(59, 130, 246, 0.4) !important;
 }
 
-/* Make Detected Mood bar transparent glass */
+/* Transparent Mood Info Box */
 [data-testid="stAlert"] {
     background: rgba(255, 255, 255, 0.05) !important;
     backdrop-filter: blur(10px) !important;
     border: 1px solid rgba(255, 255, 255, 0.1) !important;
-    color: #F8FAFC !important;
+    color: white !important;
     border-radius: 15px !important;
+    animation: float 6s ease-in-out infinite !important; /* Gentle floating effect */
 }
 
-/* ============================= */
-/* 🔥 TRANSPARENT CHAT (NO BLACK BOX) 🔥 */
-/* ============================= */
-[data-testid="stBottom"],
-[data-testid="stBottom"] > div,
-[data-testid="stBottomBlockContainer"] {
-    background-color: transparent !important;
-    background: transparent !important;
-    border: none !important;
-}
-[data-testid="stChatInput"] {
-    padding-bottom: 20px !important;
-    background-color: transparent !important;
-}
-[data-testid="stChatInput"] > div:first-child {
-    background: rgba(15,23,42,0.85) !important;
-    backdrop-filter: blur(12px) !important;
-    border-radius: 30px !important;
-    border: 1px solid rgba(255,255,255,0.08) !important;
-    box-shadow: 0 8px 30px rgba(0,0,0,0.5) !important;
-}
-
-/* Fix inner black box of text area */
-[data-testid="stChatInputTextArea"],
-[data-testid="stChatInputTextArea"] > div,
-[data-testid="stChatInputTextArea"] textarea,
-[data-testid="stChatInputDynamicTextarea"] { 
-    color: #F8FAFC !important; 
-    background-color: transparent !important;
-    background: transparent !important;
-}
-
-[data-testid="stChatInputSubmitButton"] { color: #3B82F6 !important; }
-
-/* Fix chat message bubbles */
+/* Chat Message Bubbles */
 [data-testid="stChatMessage"] {
     background-color: transparent !important;
+}
+
+/* Chat Input Bar */
+[data-testid="stChatInput"] > div {
+    background: rgba(15,23,42,0.65) !important;
+    backdrop-filter: blur(12px);
+    border-radius: 25px;
+    border: 1px solid rgba(255,255,255,0.08);
+    transition: all 0.3s ease !important;
+}
+[data-testid="stChatInput"] > div:focus-within {
+    border-color: #3B82F6 !important;
+    box-shadow: 0 0 20px rgba(59,130,246,0.3) !important;
+}
+[data-testid="stChatInputTextArea"] { 
+    color: white !important; 
+    background-color: transparent !important;
+}
+
+/* Remove bottom black area */
+[data-testid="stBottom"] {
+    background: transparent !important;
 }
 
 /* ============================= */
