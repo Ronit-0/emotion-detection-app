@@ -30,8 +30,7 @@ if "current_emotion" not in st.session_state:
 
 AI_AVATAR = "https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Smilies/Robot.png"
 
-# --- 🎨 PNEUMONIALENS DYNAMIC CSS (CRASH-PROOF) 🎨 ---
-# Note: No 'f' before the triple quotes, meaning single braces are fine for CSS properties!
+# --- 🎨 FINAL CLEAN DYNAMIC CSS 🎨 ---
 st.markdown("""
 <style>
 
@@ -45,9 +44,9 @@ footer {visibility: hidden;}
 ::-webkit-scrollbar-thumb { background: rgba(0, 255, 255, 0.4); border-radius: 10px; }
 ::-webkit-scrollbar-thumb:hover { background: rgba(0, 255, 255, 0.8); }
 
-/* --- BACKGROUND (Deep Medical AI Dark Theme) --- */
+/* --- BACKGROUND (Clean Dark Slate Gradient) --- */
 .stApp {
-    background: radial-gradient(circle at top center, #0f172a 0%, #020617 100%) !important;
+    background: radial-gradient(circle at center, #1e293b 0%, #0B0F19 100%) !important;
     background-attachment: fixed !important;
     color: #f8fafc;
 }
@@ -66,29 +65,29 @@ footer {visibility: hidden;}
 /* 🚀 DYNAMIC KEYFRAME ANIMATIONS 🚀 */
 /* ============================= */
 
-/* 1. Breathing Glow for selected tab */
+/* Breathing Glow for selected tab */
 @keyframes tabActiveGlow {
-    0% { box-shadow: 0 0 10px rgba(0, 255, 255, 0.2); }
-    100% { box-shadow: 0 0 20px rgba(0, 255, 255, 0.6); }
+    0% { box-shadow: 0 0 10px rgba(59, 130, 246, 0.3); }
+    100% { box-shadow: 0 0 25px rgba(59, 130, 246, 0.7); }
 }
 
-/* 2. Content Slide-Up and Fade-In on tab switch */
+/* Content Slide-Up and Fade-In on tab switch */
 @keyframes slideUpFade {
-    0% { opacity: 0; transform: translateY(25px) scale(0.98); }
+    0% { opacity: 0; transform: translateY(20px) scale(0.98); }
     100% { opacity: 1; transform: translateY(0) scale(1); }
 }
 
-/* 3. Infinite Floating for Alert Box */
-@keyframes float {
+/* Infinite Floating for Alert Box */
+@keyframes floatIdle {
     0% { transform: translateY(0px); }
-    50% { transform: translateY(-5px); }
+    50% { transform: translateY(-6px); }
     100% { transform: translateY(0px); }
 }
 
-/* 4. Chat Message Pop-In */
+/* Chat Message Pop-In */
 @keyframes popIn {
-    0% { opacity: 0; transform: scale(0.9); }
-    100% { opacity: 1; transform: scale(1); }
+    0% { opacity: 0; transform: scale(0.9) translateY(10px); }
+    100% { opacity: 1; transform: scale(1) translateY(0); }
 }
 
 /* Apply smooth content transitions to dynamic blocks */
@@ -105,6 +104,7 @@ div:has(> [data-testid="stAlert"]) {
 [data-testid="stRadio"] {
     display: flex !important;
     justify-content: center !important;
+    align-items: center !important;
     width: 100% !important;
     margin: 10px auto 40px auto !important;
     background: transparent !important;
@@ -112,7 +112,7 @@ div:has(> [data-testid="stAlert"]) {
 
 [data-testid="stRadio"] > div {
     width: 100% !important;
-    max-width: 700px !important;
+    max-width: 650px !important;
     margin: 0 auto !important;
     background: transparent !important;
 }
@@ -121,14 +121,14 @@ div[role="radiogroup"] {
     display: flex !important;
     flex-direction: row !important;
     width: 100% !important;
-    gap: 10px !important;
-    background: rgba(15, 23, 42, 0.6) !important;
-    backdrop-filter: blur(12px) !important;
-    -webkit-backdrop-filter: blur(12px) !important;
-    border-radius: 50px !important;
+    gap: 8px !important;
+    background: rgba(255, 255, 255, 0.04) !important;
+    backdrop-filter: blur(14px) !important;
+    -webkit-backdrop-filter: blur(14px) !important;
+    border-radius: 40px !important;
     padding: 8px !important;
-    border: 1px solid rgba(0, 255, 255, 0.15) !important;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5) !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.35) !important;
 }
 
 /* Hide radio dot */
@@ -138,11 +138,11 @@ div[role="radiogroup"] {
 
 /* Tabs Base */
 div[role="radiogroup"] > label {
-    flex: 1 1 0px !important; /* Force equal stretching */
+    flex: 1 1 0px !important; 
     background-color: transparent !important; 
     text-align: center !important;
     padding: 12px 0px !important;
-    border-radius: 40px !important;
+    border-radius: 30px !important;
     font-weight: 600 !important;
     font-size: 1.05rem !important;
     color: #94A3B8 !important;
@@ -156,26 +156,26 @@ div[role="radiogroup"] > label {
 
 /* Tab Hover Physics */
 div[role="radiogroup"] > label:hover {
-    background: rgba(0, 255, 255, 0.08) !important;
+    background: rgba(255, 255, 255, 0.08) !important;
     color: #e2e8f0 !important;
-    transform: translateY(-2px) !important;
+    transform: translateY(-2px) scale(1.02) !important;
 }
 
 /* Tab Active State (Pop out and Breathing Glow) */
 div[role="radiogroup"] > label[data-checked="true"],
-div[role="radiogroup"] > label:has(input:checked) {
-    background: linear-gradient(135deg, #00ced1, #008080) !important;
-    color: #000000 !important; /* Dark text on bright cyan background */
-    transform: scale(1.05) !important; /* Pop out */
+div[role="radiogroup"] > label:has(input:checked),
+div[role="radiogroup"] > label[aria-checked="true"] {
+    background: linear-gradient(135deg, #3B82F6, #2563EB) !important;
+    color: white !important; 
+    transform: scale(1.05) !important; 
     z-index: 10 !important;
     font-weight: 700 !important;
-    animation: tabActiveGlow 2.5s infinite alternate !important; /* Dynamic pulse */
+    animation: tabActiveGlow 2.5s infinite alternate !important; 
 }
 
 /* ============================= */
 /* 🔥 TRANSPARENT CAMERA & SHUTTER 🔥 */
 /* ============================= */
-/* The core request: transparency on the containers */
 [data-testid="stCameraInput"], 
 [data-testid="stCameraInput"] > div, 
 [data-testid="stCameraInput"] > div > div {
@@ -186,8 +186,7 @@ div[role="radiogroup"] > label:has(input:checked) {
 [data-testid="stCameraInput"] video {
     border-radius: 18px !important;
     transform: scaleX(-1) !important;
-    border: 1px solid rgba(0, 255, 255, 0.2);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5) !important;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4) !important;
 }
 
 /* Shutter Button Hover Physics */
@@ -195,41 +194,40 @@ div[role="radiogroup"] > label:has(input:checked) {
     width: 65px !important;
     height: 65px !important;
     border-radius: 50% !important;
-    background-color: rgba(0, 255, 255, 0.05) !important;
-    border: 5px solid #00FFFF !important;
-    box-shadow: 0 0 15px rgba(0, 255, 255, 0.3) !important;
+    background-color: rgba(255, 255, 255, 0.1) !important;
+    border: 5px solid #ffffff !important;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3) !important;
     color: transparent !important; 
     margin: 15px auto !important;
     display: block !important;
-    transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
 }
 [data-testid="stCameraInput"] button:hover {
-    background-color: rgba(0, 255, 255, 0.2) !important;
+    background-color: white !important;
     transform: scale(1.1) !important;
-    box-shadow: 0 0 25px rgba(0, 255, 255, 0.6) !important;
+    box-shadow: 0 8px 25px rgba(255, 255, 255, 0.4) !important;
 }
 
 /* ============================= */
 /* 🔥 TRANSPARENT UPLOAD BOX 🔥 */
 /* ============================= */
-/* Transparency on the upload containers */
 [data-testid="stFileUploader"], 
 [data-testid="stFileUploader"] > div {
     background-color: transparent !important;
 }
-/* Style the dropzone itself as a glass element */
+/* Dropzone glass styling */
 [data-testid="stFileUploadDropzone"], 
 [data-testid="stFileUploaderDropzone"] {
-    background: rgba(15, 23, 42, 0.4) !important;
-    backdrop-filter: blur(8px) !important;
+    background: rgba(255, 255, 255, 0.03) !important;
+    backdrop-filter: blur(10px) !important;
     border-radius: 18px !important;
-    border: 2px dashed rgba(0, 255, 255, 0.3) !important;
+    border: 2px dashed rgba(255, 255, 255, 0.2) !important;
     transition: all 0.3s ease !important;
 }
 [data-testid="stFileUploadDropzone"]:hover {
-    border-color: rgba(0, 255, 255, 0.8) !important;
-    background: rgba(15, 23, 42, 0.6) !important;
-    box-shadow: 0 10px 30px rgba(0, 255, 255, 0.2) !important;
+    border-color: #3B82F6 !important;
+    background: rgba(255, 255, 255, 0.08) !important;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2) !important;
     transform: translateY(-2px) !important;
 }
 
@@ -238,38 +236,37 @@ div[role="radiogroup"] > label:has(input:checked) {
 /* ============================= */
 /* Suggestion Buttons Hover Physics */
 div.stButton > button {
-    background: rgba(15, 23, 42, 0.6) !important;
-    border: 1px solid rgba(0, 255, 255, 0.2) !important;
+    background: rgba(255, 255, 255, 0.05) !important;
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
     backdrop-filter: blur(10px) !important;
     color: #e2e8f0 !important;
-    border-radius: 12px !important;
+    border-radius: 15px !important;
     transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
     padding: 10px !important;
 }
 div.stButton > button:hover {
-    background: rgba(0, 255, 255, 0.15) !important;
-    border-color: #00FFFF !important;
+    background: rgba(59, 130, 246, 0.2) !important;
+    border-color: #3B82F6 !important;
     color: #ffffff !important;
-    transform: translateY(-2px) !important; 
-    box-shadow: 0 8px 25px rgba(0, 255, 255, 0.3) !important;
+    transform: translateY(-3px) scale(1.02) !important; 
+    box-shadow: 0 8px 25px rgba(59, 130, 246, 0.4) !important;
 }
 
 /* Mood Info Box with Floating Effect */
 [data-testid="stAlert"] {
-    background: rgba(15, 23, 42, 0.8) !important;
+    background: rgba(255, 255, 255, 0.05) !important;
     backdrop-filter: blur(10px) !important;
-    border: 1px solid rgba(0, 255, 255, 0.2) !important;
-    border-left: 5px solid #00FFFF !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
     color: #f8fafc !important;
-    border-radius: 8px !important;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.5) !important;
-    animation: float 6s ease-in-out infinite !important; /* Gentle floating */
+    border-radius: 12px !important;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3) !important;
+    animation: floatIdle 6s ease-in-out infinite !important; 
 }
 
 /* Chat Message Bubbles Pop-in */
 [data-testid="stChatMessage"] {
     background-color: transparent !important;
-    animation: popIn 0.3s cubic-bezier(0.25, 1, 0.5, 1) forwards !important;
+    animation: popIn 0.4s cubic-bezier(0.25, 1, 0.5, 1) forwards !important;
 }
 
 /* Chat Input Bar Transparency */
@@ -287,15 +284,15 @@ div.stButton > button:hover {
 }
 [data-testid="stChatInput"] > div:first-child {
     background: rgba(15, 23, 42, 0.85) !important;
-    backdrop-filter: blur(12px) !important;
+    backdrop-filter: blur(15px) !important;
     border-radius: 30px !important;
-    border: 1px solid rgba(0, 255, 255, 0.2) !important;
-    box-shadow: 0 8px 25px rgba(0,0,0,0.5) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5) !important;
     transition: all 0.3s ease !important;
 }
 [data-testid="stChatInput"] > div:first-child:focus-within {
-    border-color: #00FFFF !important;
-    box-shadow: 0 8px 30px rgba(0, 255, 255, 0.2) !important;
+    border-color: #3B82F6 !important;
+    box-shadow: 0 8px 30px rgba(59, 130, 246, 0.3) !important;
 }
 [data-testid="stChatInputTextArea"],
 [data-testid="stChatInputTextArea"] > div,
@@ -304,17 +301,19 @@ div.stButton > button:hover {
     background-color: transparent !important;
     background: transparent !important;
 }
-[data-testid="stChatInputSubmitButton"] { color: #00FFFF !important; }
+[data-testid="stChatInputSubmitButton"] { color: #3B82F6 !important; transition: transform 0.2s; }
+[data-testid="stChatInputSubmitButton"]:hover { transform: scale(1.15); }
 
 /* ============================= */
-/* Typography (Cyan Glow) */
+/* Typography */
 /* ============================= */
 .main-title {
-    font-size: 3rem;
+    font-size: 3.2rem;
     font-weight: 800;
     text-align: center;
-    color: #00FFFF !important;
-    text-shadow: 0 0 10px rgba(0, 255, 255, 0.4);
+    background: linear-gradient(to right, #4facfe, #00f2fe);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
     margin-top: 0px;
     margin-bottom: 5px;
 }
@@ -373,16 +372,13 @@ with colB:
     use_gemini = st.toggle("🚀 Enable High-Accuracy Mode (Gemini Vision AI)", value=False)
 st.write("") 
 
-# --- THE CUSTOM "ROUTER" TABS (CENTERED VERSION) ---
-tab_col1, tab_col2, tab_col3 = st.columns([1,2,1])
-
-with tab_col2:
-    selected_tab = st.radio(
-        "Navigation", 
-        ["📸 Camera", "🖼️ Upload Images", "💬 AI Assistant"], 
-        horizontal=True, 
-        label_visibility="collapsed"
-    )
+# --- THE CUSTOM "ROUTER" TABS ---
+selected_tab = st.radio(
+    "Navigation", 
+    ["📸 Camera", "🖼️ Upload Images", "💬 AI Assistant"], 
+    horizontal=True, 
+    label_visibility="collapsed"
+)
 
 # --- THE VISION ENGINE ---
 def run_analysis(image_file, file_name="Captured Image"):
