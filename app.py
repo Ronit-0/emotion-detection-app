@@ -215,49 +215,7 @@ div[role="radiogroup"] > label[data-checked="true"] {
 img {
     border-radius: 12px;
 }
-/* ============================= */
-/* 🔥 FORCE REMOVE ALL CHAT BLACK BACKGROUNDS */
-/* ============================= */
 
-/* Entire chat container */
-[data-testid="stChatMessage"] {
-    background: transparent !important;
-}
-
-/* Inner wrapper */
-[data-testid="stChatMessage"] > div {
-    background: transparent !important;
-}
-
-/* Message block */
-[data-testid="stChatMessage"] [data-testid="stVerticalBlock"] {
-    background: transparent !important;
-}
-
-/* Markdown container */
-[data-testid="stChatMessage"] .stMarkdown {
-    background: transparent !important;
-}
-
-/* Message content */
-[data-testid="stChatMessageContent"] {
-    background: rgba(255,255,255,0.04) !important;
-    backdrop-filter: blur(8px) !important;
-    border-radius: 14px !important;
-    padding: 12px 16px !important;
-    border: 1px solid rgba(255,255,255,0.08) !important;
-}
-
-/* Remove extra nested background */
-[data-testid="stChatMessageContent"] * {
-    background: transparent !important;
-}
-
-/* User message bubble */
-[data-testid="stChatMessage"]:has(div[data-testid="stAvatarIcon-user"]) 
-[data-testid="stChatMessageContent"] {
-    background: rgba(59,130,246,0.08) !important;
-}
 </style>
 """, unsafe_allow_html=True)
 
