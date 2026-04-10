@@ -30,7 +30,7 @@ if "current_emotion" not in st.session_state:
 
 AI_AVATAR = "https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Smilies/Robot.png"
 
-# --- 🎨 FINAL PRECISE CSS OVERRIDE 🎨 ---
+# --- 🎨 FINAL CSS WITH DYNAMIC ANIMATIONS 🎨 ---
 st.markdown("""
 <style>
 
@@ -54,12 +54,35 @@ footer {visibility: hidden;}
 }
 
 /* ============================= */
-/* 🚀 DYNAMIC ANIMATIONS */
+/* 🚀 DYNAMIC KEYFRAME ANIMATIONS */
 /* ============================= */
+@keyframes slideUpFade {
+    0% { opacity: 0; transform: translateY(25px) scale(0.98); }
+    100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+
 @keyframes breathingGlow {
     0% { box-shadow: 0 0 15px rgba(59,130,246,0.3); }
-    50% { box-shadow: 0 0 30px rgba(59,130,246,0.7); }
+    50% { box-shadow: 0 0 35px rgba(59,130,246,0.8); }
     100% { box-shadow: 0 0 15px rgba(59,130,246,0.3); }
+}
+
+@keyframes floatIdle {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-6px); }
+    100% { transform: translateY(0px); }
+}
+
+@keyframes popIn {
+    0% { opacity: 0; transform: scale(0.9) translateY(15px); }
+    100% { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+/* Apply Slide-up transition to content blocks */
+[data-testid="stCameraInput"], 
+[data-testid="stFileUploader"], 
+.stChatInputContainer {
+    animation: slideUpFade 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards !important;
 }
 
 /* ============================= */
@@ -101,7 +124,7 @@ div[role="radiogroup"] {
     display: none !important;
 }
 
-/* Tabs */
+/* Tabs Base */
 div[role="radiogroup"] > label {
     background-color: transparent !important; 
     text-align: center !important;
@@ -110,7 +133,7 @@ div[role="radiogroup"] > label {
     font-weight: 600 !important;
     font-size: 1rem !important;
     color: #94A3B8 !important;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important; /* Smooth bouncy transition */
     white-space: nowrap !important;
     margin: 0 !important;
     display: flex !important;
@@ -118,27 +141,26 @@ div[role="radiogroup"] > label {
     justify-content: center !important;
 }
 
-/* Hover */
+/* Tab Hover Physics */
 div[role="radiogroup"] > label:hover {
     background: rgba(255,255,255,0.08) !important;
     color: #E2E8F0 !important;
-    transform: translateY(-2px) scale(1.02) !important;
+    transform: translateY(-3px) scale(1.02) !important; /* Lift up */
 }
 
-/* Active Tab Fixed 🚨 */
+/* Tab Active State (Breathing Glow) */
 div[role="radiogroup"] > label:has(input:checked),
 div[role="radiogroup"] > label[aria-checked="true"],
 div[role="radiogroup"] > label[data-checked="true"] {
     background: linear-gradient(135deg,#3B82F6,#2563EB) !important;
     color: white !important;
-    box-shadow: 0 0 20px rgba(59,130,246,0.5) !important;
-    transform: scale(1.05) !important;
+    transform: scale(1.05) !important; /* Pop out */
     z-index: 10 !important;
-    animation: breathingGlow 2.5s infinite alternate !important;
+    animation: breathingGlow 2.5s infinite alternate !important; /* Dynamic pulse */
 }
 
 /* ============================= */
-/* 🔥 TRANSPARENT CAMERA & CIRCLE SHUTTER 🔥 */
+/* 🔥 TRANSPARENT CAMERA & SHUTTER 🔥 */
 /* ============================= */
 [data-testid="stCameraInput"], 
 [data-testid="stCameraInput"] > div, 
@@ -152,6 +174,7 @@ div[role="radiogroup"] > label[data-checked="true"] {
     transform: scaleX(-1) !important;
     box-shadow: 0 10px 30px rgba(0,0,0,0.4) !important;
 }
+/* Shutter Button Hover Physics */
 [data-testid="stCameraInput"] button {
     width: 65px !important;
     height: 65px !important;
@@ -161,12 +184,13 @@ div[role="radiogroup"] > label[data-checked="true"] {
     color: transparent !important; 
     margin: 15px auto !important;
     display: block !important;
-    transition: all 0.2s ease !important;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
     box-shadow: 0 4px 15px rgba(0,0,0,0.3) !important;
 }
 [data-testid="stCameraInput"] button:hover {
     background-color: white !important;
-    transform: scale(1.05) !important;
+    transform: scale(1.15) !important; /* Pop scale */
+    box-shadow: 0 10px 25px rgba(255,255,255,0.4) !important;
 }
 
 /* ============================= */
@@ -182,18 +206,55 @@ div[role="radiogroup"] > label[data-checked="true"] {
     backdrop-filter: blur(10px) !important;
     border-radius: 18px !important;
     border: 2px dashed rgba(255,255,255,0.15) !important;
+    transition: all 0.3s ease !important;
+}
+[data-testid="stFileUploadDropzone"]:hover {
+    background: rgba(255,255,255,0.08) !important;
+    border-color: #3B82F6 !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3) !important;
 }
 
 /* ============================= */
-/* 🔥 TRANSPARENT CHAT (NO BLACK BOX) 🔥 */
+/* 🔥 CHAT & SUGGESTION BOXES 🔥 */
 /* ============================= */
+/* Suggestion Buttons Hover Physics */
+div.stButton > button {
+    background: rgba(255, 255, 255, 0.05) !important;
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
+    backdrop-filter: blur(10px) !important;
+    color: #F8FAFC !important;
+    border-radius: 15px !important;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+}
+div.stButton > button:hover {
+    background: rgba(59, 130, 246, 0.2) !important;
+    border-color: #3B82F6 !important;
+    color: #ffffff !important;
+    transform: translateY(-4px) scale(1.02) !important; /* Lift and grow */
+    box-shadow: 0 8px 25px rgba(59, 130, 246, 0.4) !important;
+}
 
-/* Extreme target for bottom bar and internal chat containers 🚨 */
+/* Floating Mood Alert Box */
+[data-testid="stAlert"] {
+    background: rgba(255, 255, 255, 0.05) !important;
+    backdrop-filter: blur(10px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    color: #F8FAFC !important;
+    border-radius: 15px !important;
+    animation: floatIdle 5s ease-in-out infinite !important; /* Floating effect */
+}
+
+/* Chat Message Pop-in */
+[data-testid="stChatMessage"] {
+    background-color: transparent !important;
+    animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards !important;
+}
+
+/* Chat Input Bar Transparency */
 [data-testid="stBottom"],
 [data-testid="stBottom"] > div,
-[data-testid="stBottomBlockContainer"],
-div[class*="stBottom"],
-.stChatInputContainer {
+[data-testid="stBottomBlockContainer"] {
     background-color: transparent !important;
     background: transparent !important;
     border: none !important;
@@ -208,10 +269,21 @@ div[class*="stBottom"],
     border-radius: 30px !important;
     border: 1px solid rgba(255,255,255,0.08) !important;
     box-shadow: 0 8px 30px rgba(0,0,0,0.5) !important;
+    transition: all 0.3s ease !important;
 }
-[data-testid="stChatInputTextArea"] { 
+[data-testid="stChatInput"] > div:first-child:focus-within {
+    border-color: #3B82F6 !important;
+    box-shadow: 0 0 20px rgba(59,130,246,0.4) !important;
+}
+
+/* Inner Text Area */
+[data-testid="stChatInputTextArea"],
+[data-testid="stChatInputTextArea"] > div,
+[data-testid="stChatInputTextArea"] textarea,
+[data-testid="stChatInputDynamicTextarea"] { 
     color: #F8FAFC !important; 
     background-color: transparent !important;
+    background: transparent !important;
 }
 [data-testid="stChatInputSubmitButton"] { color: #3B82F6 !important; }
 
