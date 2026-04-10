@@ -170,6 +170,33 @@ div[role="radiogroup"] > label[data-checked="true"] {
 }
 
 /* ============================= */
+/* 🔥 TRANSPARENT SUGGESTION BOXES 🔥 */
+/* ============================= */
+/* Make suggestion buttons transparent glass */
+div.stButton > button {
+    background: rgba(255, 255, 255, 0.05) !important;
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
+    backdrop-filter: blur(10px) !important;
+    color: #F8FAFC !important;
+    border-radius: 15px !important;
+    transition: all 0.3s ease !important;
+}
+div.stButton > button:hover {
+    background: rgba(255, 255, 255, 0.15) !important;
+    border-color: rgba(255, 255, 255, 0.3) !important;
+    color: #ffffff !important;
+}
+
+/* Make Detected Mood bar transparent glass */
+[data-testid="stAlert"] {
+    background: rgba(255, 255, 255, 0.05) !important;
+    backdrop-filter: blur(10px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    color: #F8FAFC !important;
+    border-radius: 15px !important;
+}
+
+/* ============================= */
 /* 🔥 TRANSPARENT CHAT (NO BLACK BOX) 🔥 */
 /* ============================= */
 [data-testid="stBottom"],
@@ -190,11 +217,23 @@ div[role="radiogroup"] > label[data-checked="true"] {
     border: 1px solid rgba(255,255,255,0.08) !important;
     box-shadow: 0 8px 30px rgba(0,0,0,0.5) !important;
 }
-[data-testid="stChatInputTextArea"] { 
+
+/* Fix inner black box of text area */
+[data-testid="stChatInputTextArea"],
+[data-testid="stChatInputTextArea"] > div,
+[data-testid="stChatInputTextArea"] textarea,
+[data-testid="stChatInputDynamicTextarea"] { 
     color: #F8FAFC !important; 
     background-color: transparent !important;
+    background: transparent !important;
 }
+
 [data-testid="stChatInputSubmitButton"] { color: #3B82F6 !important; }
+
+/* Fix chat message bubbles */
+[data-testid="stChatMessage"] {
+    background-color: transparent !important;
+}
 
 /* ============================= */
 /* Typography */
