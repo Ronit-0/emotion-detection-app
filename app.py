@@ -30,7 +30,7 @@ if "current_emotion" not in st.session_state:
 
 AI_AVATAR = "https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Smilies/Robot.png"
 
-# --- 🎨 FINAL CSS GRID UI OVERRIDE 🎨 ---
+# --- 🎨 FINAL CSS TAB FIX 🎨 ---
 st.markdown("""
     <style>
     /* 1. HIDE HEADER & FOOTER */
@@ -53,22 +53,22 @@ st.markdown("""
         background-color: transparent !important;
     }
 
-    /* 3. 🔥 THE FIX: 100% WIDTH TAB STRETCHING 🔥 */
-    /* Because we center it with st.columns, we just tell CSS to fill the space */
+    /* 3. 🔥 PERFECT CENTERED, STRETCHED, SINGLE-LINE TABS 🔥 */
     [data-testid="stRadio"] {
-        display: block !important;
+        display: flex !important;
+        justify-content: center !important;
         width: 100% !important;
-        margin: 0 auto 30px auto !important;
+        margin: 0 auto 40px auto !important;
     }
     [data-testid="stRadio"] > div {
         width: 100% !important;
-        display: block !important;
+        max-width: 850px !important; /* Stretches the box wide */
+        margin: 0 auto !important; /* Centers the box */
     }
     div[role="radiogroup"] {
         display: flex !important;
         flex-direction: row !important;
         width: 100% !important; 
-        justify-content: space-between !important;
         gap: 15px !important;
         background-color: rgba(255, 255, 255, 0.03) !important;
         border-radius: 50px !important;
@@ -76,20 +76,19 @@ st.markdown("""
         border: 1px solid rgba(255, 255, 255, 0.05) !important;
         box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3) !important;
         backdrop-filter: blur(10px) !important;
-        margin: 0 auto !important;
     }
     [data-testid="stRadio"] div[role="radiogroup"] > label > div:first-of-type {
         display: none !important; 
     }
     div[role="radiogroup"] > label {
-        flex: 1 1 0 !important; /* Forces equal stretching */
-        width: 100% !important;
+        flex: 1 1 0px !important; /* Forces equal width */
+        white-space: nowrap !important; /* CRITICAL: Keeps text on one line! */
         text-align: center !important;
         display: flex !important;
         align-items: center !important;
         justify-content: center !important;
         background-color: transparent !important;
-        padding: 12px 0px !important;
+        padding: 12px 20px !important;
         border-radius: 50px !important;
         color: #94A3B8 !important;
         font-weight: 600 !important;
@@ -238,17 +237,13 @@ with colB:
     use_gemini = st.toggle("🚀 Enable High-Accuracy Mode (Gemini Vision AI)", value=False)
 st.write("") 
 
-# --- 🔥 PYTHON LAYOUT TRICK FOR PERFECT CENTERING 🔥 ---
-# We use Streamlit's layout columns to mathematically trap the radio buttons in the center
-_, tab_col, _ = st.columns([1, 10, 1])
-
-with tab_col:
-    selected_tab = st.radio(
-        "Navigation", 
-        ["📸 Camera", "🖼️ Upload Images", "💬 AI Assistant"], 
-        horizontal=True, 
-        label_visibility="collapsed"
-    )
+# --- THE CUSTOM "ROUTER" TABS (No column wrappers needed!) ---
+selected_tab = st.radio(
+    "Navigation", 
+    ["📸 Camera", "🖼️ Upload Images", "💬 AI Assistant"], 
+    horizontal=True, 
+    label_visibility="collapsed"
+)
 
 # --- THE VISION ENGINE ---
 def run_analysis(image_file, file_name="Captured Image"):
@@ -345,7 +340,7 @@ elif selected_tab == "🖼️ Upload Images":
         for img in uploaded_imgs:
             run_analysis(img, img.name)
 
-# --- THE CHAT ENGINE (Powered by Groq's Llama 3.1) ---
+# --- THE CHAT ENGINE ---
 elif selected_tab == "💬 AI Assistant":
     current_mood = st.session_state.current_emotion
     emoji = emoji_map.get(current_mood, '')
@@ -402,3 +397,4 @@ elif selected_tab == "💬 AI Assistant":
                         st.session_state.messages.append({"role": "assistant", "content": response_text})
                     except Exception as e:
                         st.error(f"⚠️ Oops! The Groq chatbot encountered an issue: {e}")
+                        
