@@ -23,24 +23,21 @@ try:
 except Exception as e:
     groq_client = None
 
-# --- SESSION STATE INITIALIZATION ---
 if "messages" not in st.session_state:
     st.session_state.messages = [{"role": "assistant", "content": "Hello! I am your AI Emotion Assistant. Scan an image first, and I will tailor my responses, quotes, and advice to your current mood!"}]
 if "current_emotion" not in st.session_state:
     st.session_state.current_emotion = "Neutral"
-if "selected_tab" not in st.session_state:
-    st.session_state.selected_tab = "Camera"
 
 AI_AVATAR = "https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Smilies/Robot.png"
 
-# --- 🎨 MASTER UI STYLING & CUSTOM TAB COMPONENT 🎨 ---
+# --- 🎨 MASTER UI CSS: CENTERED UNIFIED PILL TABS 🎨 ---
 st.markdown("""
     <style>
     /* 1. HIDE HEADER & FOOTER */
     header {visibility: hidden !important;}
     footer {visibility: hidden !important;}
     
-    /* Expand main container */
+    /* Expand container */
     .block-container {
         max-width: 950px !important;
         padding-top: 3rem !important; 
@@ -56,29 +53,69 @@ st.markdown("""
         background-color: transparent !important;
     }
 
-    /* 3. 🔥 THE BULLETPROOF CUSTOM TAB BAR 🔥 */
-    /* We are hiding Streamlit's native radio entirely and using our own HTML */
-    .custom-tab-container {
-        display: flex;
-        justify-content: center;
-        width: 100%;
-        margin-bottom: 30px;
+    /* 3. 🔥 THE FIX: CENTERED & STRETCHED UNIFIED PILL 🔥 */
+    [data-testid="stRadio"] {
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+        width: 100% !important;
+        margin: 0 auto 40px auto !important;
     }
-    .custom-tabs {
-        display: flex;
-        flex-direction: row;
-        width: 100%;
-        max-width: 850px;
-        gap: 15px;
-        background-color: rgba(255, 255, 255, 0.03);
-        border-radius: 50px;
-        padding: 10px;
-        border: 1px solid rgba(255, 255, 255, 0.05);
-        box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
-        backdrop-filter: blur(10px);
+    /* Controls the maximum width of the unified tab bar */
+    [data-testid="stRadio"] > div {
+        width: 100% !important;
+        max-width: 800px !important; /* Stretches wide */
+        margin: 0 auto !important;
+        display: flex !important;
+        justify-content: center !important;
     }
-    /* Hide the ugly native radio buttons */
-    [data-testid="stRadio"] { display: none !important; }
+    /* The Unified Pill Background */
+    div[role="radiogroup"] {
+        display: flex !important;
+        flex-direction: row !important;
+        width: 100% !important; 
+        gap: 5px !important; /* Small gap inside the pill */
+        background-color: rgba(30, 41, 59, 0.8) !important; /* Unified dark glass background */
+        border-radius: 50px !important; /* Rounded edges for the whole bar */
+        padding: 8px !important;
+        border: 1px solid rgba(255, 255, 255, 0.1) !important;
+        box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4) !important;
+        backdrop-filter: blur(15px) !important;
+        margin: 0 auto !important;
+    }
+    /* Hide native radio circles */
+    [data-testid="stRadio"] div[role="radiogroup"] > label > div:first-of-type {
+        display: none !important; 
+    }
+    /* Individual Tab Buttons */
+    div[role="radiogroup"] > label {
+        flex: 1 1 0px !important; /* Forces equal width stretching */
+        white-space: nowrap !important; /* Keeps text on one line */
+        text-align: center !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        background-color: transparent !important;
+        padding: 12px 0px !important;
+        border-radius: 50px !important; /* Inner pill shape */
+        color: #94A3B8 !important;
+        font-weight: 600 !important;
+        font-size: 1.1rem !important;
+        transition: all 0.3s ease !important;
+        cursor: pointer !important;
+        margin: 0 !important;
+    }
+    /* Hover state */
+    div[role="radiogroup"] > label:hover {
+        background-color: rgba(255, 255, 255, 0.05) !important;
+        color: #F8FAFC !important;
+    }
+    /* Active selected tab */
+    div[role="radiogroup"] > label[data-checked="true"] {
+        background-color: #3B82F6 !important;
+        color: white !important;
+        box-shadow: 0 4px 15px rgba(59, 130, 246, 0.5) !important;
+    }
 
     /* 4. KILL THE CHAT BLACK BOX */
     [data-testid="stBottom"],
@@ -209,48 +246,14 @@ with colB:
     use_gemini = st.toggle("🚀 Enable High-Accuracy Mode (Gemini Vision AI)", value=False)
 st.write("") 
 
-# --- BULLETPROOF CUSTOM TAB BAR LOGIC ---
-# Create 3 columns for the tab buttons to ensure they are centered and evenly spaced
-t1, t2, t3 = st.columns(3)
-
-def set_tab(tab_name):
-    st.session_state.selected_tab = tab_name
-
-# Style the buttons to look like the pills we wanted
-st.markdown("""
-<style>
-div[data-testid="column"] button {
-    width: 100% !important;
-    border-radius: 50px !important;
-    padding: 12px 0px !important;
-    font-size: 1.1rem !important;
-    font-weight: 600 !important;
-    border: none !important;
-    transition: all 0.3s ease !important;
-}
-</style>
-""", unsafe_allow_html=True)
-
-# Render the buttons and manually handle "active" state styling
-with t1:
-    bg_color = "#3B82F6" if st.session_state.selected_tab == "Camera" else "rgba(255, 255, 255, 0.05)"
-    text_color = "white" if st.session_state.selected_tab == "Camera" else "#94A3B8"
-    st.markdown(f'<style>div[data-testid="column"]:nth-child(1) button {{ background-color: {bg_color} !important; color: {text_color} !important; }}</style>', unsafe_allow_html=True)
-    if st.button("📸 Camera", on_click=set_tab, args=("Camera",), use_container_width=True): pass
-
-with t2:
-    bg_color = "#3B82F6" if st.session_state.selected_tab == "Upload" else "rgba(255, 255, 255, 0.05)"
-    text_color = "white" if st.session_state.selected_tab == "Upload" else "#94A3B8"
-    st.markdown(f'<style>div[data-testid="column"]:nth-child(2) button {{ background-color: {bg_color} !important; color: {text_color} !important; }}</style>', unsafe_allow_html=True)
-    if st.button("🖼️ Upload Images", on_click=set_tab, args=("Upload",), use_container_width=True): pass
-
-with t3:
-    bg_color = "#3B82F6" if st.session_state.selected_tab == "Assistant" else "rgba(255, 255, 255, 0.05)"
-    text_color = "white" if st.session_state.selected_tab == "Assistant" else "#94A3B8"
-    st.markdown(f'<style>div[data-testid="column"]:nth-child(3) button {{ background-color: {bg_color} !important; color: {text_color} !important; }}</style>', unsafe_allow_html=True)
-    if st.button("💬 AI Assistant", on_click=set_tab, args=("Assistant",), use_container_width=True): pass
-
-st.write("") # Spacer
+# --- THE CUSTOM "ROUTER" TABS ---
+# Standard st.radio, NO column wrappers, styled entirely by the CSS above
+selected_tab = st.radio(
+    "Navigation", 
+    ["📸 Camera", "🖼️ Upload Images", "💬 AI Assistant"], 
+    horizontal=True, 
+    label_visibility="collapsed"
+)
 
 # --- THE VISION ENGINE ---
 def run_analysis(image_file, file_name="Captured Image"):
@@ -334,13 +337,13 @@ def run_analysis(image_file, file_name="Captured Image"):
         st.write("") 
 
 # --- ROUTER LOGIC ---
-if st.session_state.selected_tab == "Camera":
+if selected_tab == "📸 Camera":
     st.markdown("<h5 style='text-align: center; color: #94A3B8; font-weight: normal; margin-bottom: 10px;'>Align your face in the center</h5>", unsafe_allow_html=True)
     camera_img = st.camera_input("Smile for the camera!", label_visibility="collapsed")
     if camera_img is not None:
         run_analysis(camera_img, "Webcam Capture")
 
-elif st.session_state.selected_tab == "Upload":
+elif selected_tab == "🖼️ Upload Images":
     uploaded_imgs = st.file_uploader("Drag and drop images here", type=["jpg", "png", "jpeg"], accept_multiple_files=True, label_visibility="collapsed")
     if uploaded_imgs:
         st.success(f"Successfully loaded {len(uploaded_imgs)} image(s) into the pipeline.")
@@ -348,7 +351,7 @@ elif st.session_state.selected_tab == "Upload":
             run_analysis(img, img.name)
 
 # --- THE CHAT ENGINE (Powered by Groq's Llama 3.1) ---
-elif st.session_state.selected_tab == "Assistant":
+elif selected_tab == "💬 AI Assistant":
     current_mood = st.session_state.current_emotion
     emoji = emoji_map.get(current_mood, '')
     
