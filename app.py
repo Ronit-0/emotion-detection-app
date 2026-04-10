@@ -55,17 +55,15 @@ st.markdown("""
 
     /* 3. 🔥 THE ULTIMATE STRETCHED & CENTERED TABS 🔥 */
     [data-testid="stRadio"] {
+        align-self: center !important; /* THE MAGIC BULLET: Breaks Streamlit's left-align lock */
+        margin: 0 auto 40px auto !important;
+        width: 100% !important;
+        max-width: 850px !important; /* Controls how wide the tabs stretch */
         display: flex !important;
         justify-content: center !important;
-        align-items: center !important;
-        width: 100% !important;
-        margin: 0 auto 40px auto !important;
     }
-    /* This specific div controls the maximum width of the tab bar */
     [data-testid="stRadio"] > div {
         width: 100% !important;
-        max-width: 800px !important; /* The exact width of the stretched tabs */
-        margin: 0 auto !important;
     }
     div[role="radiogroup"] {
         display: flex !important;
@@ -78,6 +76,7 @@ st.markdown("""
         border: 1px solid rgba(255, 255, 255, 0.05) !important;
         box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3) !important;
         backdrop-filter: blur(10px) !important;
+        margin: 0 auto !important;
     }
     [data-testid="stRadio"] div[role="radiogroup"] > label > div:first-of-type {
         display: none !important; 
@@ -239,7 +238,7 @@ with colB:
     use_gemini = st.toggle("🚀 Enable High-Accuracy Mode (Gemini Vision AI)", value=False)
 st.write("") 
 
-# --- THE CUSTOM "ROUTER" TABS (NO st.columns wrapper!) ---
+# --- THE CUSTOM "ROUTER" TABS ---
 selected_tab = st.radio(
     "Navigation", 
     ["📸 Camera", "🖼️ Upload Images", "💬 AI Assistant"], 
