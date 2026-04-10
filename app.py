@@ -30,7 +30,7 @@ if "current_emotion" not in st.session_state:
 
 AI_AVATAR = "https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Smilies/Robot.png"
 
-# --- 🎨 MASTER UI CSS: CENTERED UNIFIED PILL TABS 🎨 ---
+# --- 🎨 FINAL CSS GRID UI OVERRIDE 🎨 ---
 st.markdown("""
     <style>
     /* 1. HIDE HEADER & FOOTER */
@@ -53,60 +53,60 @@ st.markdown("""
         background-color: transparent !important;
     }
 
-    /* 3. 🔥 THE FIX: STRETCHED UNIFIED PILL 🔥 */
-    /* We let the Streamlit column handle the centering, and CSS handles the stretching */
+    /* 3. 🔥 THE FIX: 100% WIDTH TAB STRETCHING 🔥 */
+    /* Because we center it with st.columns, we just tell CSS to fill the space */
     [data-testid="stRadio"] {
+        display: block !important;
         width: 100% !important;
-        margin-bottom: 30px !important;
+        margin: 0 auto 30px auto !important;
     }
     [data-testid="stRadio"] > div {
         width: 100% !important;
+        display: block !important;
     }
-    /* The Unified Pill Background */
     div[role="radiogroup"] {
         display: flex !important;
         flex-direction: row !important;
         width: 100% !important; 
-        gap: 5px !important; 
-        background-color: rgba(30, 41, 59, 0.8) !important; 
-        border-radius: 50px !important; 
-        padding: 8px !important;
-        border: 1px solid rgba(255, 255, 255, 0.1) !important;
-        box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4) !important;
-        backdrop-filter: blur(15px) !important;
+        justify-content: space-between !important;
+        gap: 15px !important;
+        background-color: rgba(255, 255, 255, 0.03) !important;
+        border-radius: 50px !important;
+        padding: 10px !important;
+        border: 1px solid rgba(255, 255, 255, 0.05) !important;
+        box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3) !important;
+        backdrop-filter: blur(10px) !important;
+        margin: 0 auto !important;
     }
-    /* Hide native radio circles */
     [data-testid="stRadio"] div[role="radiogroup"] > label > div:first-of-type {
         display: none !important; 
     }
-    /* Individual Tab Buttons */
     div[role="radiogroup"] > label {
-        flex: 1 1 0px !important; /* Forces perfect equal width stretching */
-        white-space: nowrap !important; /* CRITICAL: Keeps text on one line! */
+        flex: 1 1 0 !important; /* Forces equal stretching */
+        width: 100% !important;
         text-align: center !important;
         display: flex !important;
         align-items: center !important;
         justify-content: center !important;
         background-color: transparent !important;
         padding: 12px 0px !important;
-        border-radius: 50px !important; 
+        border-radius: 50px !important;
         color: #94A3B8 !important;
         font-weight: 600 !important;
         font-size: 1.1rem !important;
         transition: all 0.3s ease !important;
         cursor: pointer !important;
+        border: 1px solid transparent !important;
         margin: 0 !important;
     }
-    /* Hover state */
     div[role="radiogroup"] > label:hover {
-        background-color: rgba(255, 255, 255, 0.05) !important;
+        background-color: rgba(255, 255, 255, 0.1) !important;
         color: #F8FAFC !important;
     }
-    /* Active selected tab */
     div[role="radiogroup"] > label[data-checked="true"] {
         background-color: #3B82F6 !important;
         color: white !important;
-        box-shadow: 0 4px 15px rgba(59, 130, 246, 0.5) !important;
+        box-shadow: 0 0 20px rgba(59, 130, 246, 0.4) !important;
     }
 
     /* 4. KILL THE CHAT BLACK BOX */
@@ -238,12 +238,11 @@ with colB:
     use_gemini = st.toggle("🚀 Enable High-Accuracy Mode (Gemini Vision AI)", value=False)
 st.write("") 
 
-# --- 🔥 THE MAGIC CENTERING TRICK 🔥 ---
-# We use columns to build an invisible box in the middle of the screen.
-# The pill will expand to perfectly fill this middle column.
-col_left, col_center, col_right = st.columns([1, 8, 1])
+# --- 🔥 PYTHON LAYOUT TRICK FOR PERFECT CENTERING 🔥 ---
+# We use Streamlit's layout columns to mathematically trap the radio buttons in the center
+_, tab_col, _ = st.columns([1, 10, 1])
 
-with col_center:
+with tab_col:
     selected_tab = st.radio(
         "Navigation", 
         ["📸 Camera", "🖼️ Upload Images", "💬 AI Assistant"], 
