@@ -30,18 +30,19 @@ if "current_emotion" not in st.session_state:
 
 AI_AVATAR = "https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Smilies/Robot.png"
 
-# --- 🎨 PRECISE CSS OVERRIDE 🎨 ---
+# --- 🎨 THE ULTIMATE CSS FIX 🎨 ---
 st.markdown("""
 <style>
 
 /* Hide Header & Footer */
-header {visibility: hidden;}
-footer {visibility: hidden;}
+header {visibility: hidden !important;}
+footer {visibility: hidden !important;}
 
 /* Page Width */
 .block-container {
     max-width: 950px !important;
     padding-top: 2rem !important;
+    padding-bottom: 6rem !important;
 }
 
 /* Background */
@@ -54,78 +55,69 @@ footer {visibility: hidden;}
 }
 
 /* ============================= */
-/* 🔥 GLASS TAB BAR (CENTERED) 🔥 */
+/* 🔥 UNIFIED, CENTERED TABS 🔥 */
 /* ============================= */
-
-[data-testid="stRadio"] {
+div.stRadio {
     display: flex !important;
-    justify-content: center !important; /* Centers horizontally */
+    justify-content: center !important;
+    align-items: center !important;
     width: 100% !important;
-    margin: 25px auto !important;
-    background: transparent !important;
+    margin: 0 auto 40px auto !important;
 }
 
-[data-testid="stRadio"] > div {
-    width: 100% !important;
-    max-width: 800px !important; /* Controls how wide the tabs stretch */
-    margin: 0 auto !important;
-    background: transparent !important;
-}
-
+/* HARDCODING 800px WIDTH FORCES CENTERING AND STRETCHING */
 div[role="radiogroup"] {
-    display: grid !important;
-    grid-template-columns: 1fr 1fr 1fr !important;
-    gap: 8px !important;
-    
-    /* Glass Effect */
-    background: rgba(255,255,255,0.04) !important;
-    backdrop-filter: blur(14px) !important;
-    -webkit-backdrop-filter: blur(14px) !important;
-    
-    border-radius: 40px !important;
+    display: flex !important;
+    flex-direction: row !important;
+    width: 800px !important; 
+    margin: 0 auto !important;
+    background: rgba(30, 41, 59, 0.8) !important; /* Unified dark glass */
+    border-radius: 50px !important;
     padding: 8px !important;
-    border: 1px solid rgba(255,255,255,0.08) !important;
-    box-shadow: 0 8px 30px rgba(0,0,0,0.35) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4) !important;
+    backdrop-filter: blur(15px) !important;
 }
 
-/* Hide radio dot */
+/* Hide native dot */
 [data-testid="stRadio"] div[role="radiogroup"] > label > div:first-of-type {
     display: none !important;
 }
 
-/* Tabs */
+/* Tab Buttons */
 div[role="radiogroup"] > label {
+    flex: 1 1 0px !important; /* Equal stretching */
     background-color: transparent !important; 
     text-align: center !important;
-    padding: 12px 10px !important;
-    border-radius: 30px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 12px 0px !important;
+    border-radius: 40px !important;
     font-weight: 600 !important;
-    font-size: 1rem !important;
+    font-size: 1.1rem !important;
     color: #94A3B8 !important;
     transition: all 0.25s ease !important;
     white-space: nowrap !important;
     margin: 0 !important;
 }
 
-/* Hover */
 div[role="radiogroup"] > label:hover {
     background: rgba(255,255,255,0.08) !important;
     color: #E2E8F0 !important;
 }
 
-/* Active */
 div[role="radiogroup"] > label[data-checked="true"] {
-    background: linear-gradient(135deg,#3B82F6,#2563EB) !important;
+    background: #3B82F6 !important;
     color: white !important;
-    box-shadow: 0 0 20px rgba(59,130,246,0.35) !important;
+    box-shadow: 0 4px 15px rgba(59, 130, 246, 0.5) !important;
 }
 
 /* ============================= */
-/* 🔥 TRANSPARENT BUTTONS & ALERTS 🔥 */
+/* 🔥 TRANSPARENT SUGGESTIONS 🔥 */
 /* ============================= */
-/* Make suggestion boxes (buttons) transparent glass */
 div.stButton > button {
-    background-color: rgba(255, 255, 255, 0.05) !important;
+    background: rgba(255, 255, 255, 0.05) !important;
     border: 1px solid rgba(255, 255, 255, 0.15) !important;
     backdrop-filter: blur(10px) !important;
     color: #F8FAFC !important;
@@ -133,97 +125,114 @@ div.stButton > button {
     transition: all 0.3s ease !important;
 }
 div.stButton > button:hover {
-    background-color: rgba(255, 255, 255, 0.15) !important;
+    background: rgba(255, 255, 255, 0.15) !important;
     border-color: rgba(255, 255, 255, 0.3) !important;
     color: #ffffff !important;
 }
 
-/* Make Detected Mood bar (info alert) transparent glass */
+/* Mood Info Box */
 [data-testid="stAlert"] {
-    background-color: rgba(255, 255, 255, 0.05) !important;
+    background: rgba(255, 255, 255, 0.05) !important;
     backdrop-filter: blur(10px) !important;
     border: 1px solid rgba(255, 255, 255, 0.1) !important;
     color: #F8FAFC !important;
     border-radius: 15px !important;
 }
 
-/* Keep chat messages clean with no backgrounds */
-[data-testid="stChatMessage"] {
+/* ============================= */
+/* 🔥 CAMERA GLASS & SHUTTER 🔥 */
+/* ============================= */
+/* Strip default backgrounds completely */
+[data-testid="stCameraInput"] {
+    background: transparent !important;
+}
+[data-testid="stCameraInput"] * {
     background-color: transparent !important;
 }
-
-/* ============================= */
-/* CAMERA GLASS */
-/* ============================= */
-[data-testid="stCameraInput"] {
-    background: rgba(255,255,255,0.03) !important;
-    backdrop-filter: blur(12px) !important;
-    border-radius: 20px !important;
-    padding: 15px !important;
-    border: 1px solid rgba(255,255,255,0.05) !important;
-}
-
-/* Camera Video */
 [data-testid="stCameraInput"] video {
-    border-radius: 18px !important;
+    background-color: #000 !important; /* Keep video black */
+    border-radius: 20px !important;
     transform: scaleX(-1) !important;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.4) !important;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.5) !important;
 }
-
-/* Circle Shutter Button Fix */
+/* Circle Button */
 [data-testid="stCameraInput"] button {
-    width: 65px !important;
-    height: 65px !important;
+    width: 70px !important;
+    height: 70px !important;
     border-radius: 50% !important;
-    background-color: rgba(255,255,255,0.1) !important;
-    border: 5px solid #ffffff !important;
-    color: transparent !important; 
-    margin: 15px auto !important;
+    background: rgba(255,255,255,0.1) !important;
+    border: 5px solid white !important;
+    color: transparent !important; /* Hides text */
+    margin: 20px auto !important;
     display: block !important;
-    transition: all 0.2s ease !important;
     box-shadow: 0 4px 15px rgba(0,0,0,0.3) !important;
+    transition: all 0.2s ease !important;
+}
+[data-testid="stCameraInput"] button:hover {
+    transform: scale(1.05) !important;
+    background: white !important;
 }
 
 /* ============================= */
-/* UPLOAD GLASS */
+/* 🔥 UPLOAD GLASS 🔥 */
 /* ============================= */
-[data-testid="stFileUploadDropzone"] {
-    background: rgba(255,255,255,0.03) !important;
-    backdrop-filter: blur(10px) !important;
-    border-radius: 18px !important;
-    border: 1px dashed rgba(255,255,255,0.15) !important;
-}
-
-/* ============================= */
-/* CHAT GLASS */
-/* ============================= */
-[data-testid="stChatInput"] > div {
-    background: rgba(15,23,42,0.85) !important;
-    backdrop-filter: blur(12px) !important;
-    border-radius: 25px !important;
-    border: 1px solid rgba(255,255,255,0.08) !important;
-}
-
-/* Remove bottom black area */
-[data-testid="stBottom"] {
+[data-testid="stFileUploader"] {
     background: transparent !important;
+}
+[data-testid="stFileUploader"] section {
+    background: rgba(255,255,255,0.03) !important;
+    border: 2px dashed rgba(255,255,255,0.2) !important;
+    border-radius: 20px !important;
+    backdrop-filter: blur(10px) !important;
+}
+
+/* ============================= */
+/* 🔥 CHAT INPUT GLASS 🔥 */
+/* ============================= */
+/* Remove the bottom solid grey block */
+div[data-testid="stBottom"], 
+div[data-testid="stBottom"] > div {
+    background: transparent !important;
+    background-color: transparent !important;
+    border: none !important;
+}
+div[data-testid="stChatInput"] {
+    background: transparent !important;
+    padding-bottom: 20px !important;
+}
+div[data-testid="stChatInput"] > div:first-child {
+    background: rgba(15,23,42,0.85) !important;
+    border: 1px solid rgba(255,255,255,0.1) !important;
+    border-radius: 30px !important;
+    backdrop-filter: blur(15px) !important;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.5) !important;
+}
+[data-testid="stChatInputTextArea"] {
+    background: transparent !important;
+    color: white !important;
+}
+[data-testid="stChatMessage"] {
+    background-color: transparent !important;
 }
 
 /* ============================= */
 /* Typography */
 /* ============================= */
 .main-title {
-    font-size: 3rem;
+    font-size: 3.2rem;
     font-weight: 800;
     text-align: center;
     background: linear-gradient(to right, #4facfe, #00f2fe);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
+    margin-top: 0px;
+    margin-bottom: 5px;
 }
 .sub-title {
     text-align: center;
     color: #94a3b8;
-    margin-bottom: 25px;
+    margin-bottom: 30px;
+    font-size: 1.1rem;
 }
 img {
     border-radius: 12px;
@@ -231,6 +240,7 @@ img {
 
 </style>
 """, unsafe_allow_html=True)
+
 # --- LOAD LOCAL CNN MODEL ---
 MODEL_URL = "https://huggingface.co/Ronit-0/fer2013-emotion-model/resolve/main/final_emotion_model.h5?download=true"
 MODEL_PATH = "final_emotion_model.h5"
@@ -273,7 +283,7 @@ with colB:
     use_gemini = st.toggle("🚀 Enable High-Accuracy Mode (Gemini Vision AI)", value=False)
 st.write("") 
 
-# --- THE CUSTOM "ROUTER" TABS (Fully Centered, No Columns Wrapper!) ---
+# --- THE CUSTOM "ROUTER" TABS ---
 selected_tab = st.radio(
     "Navigation", 
     ["📸 Camera", "🖼️ Upload Images", "💬 AI Assistant"], 
