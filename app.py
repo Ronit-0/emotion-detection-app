@@ -6,16 +6,22 @@ import numpy as np
 from tensorflow.keras.models import load_model
 from PIL import Image
 import google.generativeai as genai
+from groq import Groq
 
 # --- PAGE CONFIGURATION ---
 st.set_page_config(page_title="Emotion Detector AI", page_icon="🎭", layout="centered")
 
-# --- CONFIGURE CHATBOT & VISION API ---
+# --- CONFIGURE APIS (GEMINI FOR VISION, GROQ FOR CHAT) ---
 try:
     genai.configure(api_key=st.secrets["GEMINI_API_KEY"])
-    chatbot_model = genai.GenerativeModel('gemini-2.5-flash-lite')
+    vision_model = genai.GenerativeModel('gemini-2.5-flash-lite')
 except Exception as e:
-    chatbot_model = None
+    vision_model = None
+
+try:
+    groq_client = Groq(api_key=st.secrets["GROQ_API_KEY"])
+except Exception as e:
+    groq_client = None
 
 if "messages" not in st.session_state:
     st.session_state.messages = [{"role": "assistant", "content": "Hello! I am your AI Emotion Assistant. Scan an image first, and I will tailor my responses, quotes, and advice to your current mood!"}]
@@ -48,33 +54,33 @@ st.markdown("""
     }
 
     /* 3. 🔥 THE FIX: TRUE HORIZONTAL TAB STRETCHING 🔥 */
+    [data-testid="stRadio"] {
+        width: 100% !important;
+        max-width: 850px !important;
+        margin: 0 auto 30px auto !important;
+    }
     /* Force every wrapper Streamlit uses to 100% width */
-    [data-testid="stRadio"], 
     [data-testid="stRadio"] > div {
         width: 100% !important;
-        max-width: 100% !important;
-        display: flex !important;
-        justify-content: center !important;
     }
     div[role="radiogroup"] {
         display: flex !important;
         flex-direction: row !important; 
-        width: 100% !important; /* Forces the box to span the screen */
-        justify-content: space-between !important;
-        gap: 10px !important;
+        width: 100% !important; 
+        justify-content: stretch !important; /* CRITICAL: Allows stretching */
+        gap: 15px !important;
         background-color: rgba(255, 255, 255, 0.03) !important;
         border-radius: 50px !important;
         padding: 10px !important;
         border: 1px solid rgba(255, 255, 255, 0.05) !important;
         box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3) !important;
         backdrop-filter: blur(10px) !important;
-        margin-bottom: 30px !important;
     }
     [data-testid="stRadio"] div[role="radiogroup"] > label > div:first-of-type {
         display: none !important; /* Hides the native radio circle */
     }
     div[role="radiogroup"] > label {
-        flex: 1 1 0px !important; /* Forces tabs to stretch equally */
+        flex: 1 1 0 !important; /* CRITICAL: Forces tabs to divide space equally */
         width: 100% !important;
         text-align: center !important;
         display: flex !important;
@@ -137,7 +143,6 @@ st.markdown("""
         border-radius: 20px !important;
         box-shadow: 0 10px 40px rgba(0,0,0,0.5) !important;
     }
-    /* Circular Shutter */
     [data-testid="stCameraInput"] button {
         width: 65px !important;
         height: 65px !important;
@@ -239,7 +244,7 @@ selected_tab = st.radio(
     label_visibility="collapsed"
 )
 
-# --- THE AI ENGINE ---
+# --- THE VISION ENGINE (Powered by CNN or Gemini) ---
 def run_analysis(image_file, file_name="Captured Image"):
     with st.container(): 
         st.markdown(f"#### 📄 Analyzing: `{file_name}`")
@@ -263,10 +268,10 @@ def run_analysis(image_file, file_name="Captured Image"):
                 st.image(image, use_container_width=True)
             else:
                 for (x, y, w, h) in faces:
-                    if use_gemini and chatbot_model is not None:
+                    if use_gemini and vision_model is not None:
                         try:
                             vision_prompt = "Analyze the facial expression of the primary person in this image. Classify their emotion into exactly one of these words: Angry, Disgusted, Fearful, Happy, Sad, Surprised, Neutral. Also estimate your confidence from 0 to 100. Respond strictly in this format: Emotion,Confidence (Example: Happy,95)"
-                            response = chatbot_model.generate_content([vision_prompt, image])
+                            response = vision_model.generate_content([vision_prompt, image])
                             
                             response_text = response.text.strip()
                             if "," in response_text:
@@ -334,14 +339,15 @@ elif selected_tab == "🖼️ Upload Images":
         for img in uploaded_imgs:
             run_analysis(img, img.name)
 
+# --- THE CHAT ENGINE (Powered by Groq's Llama 3) ---
 elif selected_tab == "💬 AI Assistant":
     current_mood = st.session_state.current_emotion
     emoji = emoji_map.get(current_mood, '')
     
     st.info(f"### Detected Mood: **{current_mood}** {emoji}")
     
-    if chatbot_model is None:
-        st.error("⚠️ Gemini API Key missing or invalid! Please check your Streamlit Secrets.")
+    if groq_client is None:
+        st.error("⚠️ Groq API Key missing or invalid! Please check your Streamlit Secrets.")
     else:
         st.write("✨ **What would you like to do?**")
         suggestions = suggestion_dict.get(current_mood, suggestion_dict["Neutral"])
@@ -375,9 +381,20 @@ elif selected_tab == "💬 AI Assistant":
             with st.chat_message("assistant", avatar=AI_AVATAR):
                 with st.spinner("Processing..."):
                     try:
-                        system_prompt = f"The user's face was scanned by an AI and they look {current_mood}. Keep this in mind when answering: {prompt}"
-                        response = chatbot_model.generate_content(system_prompt)
-                        st.markdown(response.text)
-                        st.session_state.messages.append({"role": "assistant", "content": response.text})
+                        # Using Groq's blazing fast Llama 3 model!
+                        completion = groq_client.chat.completions.create(
+                            model="llama3-8b-8192", # You can also try "llama3-70b-8192" or "mixtral-8x7b-32768"
+                            messages=[
+                                {"role": "system", "content": f"You are a helpful, empathetic AI assistant. The user's face was just scanned by an emotion detection model, and they are currently feeling: {current_mood}. Keep this mood in mind and tailor your responses, tone, and advice accordingly."},
+                                {"role": "user", "content": prompt}
+                            ],
+                            temperature=0.7,
+                            max_tokens=1024,
+                        )
+                        
+                        response_text = completion.choices[0].message.content
+                        st.markdown(response_text)
+                        st.session_state.messages.append({"role": "assistant", "content": response_text})
                     except Exception as e:
-                        st.error("⚠️ Oops! The chatbot encountered a slight issue. Please try again.")
+                        st.error(f"⚠️ Oops! The Groq chatbot encountered an issue: {e}")
+                        
