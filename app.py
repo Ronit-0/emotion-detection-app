@@ -215,6 +215,10 @@ div[data-testid="stHorizontalBlock"] {
 div[role="radiogroup"] {
     margin: 0 auto !important;
 }
+[data-testid="stRadio"] {
+    margin-top: 20px !important;
+    margin-bottom: 30px !important;
+}
     </style>
 """, unsafe_allow_html=True)
 
@@ -260,13 +264,16 @@ with colB:
     use_gemini = st.toggle("🚀 Enable High-Accuracy Mode (Gemini Vision AI)", value=False)
 st.write("") 
 
-# --- THE CUSTOM "ROUTER" TABS ---
-selected_tab = st.radio(
-    "Navigation", 
-    ["📸 Camera", "🖼️ Upload Images", "💬 AI Assistant"], 
-    horizontal=True, 
-    label_visibility="collapsed"
-)
+# --- THE CUSTOM "ROUTER" TABS (CENTERED VERSION) ---
+tab_col1, tab_col2, tab_col3 = st.columns([1,2,1])
+
+with tab_col2:
+    selected_tab = st.radio(
+        "Navigation", 
+        ["📸 Camera", "🖼️ Upload Images", "💬 AI Assistant"], 
+        horizontal=True, 
+        label_visibility="collapsed"
+    )
 
 # --- THE VISION ENGINE ---
 def run_analysis(image_file, file_name="Captured Image"):
