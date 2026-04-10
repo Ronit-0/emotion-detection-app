@@ -216,88 +216,47 @@ img {
     border-radius: 12px;
 }
 /* ============================= */
-/* 🔥 TRANSPARENT SUGGESTION BUTTONS */
+/* 🔥 FORCE REMOVE ALL CHAT BLACK BACKGROUNDS */
 /* ============================= */
 
-div[data-testid="stButton"] > button {
-    background: rgba(255,255,255,0.03) !important;
-    backdrop-filter: blur(8px) !important;
-    border: 1px solid rgba(255,255,255,0.08) !important;
-    color: #E2E8F0 !important;
-    border-radius: 14px !important;
-    transition: all 0.25s ease !important;
-}
-
-div[data-testid="stButton"] > button:hover {
-    background: rgba(255,255,255,0.08) !important;
-    border: 1px solid rgba(255,255,255,0.15) !important;
-    transform: translateY(-1px);
-}
-
-
-/* ============================= */
-/* 🔥 REMOVE CHAT MESSAGE BLACK BOX */
-/* ============================= */
-
+/* Entire chat container */
 [data-testid="stChatMessage"] {
     background: transparent !important;
-    border: none !important;
 }
 
-[data-testid="stChatMessageContent"] {
-    background: rgba(255,255,255,0.02) !important;
-    backdrop-filter: blur(6px) !important;
-    border-radius: 14px !important;
-    padding: 12px 14px !important;
-    border: 1px solid rgba(255,255,255,0.05) !important;
-}
-
-/* Assistant message softer */
-[data-testid="stChatMessage"]:has(img) [data-testid="stChatMessageContent"] {
-    background: rgba(255,255,255,0.02) !important;
-}
-
-/* User message */
-[data-testid="stChatMessage"]:not(:has(img)) [data-testid="stChatMessageContent"] {
-    background: rgba(59,130,246,0.08) !important;
-}
-/* ============================= */
-/* 🔥 REMOVE CHAT MESSAGE BLACK BOX (STRONG FIX) */
-/* ============================= */
-
-[data-testid="stChatMessage"] {
-    background: transparent !important;
-    background-color: transparent !important;
-    border: none !important;
-    box-shadow: none !important;
-}
-
-/* Inner container */
+/* Inner wrapper */
 [data-testid="stChatMessage"] > div {
     background: transparent !important;
-    background-color: transparent !important;
-    border: none !important;
-    box-shadow: none !important;
 }
 
-/* Actual message bubble */
+/* Message block */
+[data-testid="stChatMessage"] [data-testid="stVerticalBlock"] {
+    background: transparent !important;
+}
+
+/* Markdown container */
+[data-testid="stChatMessage"] .stMarkdown {
+    background: transparent !important;
+}
+
+/* Message content */
 [data-testid="stChatMessageContent"] {
-    background: rgba(255,255,255,0.03) !important;
-    backdrop-filter: blur(10px) !important;
-    border-radius: 16px !important;
-    border: 1px solid rgba(255,255,255,0.08) !important;
+    background: rgba(255,255,255,0.04) !important;
+    backdrop-filter: blur(8px) !important;
+    border-radius: 14px !important;
     padding: 12px 16px !important;
+    border: 1px solid rgba(255,255,255,0.08) !important;
 }
 
-/* Remove any nested dark container */
-[data-testid="stChatMessageContent"] > div {
+/* Remove extra nested background */
+[data-testid="stChatMessageContent"] * {
     background: transparent !important;
-    background-color: transparent !important;
 }
 
-/* Remove markdown dark box */
-[data-testid="stMarkdownContainer"] {
-    background: transparent !important;
+/* User message bubble */
+[data-testid="stChatMessage"]:has(div[data-testid="stAvatarIcon-user"]) 
+[data-testid="stChatMessageContent"] {
+    background: rgba(59,130,246,0.08) !important;
 }
 </style>
 """, unsafe_allow_html=True)
