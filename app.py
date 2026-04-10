@@ -7,7 +7,6 @@ from tensorflow.keras.models import load_model
 from PIL import Image
 import google.generativeai as genai
 from groq import Groq
-import base64
 
 # --- PAGE CONFIGURATION ---
 st.set_page_config(page_title="Emotion Detector AI", page_icon="🎭", layout="centered")
@@ -31,92 +30,84 @@ if "current_emotion" not in st.session_state:
 
 AI_AVATAR = "https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Smilies/Robot.png"
 
-# --- 🎨 FINAL RUTHLESS DYNAMISM CSS OVERRIDE 🎨 ---
-
-# Subtly futuristic neural net texture (Base64)
-bg_texture_base64 = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAMAAAAAF4NtAAAAXVBMVEVHcEwAAAAXFxchISEAAAAXFxccHBwAAAAAAAAXFxcXFxcdHR0AAAAXFxcAAAAAAAAAAAAXFxcdHR0AAAAXFxcAAAAAAAAAAAAXFxccHBwAAAAXFxcXFxccHBzO7P9bAAAAHHRSTlMAAQIDBAUGBwgJCgsMDQ4PEBESExQVFhcYGRoaGv4N19gAAAClSURBVDjLzZTRCsMgDETPQpM50///02bQLobEwR6K+9ALB09QvE43Nf1z64pCHqDAsyAitYwYisQ6mkh4E4lk8pEI4vIkkrg9iSSu7kU6vYv05I4v4iFuxAtu5C4u4wZepO8v4iVuxEPe4ituxEv+7m/xIn+K/R96F0tY9A7p5pD0uUf6bHofS7i9pC/P+iG464fgrh+CG3v7+4ffA5r/A65AAtp3GqYgA9w9AAAAAElFTkSuQmCC"
-
-st.markdown(f"""
+# --- 🎨 PNEUMONIALENS DYNAMIC CSS (CRASH-PROOF) 🎨 ---
+# Note: No 'f' before the triple quotes, meaning no brace escaping is needed!
+st.markdown("""
 <style>
 
 /* Hide Header & Footer */
-header {{visibility: hidden;}}
-footer {{visibility: hidden;}}
+header {visibility: hidden;}
+footer {visibility: hidden;}
 
-/* Background (Futuristic Grid) */
-.stApp {{
-    background-color: #0B0F19;
-    background-image: url("{bg_texture_base64}"), radial-gradient(circle at center, #1e293b 0%, #0B0F19 100%);
-    background-attachment: fixed !important;
-    background-repeat: repeat;
-    background-size: auto, cover;
+/* --- THE CYBERPUNK SCROLLBAR --- */
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: rgba(10, 10, 10, 0.9); border-left: 1px solid rgba(0, 255, 255, 0.1); }
+::-webkit-scrollbar-thumb { background: rgba(0, 255, 255, 0.3); border-radius: 10px; border: 1px solid rgba(10, 10, 10, 0.9); }
+::-webkit-scrollbar-thumb:hover { background: rgba(0, 255, 255, 0.8); box-shadow: 0 0 15px rgba(0, 255, 255, 0.5); }
+
+/* --- BACKGROUND IMAGE (Dark Abstract Tech) --- */
+.stApp {
+    background-color: #050810;
+    background-image: url("https://images.unsplash.com/photo-1620641788421-7a1c342ea42e?q=80&w=1974&auto=format&fit=crop");
+    background-size: cover;
+    background-attachment: fixed;
+    background-position: center;
 }
-[data-testid="stAppViewContainer"] {{
+[data-testid="stAppViewContainer"] {
     background-color: transparent !important;
-}}
-
-/* ============================= */
-/* 🚀 KEYFRAME ANIMATIONS 🚀 */
-/* ============================= */
-
-/* Continuous Glitch Title Effect */
-@keyframes titleGlitch {{
-    0% {{ text-shadow: 0.5px 0 0 #ff00ff, -0.5px 0 0 #00ffff; }}
-    2% {{ text-shadow: 2px 0 0 #ff00ff, -2px 0 0 #00ffff; }}
-    4% {{ text-shadow: 0.5px 0 0 #ff00ff, -0.5px 0 0 #00ffff; }}
-    6% {{ text-shadow: 0.5px 0 0 #ff00ff, -0.5px 0 0 #00ffff; }}
-    8% {{ text-shadow: -2px 0 0 #ff00ff, 2px 0 0 #00ffff; }}
-    10% {{ text-shadow: 0.5px 0 0 #ff00ff, -0.5px 0 0 #00ffff; }}
-    100% {{ text-shadow: 0.5px 0 0 #ff00ff, -0.5px 0 0 #00ffff; }}
-}
-
-/* Moving Border Energy Glow for Main Container */
-@keyframes borderGlowMove {{
-    0% {{ background-position: 0% 50%; }}
-    100% {{ background-position: 200% 50%; }}
-}
-
-/* Image Scanner Line Pulse */
-@keyframes scannerLine {{
-    0% {{ transform: translateY(0%); opacity: 0; }}
-    10% {{ opacity: 1; }}
-    50% {{ transform: translateY(1000%); opacity: 1; }}
-    90% {{ opacity: 1; }}
-    100% {{ transform: translateY(0%); opacity: 0; }}
-}
-
-/* Tabs Breathing Active Glow */
-@keyframes tabActiveGlow {{
-    0% {{ box-shadow: 0 0 10px rgba(0, 255, 255, 0.4); }}
-    100% {{ box-shadow: 0 0 25px rgba(0, 255, 255, 0.8); }}
 }
 
 /* ============================= */
-/* 🔥 MAIN CONTAINER HOLOGRAPHIC GLOW 🔥 */
+/* 🚀 DYNAMIC ANIMATIONS 🚀 */
 /* ============================= */
-.block-container {{
+
+@keyframes containerBreathe {
+    0% { box-shadow: 0 0 20px rgba(0, 255, 255, 0.05); border: 1px solid rgba(0, 255, 255, 0.1); }
+    50% { box-shadow: 0 0 45px rgba(0, 206, 209, 0.25); border: 1px solid rgba(0, 255, 255, 0.3); }
+    100% { box-shadow: 0 0 20px rgba(0, 255, 255, 0.05); border: 1px solid rgba(0, 255, 255, 0.1); }
+}
+
+@keyframes tabActiveGlow {
+    0% { box-shadow: 0 0 10px rgba(0, 255, 255, 0.3); }
+    100% { box-shadow: 0 0 25px rgba(0, 255, 255, 0.7); }
+}
+
+@keyframes slideUpFade {
+    0% { opacity: 0; transform: translateY(25px) scale(0.98); }
+    100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes popIn {
+    0% { opacity: 0; transform: scale(0.9) translateY(15px); }
+    100% { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+/* Apply Slide-up transition to content blocks */
+[data-testid="stCameraInput"], 
+[data-testid="stFileUploader"], 
+.stChatInputContainer {
+    animation: slideUpFade 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards !important;
+}
+
+/* ============================= */
+/* 🔥 BREATHING MAIN CONTAINER 🔥 */
+/* ============================= */
+.block-container {
     max-width: 950px !important;
+    background-color: rgba(5, 8, 15, 0.85) !important; 
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
     padding: 3rem !important;
-    position: relative;
-    
-    /* Moving Border Energy */
-    border: 2px solid transparent;
     border-radius: 20px;
-    background-image: linear-gradient(#0B0F19, #0B0F19), linear-gradient(135deg, #3B82F6, transparent, #ff00ff, transparent, #00ffff);
-    background-origin: border-box;
-    background-clip: padding-box, border-box;
-    background-size: 100% 100%, 200% 100%;
-    animation: borderGlowMove 4s linear infinite;
-    
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    box-shadow: 0 0 40px rgba(59, 130, 246, 0.2) !important;
+    animation: containerBreathe 6s infinite ease-in-out;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
 }
 
 /* ============================= */
 /* 🔥 YOUR CENTERED MAGNETIC TAB BAR 🔥 */
 /* ============================= */
-[data-testid="stRadio"] {{
+[data-testid="stRadio"] {
     display: flex !important;
     justify-content: center !important;
     width: 100% !important;
@@ -124,36 +115,32 @@ footer {{visibility: hidden;}}
     background: transparent !important;
 }
 
-[data-testid="stRadio"] > div {{
+[data-testid="stRadio"] > div {
     width: 100% !important;
     max-width: 650px !important;
     margin: 0 auto !important;
     background: transparent !important;
 }
 
-div[role="radiogroup"] {{
+div[role="radiogroup"] {
     display: grid !important;
     grid-template-columns: 1fr 1fr 1fr !important;
     gap: 8px !important;
-    
-    /* Glass Effect */
     background: rgba(255,255,255,0.02) !important;
     backdrop-filter: blur(14px) !important;
-    -webkit-backdrop-filter: blur(14px) !important;
-    
     border-radius: 40px !important;
     padding: 8px !important;
-    border: 1px solid rgba(255,255,255,0.05) !important;
+    border: 1px solid rgba(0,255,255,0.15) !important;
     box-shadow: 0 10px 40px rgba(0,0,0,0.5) !important;
 }
 
 /* Hide radio dot */
-[data-testid="stRadio"] div[role="radiogroup"] > label > div:first-of-type {{
+[data-testid="stRadio"] div[role="radiogroup"] > label > div:first-of-type {
     display: none !important;
 }
 
-/* Tabs (futuristic style) */
-div[role="radiogroup"] > label {{
+/* Tabs */
+div[role="radiogroup"] > label {
     background-color: transparent !important; 
     text-align: center !important;
     padding: 12px 10px !important;
@@ -161,146 +148,172 @@ div[role="radiogroup"] > label {{
     font-weight: 700 !important;
     font-size: 1rem !important;
     color: #94A3B8 !important;
-    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important; /* Smooth pop */
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
     white-space: nowrap !important;
     margin: 0 !important;
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
-    text-transform: uppercase;
-    letter-spacing: 1px;
+    letter-spacing: 0.5px;
 }
 
-/* Magnetic Hover Physics */
-div[role="radiogroup"] > label:hover {{
-    background: rgba(255,255,255,0.06) !important;
+/* Hover Physics */
+div[role="radiogroup"] > label:hover {
+    background: rgba(0,255,255,0.1) !important;
     color: #E2E8F0 !important;
     transform: translateY(-4px) scale(1.02);
-    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    box-shadow: 0 5px 15px rgba(0,255,255,0.2);
 }
 
 /* Active State (Breathing Cyan Glow) */
-div[role="radiogroup"] > label[data-checked="true"] {{
-    background: linear-gradient(135deg, #00FFFF, #2563EB) !important;
-    color: white !important;
-    transform: scale(1.05); /* Magnetic pop out */
+div[role="radiogroup"] > label[data-checked="true"],
+div[role="radiogroup"] > label:has(input:checked) {
+    background: linear-gradient(135deg, #00FFFF, #008080) !important;
+    color: black !important;
+    transform: scale(1.05); 
+    z-index: 10 !important;
     animation: tabActiveGlow 2s infinite alternate !important;
-}
-
-/* ============================= */
-/* 🔥 IMAGE scanner line 🔥 */
-/* ============================= */
-div[data-testid="stHorizontalBlock"] img {{
-    position: relative;
-    border: 2px solid rgba(0, 255, 255, 0.3);
-    transition: border 0.3s ease;
-}
-div[data-testid="stHorizontalBlock"] img:hover {{
-    border-color: rgba(0, 255, 255, 1);
-}
-
-div[data-testid="stHorizontalBlock"] .stImage {{
-    position: relative;
-    overflow: hidden;
-}
-
-/* Scanner Line Overlay */
-div[data-testid="stHorizontalBlock"] .stImage::after {{
-    content: "";
-    position: absolute;
-    top: 0; left: 0; width: 100%; height: 5px;
-    background: linear-gradient(to right, transparent, rgba(0, 255, 255, 0.8), transparent);
-    animation: scannerLine 3s infinite linear;
-    pointer-events: none;
-    z-index: 5;
 }
 
 /* ============================= */
 /* 🔥 TRANSPARENT CAMERA & UPLOAD 🔥 */
 /* ============================= */
-[data-testid="stCameraInput"] button {{
+[data-testid="stCameraInput"] button {
     width: 65px !important;
     height: 65px !important;
     border-radius: 50% !important;
     background-color: rgba(0,255,255,0.05) !important;
     border: 5px solid #00FFFF !important;
-    box-shadow: 0 0 15px rgba(0, 255, 255, 0.5) !important;
-    color: transparent !important; /* Hides "Take Photo" text */
+    box-shadow: 0 0 15px rgba(0, 255, 255, 0.3) !important;
+    color: transparent !important; 
     margin: 15px auto !important;
     display: block !important;
-    transition: all 0.2s ease !important;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
 }
-[data-testid="stCameraInput"] button:hover {{
+[data-testid="stCameraInput"] button:hover {
     background-color: #00FFFF !important;
-    transform: scale(1.1);
+    transform: scale(1.15);
+    box-shadow: 0 0 25px rgba(0, 255, 255, 0.6) !important;
+}
+[data-testid="stCameraInput"] video {
+    border-radius: 20px !important;
+    transform: scaleX(-1) !important;
+    border: 1px solid rgba(0,255,255,0.2);
 }
 
-/* File Upload Glass */
-[data-testid="stFileUploader"] > div {{
-    background: rgba(255,255,255,0.02) !important;
+/* File Upload Dropzone */
+[data-testid="stFileUploader"] > div,
+[data-testid="stFileUploadDropzone"] {
+    background: rgba(0,255,255,0.02) !important;
     backdrop-filter: blur(10px) !important;
     border-radius: 18px !important;
     border: 2px dashed rgba(0,255,255,0.3) !important;
     transition: all 0.3s ease;
 }
-[data-testid="stFileUploader"] > div:hover {{
-    border-color: rgba(0,255,255,1);
-    background: rgba(255,255,255,0.05) !important;
+[data-testid="stFileUploader"] > div:hover {
+    border-color: rgba(0,255,255,1) !important;
+    background: rgba(0,255,255,0.08) !important;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 30px rgba(0,255,255,0.2) !important;
 }
 
 /* ============================= */
-/* 🔥 TRANSPARENT CHAT 🔥 */
+/* 🔥 SUGGESTION CARDS (LIKE PNEUMONIALENS) 🔥 */
+/* ============================= */
+div.stButton > button {
+    background: rgba(15, 20, 30, 0.6) !important;
+    border: 1px solid rgba(0, 255, 255, 0.2) !important;
+    backdrop-filter: blur(10px) !important;
+    color: #E2E8F0 !important;
+    border-radius: 12px !important;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+    padding: 10px !important;
+}
+div.stButton > button:hover {
+    background: rgba(0, 255, 255, 0.15) !important;
+    border-color: #00FFFF !important;
+    color: #ffffff !important;
+    transform: translateY(-4px) scale(1.02) !important; 
+    box-shadow: 0 8px 25px rgba(0, 255, 255, 0.3) !important;
+}
+
+/* Mood Info Box (Glowing Alert) */
+[data-testid="stAlert"] {
+    background: rgba(10, 15, 25, 0.8) !important;
+    backdrop-filter: blur(10px) !important;
+    border: 1px solid rgba(0, 255, 255, 0.3) !important;
+    border-left: 5px solid #00FFFF !important;
+    color: #F8FAFC !important;
+    border-radius: 10px !important;
+    box-shadow: 0 5px 20px rgba(0,255,255,0.15) !important;
+}
+
+/* ============================= */
+/* 🔥 CHAT & INPUT GLASS 🔥 */
 /* ============================= */
 [data-testid="stBottom"],
 [data-testid="stBottom"] > div,
-[data-testid="stBottomBlockContainer"],
-.stChatInputContainer {{
+[data-testid="stBottomBlockContainer"] {
     background-color: transparent !important;
     background: transparent !important;
     border: none !important;
 }
-
-[data-testid="stChatInput"] > div:first-child {{
-    background: rgba(11, 15, 25, 0.9) !important;
-    backdrop-filter: blur(12px) !important;
+[data-testid="stChatInput"] {
+    padding-bottom: 20px !important;
+    background-color: transparent !important;
+}
+[data-testid="stChatInput"] > div:first-child {
+    background: rgba(10, 15, 25, 0.95) !important;
+    backdrop-filter: blur(15px) !important;
     border-radius: 30px !important;
-    border: 1px solid rgba(0,255,255,0.1) !important;
-    box-shadow: 0 10px 40px rgba(0,0,0,0.8), 0 0 15px rgba(0,255,255,0.1) !important;
+    border: 1px solid rgba(0,255,255,0.2) !important;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.8), 0 0 15px rgba(0,255,255,0.1) !important;
     transition: all 0.3s ease;
 }
-[data-testid="stChatInput"] > div:first-child:focus-within {{
-    border-color: rgba(0,255,255,0.8);
-    box-shadow: 0 10px 40px rgba(0,0,0,0.8), 0 0 25px rgba(0,255,255,0.3) !important;
+[data-testid="stChatInput"] > div:first-child:focus-within {
+    border-color: #00FFFF !important;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.8), 0 0 25px rgba(0,255,255,0.4) !important;
+    transform: translateY(-2px);
 }
-[data-testid="stChatInputTextArea"] {{ color: #F8FAFC !important; }}
-[data-testid="stChatInputSubmitButton"] {{ color: #00FFFF !important; }}
+[data-testid="stChatInputTextArea"],
+[data-testid="stChatInputTextArea"] > div,
+[data-testid="stChatInputTextArea"] textarea,
+[data-testid="stChatInputDynamicTextarea"] { 
+    color: #FFFFFF !important; 
+    background-color: transparent !important;
+    background: transparent !important;
+}
+[data-testid="stChatInputSubmitButton"] { color: #00FFFF !important; }
+
+/* Chat Message Bubbles */
+[data-testid="stChatMessage"] {
+    background-color: transparent !important;
+    animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards !important;
+}
 
 /* ============================= */
-/* Typography (Dynamic Glitch) */
+/* Typography (Glowing Neon Titles) */
 /* ============================= */
-.main-title {{
+.main-title {
     font-size: 3.5rem;
     font-weight: 800;
     text-align: center;
-    background: linear-gradient(to right, #4facfe, #00f2fe);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    animation: titleGlitch 5s infinite;
-    text-transform: uppercase;
-    letter-spacing: -1px;
+    color: #00FFFF !important;
+    text-shadow: 0 0 15px rgba(0, 255, 255, 0.5), 0 0 30px rgba(0, 255, 255, 0.3);
+    margin-top: 0px;
+    margin-bottom: 5px;
+    letter-spacing: 1px;
 }
-.sub-title {{
+.sub-title {
     text-align: center;
     color: #94a3b8;
     margin-bottom: 30px;
     font-weight: 300;
-    letter-spacing: 1px;
+    letter-spacing: 1.5px;
 }
-
-img {{
+img {
     border-radius: 12px;
 }
-
 </style>
 """, unsafe_allow_html=True)
 
@@ -343,7 +356,7 @@ st.markdown('<div class="sub-title">Advanced Emotion Recognition & Real-Time AI 
 
 colA, colB, colC = st.columns([1, 2, 1])
 with colB:
-    use_gemini = st.toggle("🚀 Enable Gemini Vision API (H-Acc Mode)", value=False)
+    use_gemini = st.toggle("🚀 Enable High-Accuracy Mode (Gemini Vision AI)", value=False)
 st.write("") 
 
 # --- THE CUSTOM "ROUTER" TABS (CENTERED VERSION) ---
