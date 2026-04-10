@@ -32,212 +32,171 @@ AI_AVATAR = "https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluen
 
 # --- 🎨 FINAL CSS GRID UI OVERRIDE 🎨 ---
 st.markdown("""
-    <style>
-    /* 1. HIDE HEADER & FOOTER */
-    header {visibility: hidden !important;}
-    footer {visibility: hidden !important;}
-    
-    /* Expand container */
-    .block-container {
-        max-width: 950px !important;
-        padding-top: 3rem !important; 
-        padding-bottom: 6rem !important;
-    }
+<style>
 
-    /* 2. SYMMETRICAL PREMIUM BACKGROUND */
-    .stApp {
-        background: radial-gradient(circle at center, #1e293b 0%, #0B0F19 100%) !important;
-        background-attachment: fixed !important;
-    }
-    [data-testid="stAppViewContainer"] {
-        background-color: transparent !important;
-    }
+/* Hide Header & Footer */
+header {visibility: hidden;}
+footer {visibility: hidden;}
 
-    /* 3. 🔥 PREMIUM CENTERED TABS 🔥 */
+/* Page Width */
+.block-container {
+    max-width: 950px !important;
+    padding-top: 2.5rem !important;
+}
 
-    [data-testid="stRadio"] {
-        display: flex !important;
-        justify-content: center !important;
-        align-items: center !important;
-        width: 100% !important;
-        margin: 20px auto 30px auto !important;
-    }
+/* Background */
+.stApp {
+    background: radial-gradient(circle at center, #1e293b 0%, #0B0F19 100%);
+    background-attachment: fixed;
+}
 
-    [data-testid="stRadio"] > div {
-        width: 100% !important;
-        max-width: 850px !important;
-        margin: 0 auto !important;
-    }
+/* ============================= */
+/* 🔥 PERFECT CENTERED TAB BAR */
+/* ============================= */
 
-    div[role="radiogroup"] {
-        display: grid !important;
-        grid-template-columns: auto auto auto !important;
-        justify-content: center !important;
-        gap: 15px !important;
-        background-color: rgba(255, 255, 255, 0.03) !important;
-        border-radius: 50px !important;
-        padding: 10px 20px !important;
-        border: 1px solid rgba(255, 255, 255, 0.05) !important;
-        box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3) !important;
-        backdrop-filter: blur(10px) !important;
-        margin: 0 auto !important;
-        transition: all 0.3s ease !important;
-    }
+[data-testid="stRadio"] {
+    display: flex !important;
+    justify-content: center !important;
+    width: 100% !important;
+    margin: 25px auto !important;
+}
 
-    /* Hide default radio dot */
-    [data-testid="stRadio"] div[role="radiogroup"] > label > div:first-of-type {
-        display: none !important; 
-    }
+[data-testid="stRadio"] > div {
+    width: 100% !important;
+    max-width: 750px !important;
+    margin: 0 auto !important;
+}
 
-    /* Individual Tabs */
-    div[role="radiogroup"] > label {
-        white-space: nowrap !important;
-        padding: 12px 24px !important;
-        text-align: center !important;
-        display: flex !important;
-        align-items: center !important;
-        justify-content: center !important;
-        background-color: transparent !important;
-        border-radius: 50px !important;
-        color: #94A3B8 !important;
-        font-weight: 600 !important;
-        font-size: 1.05rem !important;
-        transition: all 0.25s ease !important;
-        cursor: pointer !important;
-        border: 1px solid transparent !important;
-    }
+div[role="radiogroup"] {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr 1fr !important;
+    gap: 8px !important;
+    background: rgba(255,255,255,0.03) !important;
+    border-radius: 40px !important;
+    padding: 8px !important;
+    border: 1px solid rgba(255,255,255,0.05) !important;
+    backdrop-filter: blur(12px) !important;
+}
 
-    /* Hover Animation */
-    div[role="radiogroup"] > label:hover {
-        background-color: rgba(255, 255, 255, 0.08) !important;
-        color: #F8FAFC !important;
-        transform: translateY(-2px);
-    }
+/* Hide radio dot */
+[data-testid="stRadio"] div[role="radiogroup"] > label > div:first-of-type {
+    display: none !important;
+}
 
-    /* Active Tab */
-    div[role="radiogroup"] > label[data-checked="true"] {
-        background: linear-gradient(135deg, #3B82F6, #2563EB) !important;
-        color: white !important;
-        box-shadow: 0 0 25px rgba(59, 130, 246, 0.45) !important;
-        transform: translateY(-2px);
-    }
+/* Tab Style */
+div[role="radiogroup"] > label {
+    text-align: center !important;
+    padding: 12px 10px !important;
+    border-radius: 30px !important;
+    font-weight: 600 !important;
+    font-size: 1rem !important;
+    color: #94A3B8 !important;
+    transition: all 0.25s ease !important;
+    white-space: nowrap !important;
+}
 
-    /* 4. KILL THE CHAT BLACK BOX */
-    [data-testid="stBottom"],
-    [data-testid="stBottom"] * {
-        background-color: transparent !important;
-        background: transparent !important;
-        border: none !important;
-    }
+/* Hover */
+div[role="radiogroup"] > label:hover {
+    background: rgba(255,255,255,0.06) !important;
+    color: #E2E8F0 !important;
+    transform: translateY(-1px);
+}
 
-    [data-testid="stChatInput"] {
-        padding-bottom: 20px !important;
-    }
+/* Active */
+div[role="radiogroup"] > label[data-checked="true"] {
+    background: linear-gradient(135deg,#3B82F6,#2563EB) !important;
+    color: white !important;
+    box-shadow: 0 0 20px rgba(59,130,246,0.35) !important;
+}
 
-    [data-testid="stChatInput"] > div:first-child {
-        background-color: rgba(15, 23, 42, 0.85) !important;
-        border: 1px solid rgba(255,255,255,0.1) !important;
-        border-radius: 30px !important;
-        backdrop-filter: blur(15px) !important;
-        box-shadow: 0 8px 30px rgba(0,0,0,0.5) !important;
-        padding: 5px 10px !important;
-    }
+/* ============================= */
+/* Chat Input Glass UI */
+/* ============================= */
 
-    [data-testid="stChatInputTextArea"] { 
-        color: #F8FAFC !important; 
-        background-color: transparent !important;
-    }
+[data-testid="stChatInput"] > div {
+    background: rgba(15,23,42,0.7) !important;
+    backdrop-filter: blur(12px);
+    border-radius: 25px;
+    border: 1px solid rgba(255,255,255,0.08);
+}
 
-    [data-testid="stChatInputSubmitButton"] { 
-        color: #3B82F6 !important; 
-    }
+/* Remove Bottom Block */
+[data-testid="stBottom"] {
+    background: transparent !important;
+}
 
-    [data-testid="stChatInputSubmitButton"] svg { 
-        fill: #3B82F6 !important; 
-    }
+/* ============================= */
+/* Camera UI */
+/* ============================= */
 
-    /* 5. CAMERA UI TRANSPARENCY */
+[data-testid="stCameraInput"] video {
+    border-radius: 18px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+    transform: scaleX(-1);
+}
 
-    [data-testid="stCameraInput"] {
-        background-color: transparent !important;
-        border: none !important;
-    }
+[data-testid="stCameraInput"] button {
+    width: 65px !important;
+    height: 65px !important;
+    border-radius: 50% !important;
+}
 
-    [data-testid="stCameraInput"] > div, 
-    [data-testid="stCameraInput"] > div > div {
-        background-color: transparent !important;
-    }
+/* ============================= */
+/* Upload UI */
+/* ============================= */
 
-    [data-testid="stCameraInput"] video {
-        transform: scaleX(-1) !important; 
-        border-radius: 20px !important;
-        box-shadow: 0 10px 40px rgba(0,0,0,0.5) !important;
-    }
+[data-testid="stFileUploader"] {
+    background: transparent !important;
+}
 
-    [data-testid="stCameraInput"] button {
-        width: 65px !important;
-        height: 65px !important;
-        border-radius: 50% !important;
-        background-color: rgba(255,255,255,0.1) !important;
-        border: 5px solid #ffffff !important;
-        color: transparent !important; 
-        margin: 15px auto !important;
-        display: block !important;
-        transition: all 0.2s ease !important;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.3) !important;
-    }
+[data-testid="stFileUploadDropzone"] {
+    border-radius: 18px !important;
+    background: rgba(255,255,255,0.03) !important;
+    border: 1px dashed rgba(255,255,255,0.15) !important;
+}
 
-    /* 6. TRANSPARENT UPLOAD BOX */
+/* ============================= */
+/* Glass Cards */
+/* ============================= */
 
-    [data-testid="stFileUploader"], 
-    [data-testid="stFileUploader"] > div {
-        background-color: transparent !important;
-    }
+div[data-testid="stVerticalBlock"] > div {
+    background: rgba(15,23,42,0.4);
+    backdrop-filter: blur(12px);
+    border-radius: 18px;
+    padding: 20px;
+    border: 1px solid rgba(255,255,255,0.05);
+}
 
-    [data-testid="stFileUploadDropzone"], 
-    [data-testid="stFileUploaderDropzone"] {
-        background-color: rgba(255, 255, 255, 0.05) !important;
-        border: 2px dashed rgba(255, 255, 255, 0.2) !important;
-        border-radius: 20px !important;
-        backdrop-filter: blur(10px) !important;
-    }
+/* ============================= */
+/* Title Styling */
+/* ============================= */
 
-    /* 7. GLASS CONTAINERS */
+.main-title {
+    font-size: 3rem;
+    font-weight: 800;
+    text-align: center;
+    background: linear-gradient(to right, #4facfe, #00f2fe);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
 
-    div[data-testid="stVerticalBlock"] > div[style*="flex-direction: column;"] {
-        background: rgba(15, 23, 42, 0.5);
-        border-radius: 20px;
-        padding: 25px;
-        backdrop-filter: blur(15px);
-        border: 1px solid rgba(255, 255, 255, 0.08);
-        box-shadow: 0 10px 30px rgba(0,0,0,0.4);
-    }
+.sub-title {
+    text-align: center;
+    color: #94a3b8;
+    margin-bottom: 25px;
+}
 
-    /* 8. TYPOGRAPHY */
+/* Buttons */
+button[kind="secondary"] {
+    border-radius: 12px !important;
+}
 
-    .main-title { 
-        font-size: 3.2rem; 
-        font-weight: 800; 
-        text-align: center; 
-        margin-top: 0px; 
-        margin-bottom: 5px; 
-        background: linear-gradient(to right, #4facfe, #00f2fe); 
-        -webkit-background-clip: text; 
-        -webkit-text-fill-color: transparent; 
-    }
+/* Images */
+img {
+    border-radius: 12px;
+}
 
-    .sub-title { 
-        text-align: center; 
-        font-size: 1.1rem; 
-        color: #94a3b8; 
-        margin-bottom: 30px; 
-    }
-
-    img { 
-        border-radius: 12px; 
-    }
-
-    </style>
+</style>
 """, unsafe_allow_html=True)
 # --- LOAD LOCAL CNN MODEL ---
 MODEL_URL = "https://huggingface.co/Ronit-0/fer2013-emotion-model/resolve/main/final_emotion_model.h5?download=true"
