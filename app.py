@@ -192,6 +192,29 @@ st.markdown("""
     }
     .sub-title { text-align: center; font-size: 1.1rem; color: #94a3b8; margin-bottom: 30px; }
     img { border-radius: 12px; }
+    /* 🔥 FORCE CENTER THE TAB CONTAINER */
+div[data-testid="stHorizontalBlock"] {
+    justify-content: center !important;
+}
+
+[data-testid="stRadio"] {
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    width: 100% !important;
+}
+
+[data-testid="stRadio"] > div {
+    margin-left: auto !important;
+    margin-right: auto !important;
+    width: 100% !important;
+    max-width: 750px !important;
+}
+
+/* Extra polish */
+div[role="radiogroup"] {
+    margin: 0 auto !important;
+}
     </style>
 """, unsafe_allow_html=True)
 
