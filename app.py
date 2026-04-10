@@ -53,35 +53,27 @@ st.markdown("""
         background-color: transparent !important;
     }
 
-    /* 3. 🔥 THE FIX: CENTERED & STRETCHED UNIFIED PILL 🔥 */
+    /* 3. 🔥 THE FIX: STRETCHED UNIFIED PILL 🔥 */
+    /* We let the Streamlit column handle the centering, and CSS handles the stretching */
     [data-testid="stRadio"] {
-        display: flex !important;
-        justify-content: center !important;
-        align-items: center !important;
         width: 100% !important;
-        margin: 0 auto 40px auto !important;
+        margin-bottom: 30px !important;
     }
-    /* Controls the maximum width of the unified tab bar */
     [data-testid="stRadio"] > div {
         width: 100% !important;
-        max-width: 800px !important; /* Stretches wide */
-        margin: 0 auto !important;
-        display: flex !important;
-        justify-content: center !important;
     }
     /* The Unified Pill Background */
     div[role="radiogroup"] {
         display: flex !important;
         flex-direction: row !important;
         width: 100% !important; 
-        gap: 5px !important; /* Small gap inside the pill */
-        background-color: rgba(30, 41, 59, 0.8) !important; /* Unified dark glass background */
-        border-radius: 50px !important; /* Rounded edges for the whole bar */
+        gap: 5px !important; 
+        background-color: rgba(30, 41, 59, 0.8) !important; 
+        border-radius: 50px !important; 
         padding: 8px !important;
         border: 1px solid rgba(255, 255, 255, 0.1) !important;
         box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4) !important;
         backdrop-filter: blur(15px) !important;
-        margin: 0 auto !important;
     }
     /* Hide native radio circles */
     [data-testid="stRadio"] div[role="radiogroup"] > label > div:first-of-type {
@@ -89,15 +81,15 @@ st.markdown("""
     }
     /* Individual Tab Buttons */
     div[role="radiogroup"] > label {
-        flex: 1 1 0px !important; /* Forces equal width stretching */
-        white-space: nowrap !important; /* Keeps text on one line */
+        flex: 1 1 0px !important; /* Forces perfect equal width stretching */
+        white-space: nowrap !important; /* CRITICAL: Keeps text on one line! */
         text-align: center !important;
         display: flex !important;
         align-items: center !important;
         justify-content: center !important;
         background-color: transparent !important;
         padding: 12px 0px !important;
-        border-radius: 50px !important; /* Inner pill shape */
+        border-radius: 50px !important; 
         color: #94A3B8 !important;
         font-weight: 600 !important;
         font-size: 1.1rem !important;
@@ -246,14 +238,18 @@ with colB:
     use_gemini = st.toggle("🚀 Enable High-Accuracy Mode (Gemini Vision AI)", value=False)
 st.write("") 
 
-# --- THE CUSTOM "ROUTER" TABS ---
-# Standard st.radio, NO column wrappers, styled entirely by the CSS above
-selected_tab = st.radio(
-    "Navigation", 
-    ["📸 Camera", "🖼️ Upload Images", "💬 AI Assistant"], 
-    horizontal=True, 
-    label_visibility="collapsed"
-)
+# --- 🔥 THE MAGIC CENTERING TRICK 🔥 ---
+# We use columns to build an invisible box in the middle of the screen.
+# The pill will expand to perfectly fill this middle column.
+col_left, col_center, col_right = st.columns([1, 8, 1])
+
+with col_center:
+    selected_tab = st.radio(
+        "Navigation", 
+        ["📸 Camera", "🖼️ Upload Images", "💬 AI Assistant"], 
+        horizontal=True, 
+        label_visibility="collapsed"
+    )
 
 # --- THE VISION ENGINE ---
 def run_analysis(image_file, file_name="Captured Image"):
