@@ -30,7 +30,7 @@ if "current_emotion" not in st.session_state:
 
 AI_AVATAR = "https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Smilies/Robot.png"
 
-# --- 🎨 FINAL CSS WITH DYNAMIC ANIMATIONS 🎨 ---
+# --- 🎨 PNEUMONIALENS PURE DARK/CYAN CSS 🎨 ---
 st.markdown("""
 <style>
 
@@ -38,85 +38,80 @@ st.markdown("""
 header {visibility: hidden;}
 footer {visibility: hidden;}
 
-/* Page Width */
-.block-container {
-    max-width: 950px !important;
-    padding-top: 2rem !important;
-}
+/* --- THE CYBERPUNK SCROLLBAR --- */
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: rgba(5, 10, 15, 0.9); }
+::-webkit-scrollbar-thumb { background: rgba(0, 255, 255, 0.4); border-radius: 10px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(0, 255, 255, 0.8); }
 
-/* Background */
+/* --- BACKGROUND (Deep Medical AI Dark Theme) --- */
 .stApp {
-    background: radial-gradient(circle at center, #1e293b 0%, #0B0F19 100%) !important;
+    background: radial-gradient(circle at top center, #0f172a 0%, #020617 100%) !important;
     background-attachment: fixed !important;
+    color: #f8fafc;
 }
 [data-testid="stAppViewContainer"] {
     background-color: transparent !important;
 }
 
+/* Page Width & Main Container */
+.block-container {
+    max-width: 900px !important;
+    padding-top: 3rem !important;
+    padding-bottom: 5rem !important;
+}
+
 /* ============================= */
-/* 🚀 DYNAMIC KEYFRAME ANIMATIONS */
+/* 🚀 SUBTLE ANIMATIONS 🚀 */
 /* ============================= */
-@keyframes slideUpFade {
-    0% { opacity: 0; transform: translateY(25px) scale(0.98); }
-    100% { opacity: 1; transform: translateY(0) scale(1); }
+@keyframes tabActiveGlow {
+    0% { box-shadow: 0 0 10px rgba(0, 255, 255, 0.2); }
+    100% { box-shadow: 0 0 20px rgba(0, 255, 255, 0.6); }
 }
 
-@keyframes breathingGlow {
-    0% { box-shadow: 0 0 15px rgba(59,130,246,0.3); }
-    50% { box-shadow: 0 0 35px rgba(59,130,246,0.8); }
-    100% { box-shadow: 0 0 15px rgba(59,130,246,0.3); }
+@keyframes fadeSlideUp {
+    0% { opacity: 0; transform: translateY(15px); }
+    100% { opacity: 1; transform: translateY(0); }
 }
 
-@keyframes floatIdle {
-    0% { transform: translateY(0px); }
-    50% { transform: translateY(-6px); }
-    100% { transform: translateY(0px); }
-}
-
-@keyframes popIn {
-    0% { opacity: 0; transform: scale(0.9) translateY(15px); }
-    100% { opacity: 1; transform: scale(1) translateY(0); }
-}
-
-/* Apply Slide-up transition to content blocks */
+/* Apply smooth load-in to content blocks */
 [data-testid="stCameraInput"], 
 [data-testid="stFileUploader"], 
 .stChatInputContainer {
-    animation: slideUpFade 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards !important;
+    animation: fadeSlideUp 0.5s ease-out forwards !important;
 }
 
 /* ============================= */
-/* 🔥 YOUR CENTERED GLASS TAB BAR 🔥 */
+/* 🔥 CENTERED MAGNETIC TAB BAR 🔥 */
 /* ============================= */
 [data-testid="stRadio"] {
     display: flex !important;
     justify-content: center !important;
+    align-items: center !important;
     width: 100% !important;
-    margin: 25px auto !important;
+    margin: 10px auto 40px auto !important;
     background: transparent !important;
 }
 
 [data-testid="stRadio"] > div {
     width: 100% !important;
-    max-width: 650px !important;
+    max-width: 700px !important; /* Perfect width for 3 tabs */
     margin: 0 auto !important;
     background: transparent !important;
 }
 
 div[role="radiogroup"] {
-    display: grid !important;
-    grid-template-columns: 1fr 1fr 1fr !important;
-    gap: 8px !important;
-    
-    /* Glass Effect */
-    background: rgba(255,255,255,0.04) !important;
-    backdrop-filter: blur(14px) !important;
-    -webkit-backdrop-filter: blur(14px) !important;
-    
-    border-radius: 40px !important;
+    display: flex !important;
+    flex-direction: row !important;
+    width: 100% !important;
+    gap: 10px !important;
+    background: rgba(15, 23, 42, 0.6) !important;
+    backdrop-filter: blur(12px) !important;
+    -webkit-backdrop-filter: blur(12px) !important;
+    border-radius: 50px !important;
     padding: 8px !important;
-    border: 1px solid rgba(255,255,255,0.08) !important;
-    box-shadow: 0 8px 30px rgba(0,0,0,0.35) !important;
+    border: 1px solid rgba(0, 255, 255, 0.15) !important;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5) !important;
 }
 
 /* Hide radio dot */
@@ -126,14 +121,15 @@ div[role="radiogroup"] {
 
 /* Tabs Base */
 div[role="radiogroup"] > label {
+    flex: 1 1 0px !important; /* Forces equal stretching */
     background-color: transparent !important; 
     text-align: center !important;
-    padding: 12px 10px !important;
-    border-radius: 30px !important;
+    padding: 12px 0px !important;
+    border-radius: 40px !important;
     font-weight: 600 !important;
-    font-size: 1rem !important;
+    font-size: 1.05rem !important;
     color: #94A3B8 !important;
-    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important; /* Smooth bouncy transition */
+    transition: all 0.3s ease !important;
     white-space: nowrap !important;
     margin: 0 !important;
     display: flex !important;
@@ -141,167 +137,148 @@ div[role="radiogroup"] > label {
     justify-content: center !important;
 }
 
-/* Tab Hover Physics */
+/* Hover Physics */
 div[role="radiogroup"] > label:hover {
-    background: rgba(255,255,255,0.08) !important;
-    color: #E2E8F0 !important;
-    transform: translateY(-3px) scale(1.02) !important; /* Lift up */
+    background: rgba(0, 255, 255, 0.08) !important;
+    color: #e2e8f0 !important;
 }
 
-/* Tab Active State (Breathing Glow) */
-div[role="radiogroup"] > label:has(input:checked),
-div[role="radiogroup"] > label[aria-checked="true"],
-div[role="radiogroup"] > label[data-checked="true"] {
-    background: linear-gradient(135deg,#3B82F6,#2563EB) !important;
-    color: white !important;
-    transform: scale(1.05) !important; /* Pop out */
-    z-index: 10 !important;
-    animation: breathingGlow 2.5s infinite alternate !important; /* Dynamic pulse */
+/* Active Tab (Cyan Glow) */
+div[role="radiogroup"] > label[data-checked="true"],
+div[role="radiogroup"] > label:has(input:checked) {
+    background: linear-gradient(135deg, #00ced1, #008080) !important;
+    color: #000000 !important; /* Dark text on bright cyan background */
+    transform: scale(1.03); 
+    font-weight: 700 !important;
+    animation: tabActiveGlow 2s infinite alternate !important;
 }
 
 /* ============================= */
-/* 🔥 TRANSPARENT CAMERA & SHUTTER 🔥 */
+/* 🔥 TRANSPARENT CAMERA & UPLOAD 🔥 */
 /* ============================= */
-[data-testid="stCameraInput"], 
-[data-testid="stCameraInput"] > div, 
-[data-testid="stCameraInput"] > div > div {
-    background-color: transparent !important;
-    border: none !important;
-    box-shadow: none !important;
-}
-[data-testid="stCameraInput"] video {
-    border-radius: 18px !important;
-    transform: scaleX(-1) !important;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.4) !important;
-}
-/* Shutter Button Hover Physics */
 [data-testid="stCameraInput"] button {
     width: 65px !important;
     height: 65px !important;
     border-radius: 50% !important;
-    background-color: rgba(255,255,255,0.1) !important;
-    border: 5px solid #ffffff !important;
+    background-color: rgba(0, 255, 255, 0.05) !important;
+    border: 3px solid #00FFFF !important;
+    box-shadow: 0 0 15px rgba(0, 255, 255, 0.3) !important;
     color: transparent !important; 
     margin: 15px auto !important;
     display: block !important;
-    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.3) !important;
+    transition: all 0.2s ease !important;
 }
 [data-testid="stCameraInput"] button:hover {
-    background-color: white !important;
-    transform: scale(1.15) !important; /* Pop scale */
-    box-shadow: 0 10px 25px rgba(255,255,255,0.4) !important;
+    background-color: rgba(0, 255, 255, 0.2) !important;
+    transform: scale(1.1);
+    box-shadow: 0 0 25px rgba(0, 255, 255, 0.6) !important;
 }
-
-/* ============================= */
-/* 🔥 TRANSPARENT UPLOAD BOX 🔥 */
-/* ============================= */
-[data-testid="stFileUploader"], 
-[data-testid="stFileUploader"] > div {
-    background-color: transparent !important;
-}
-[data-testid="stFileUploadDropzone"], 
-[data-testid="stFileUploaderDropzone"] {
-    background: rgba(255,255,255,0.03) !important;
-    backdrop-filter: blur(10px) !important;
-    border-radius: 18px !important;
-    border: 2px dashed rgba(255,255,255,0.15) !important;
-    transition: all 0.3s ease !important;
-}
-[data-testid="stFileUploadDropzone"]:hover {
-    background: rgba(255,255,255,0.08) !important;
-    border-color: #3B82F6 !important;
-    transform: translateY(-2px) !important;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.3) !important;
-}
-
-/* ============================= */
-/* 🔥 CHAT & SUGGESTION BOXES 🔥 */
-/* ============================= */
-/* Suggestion Buttons Hover Physics */
-div.stButton > button {
-    background: rgba(255, 255, 255, 0.05) !important;
-    border: 1px solid rgba(255, 255, 255, 0.15) !important;
-    backdrop-filter: blur(10px) !important;
-    color: #F8FAFC !important;
+[data-testid="stCameraInput"] video {
     border-radius: 15px !important;
-    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+    transform: scaleX(-1) !important;
+    border: 1px solid rgba(0, 255, 255, 0.2);
+}
+
+/* File Upload Dropzone */
+[data-testid="stFileUploader"] > div,
+[data-testid="stFileUploadDropzone"] {
+    background: rgba(15, 23, 42, 0.4) !important;
+    backdrop-filter: blur(8px) !important;
+    border-radius: 15px !important;
+    border: 2px dashed rgba(0, 255, 255, 0.3) !important;
+    transition: all 0.3s ease;
+}
+[data-testid="stFileUploader"] > div:hover {
+    border-color: rgba(0, 255, 255, 0.8) !important;
+    background: rgba(15, 23, 42, 0.6) !important;
+    box-shadow: 0 5px 20px rgba(0, 255, 255, 0.15) !important;
+}
+
+/* ============================= */
+/* 🔥 SUGGESTION CARDS 🔥 */
+/* ============================= */
+div.stButton > button {
+    background: rgba(15, 23, 42, 0.6) !important;
+    border: 1px solid rgba(0, 255, 255, 0.2) !important;
+    backdrop-filter: blur(10px) !important;
+    color: #e2e8f0 !important;
+    border-radius: 12px !important;
+    transition: all 0.3s ease !important;
+    padding: 10px !important;
 }
 div.stButton > button:hover {
-    background: rgba(59, 130, 246, 0.2) !important;
-    border-color: #3B82F6 !important;
+    background: rgba(0, 255, 255, 0.15) !important;
+    border-color: #00FFFF !important;
     color: #ffffff !important;
-    transform: translateY(-4px) scale(1.02) !important; /* Lift and grow */
-    box-shadow: 0 8px 25px rgba(59, 130, 246, 0.4) !important;
+    transform: translateY(-2px); 
+    box-shadow: 0 5px 15px rgba(0, 255, 255, 0.2) !important;
 }
 
-/* Floating Mood Alert Box */
+/* Mood Info Box */
 [data-testid="stAlert"] {
-    background: rgba(255, 255, 255, 0.05) !important;
+    background: rgba(15, 23, 42, 0.8) !important;
     backdrop-filter: blur(10px) !important;
-    border: 1px solid rgba(255, 255, 255, 0.1) !important;
-    color: #F8FAFC !important;
-    border-radius: 15px !important;
-    animation: floatIdle 5s ease-in-out infinite !important; /* Floating effect */
+    border: 1px solid rgba(0, 255, 255, 0.2) !important;
+    border-left: 5px solid #00FFFF !important;
+    color: #f8fafc !important;
+    border-radius: 8px !important;
 }
 
-/* Chat Message Pop-in */
-[data-testid="stChatMessage"] {
-    background-color: transparent !important;
-    animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards !important;
-}
-
-/* Chat Input Bar Transparency */
+/* ============================= */
+/* 🔥 CHAT & INPUT GLASS 🔥 */
+/* ============================= */
 [data-testid="stBottom"],
 [data-testid="stBottom"] > div,
-[data-testid="stBottomBlockContainer"] {
+[data-testid="stBottomBlockContainer"],
+.stChatInputContainer {
     background-color: transparent !important;
     background: transparent !important;
     border: none !important;
 }
-[data-testid="stChatInput"] {
-    padding-bottom: 20px !important;
-    background-color: transparent !important;
-}
+
 [data-testid="stChatInput"] > div:first-child {
-    background: rgba(15,23,42,0.85) !important;
+    background: rgba(15, 23, 42, 0.85) !important;
     backdrop-filter: blur(12px) !important;
     border-radius: 30px !important;
-    border: 1px solid rgba(255,255,255,0.08) !important;
-    box-shadow: 0 8px 30px rgba(0,0,0,0.5) !important;
-    transition: all 0.3s ease !important;
+    border: 1px solid rgba(0, 255, 255, 0.2) !important;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.5) !important;
+    transition: all 0.3s ease;
 }
 [data-testid="stChatInput"] > div:first-child:focus-within {
-    border-color: #3B82F6 !important;
-    box-shadow: 0 0 20px rgba(59,130,246,0.4) !important;
+    border-color: #00FFFF !important;
+    box-shadow: 0 8px 30px rgba(0, 255, 255, 0.2) !important;
 }
-
-/* Inner Text Area */
 [data-testid="stChatInputTextArea"],
 [data-testid="stChatInputTextArea"] > div,
-[data-testid="stChatInputTextArea"] textarea,
-[data-testid="stChatInputDynamicTextarea"] { 
-    color: #F8FAFC !important; 
+[data-testid="stChatInputTextArea"] textarea { 
+    color: #FFFFFF !important; 
     background-color: transparent !important;
     background: transparent !important;
 }
-[data-testid="stChatInputSubmitButton"] { color: #3B82F6 !important; }
+[data-testid="stChatInputSubmitButton"] { color: #00FFFF !important; }
+
+/* Chat Message Bubbles */
+[data-testid="stChatMessage"] {
+    background-color: transparent !important;
+}
 
 /* ============================= */
-/* Typography */
+/* Typography (Cyan Glow) */
 /* ============================= */
 .main-title {
     font-size: 3rem;
     font-weight: 800;
     text-align: center;
-    background: linear-gradient(to right, #4facfe, #00f2fe);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+    color: #00FFFF !important;
+    text-shadow: 0 0 10px rgba(0, 255, 255, 0.4);
+    margin-top: 0px;
+    margin-bottom: 5px;
 }
 .sub-title {
     text-align: center;
     color: #94a3b8;
-    margin-bottom: 25px;
+    margin-bottom: 30px;
+    font-size: 1.1rem;
 }
 img {
     border-radius: 12px;
@@ -515,3 +492,4 @@ elif selected_tab == "💬 AI Assistant":
                         st.session_state.messages.append({"role": "assistant", "content": response_text})
                     except Exception as e:
                         st.error(f"⚠️ Oops! The Groq chatbot encountered an issue: {e}")
+                        
