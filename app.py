@@ -53,59 +53,73 @@ st.markdown("""
         background-color: transparent !important;
     }
 
-    /* 3. 🔥 THE FIX: CENTERED CSS GRID FOR PERFECT STRETCHING 🔥 */
+    /* 3. 🔥 PREMIUM CENTERED TABS 🔥 */
+
     [data-testid="stRadio"] {
         display: flex !important;
-        justify-content: center !important; /* Centers the whole block */
+        justify-content: center !important;
+        align-items: center !important;
         width: 100% !important;
-        margin: 0 auto 30px auto !important;
+        margin: 20px auto 30px auto !important;
     }
+
     [data-testid="stRadio"] > div {
         width: 100% !important;
-        max-width: 800px !important; /* Keeps it wide, but stops it from touching screen edges */
-        margin: 0 auto !important; /* Perfect centering */
+        max-width: 850px !important;
+        margin: 0 auto !important;
     }
+
     div[role="radiogroup"] {
         display: grid !important;
-        grid-template-columns: repeat(3, 1fr) !important; /* Forces 3 equal columns */
-        width: 100% !important; 
+        grid-template-columns: auto auto auto !important;
+        justify-content: center !important;
         gap: 15px !important;
         background-color: rgba(255, 255, 255, 0.03) !important;
         border-radius: 50px !important;
-        padding: 10px !important;
+        padding: 10px 20px !important;
         border: 1px solid rgba(255, 255, 255, 0.05) !important;
         box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3) !important;
         backdrop-filter: blur(10px) !important;
-        margin: 0 auto !important; /* Double-layered centering */
+        margin: 0 auto !important;
+        transition: all 0.3s ease !important;
     }
+
+    /* Hide default radio dot */
     [data-testid="stRadio"] div[role="radiogroup"] > label > div:first-of-type {
         display: none !important; 
     }
+
+    /* Individual Tabs */
     div[role="radiogroup"] > label {
-        width: 100% !important;
+        white-space: nowrap !important;
+        padding: 12px 24px !important;
         text-align: center !important;
         display: flex !important;
         align-items: center !important;
         justify-content: center !important;
         background-color: transparent !important;
-        padding: 12px 0px !important;
         border-radius: 50px !important;
         color: #94A3B8 !important;
         font-weight: 600 !important;
-        font-size: 1.1rem !important;
-        transition: all 0.3s ease !important;
+        font-size: 1.05rem !important;
+        transition: all 0.25s ease !important;
         cursor: pointer !important;
         border: 1px solid transparent !important;
-        margin: 0 !important;
     }
+
+    /* Hover Animation */
     div[role="radiogroup"] > label:hover {
-        background-color: rgba(255, 255, 255, 0.1) !important;
+        background-color: rgba(255, 255, 255, 0.08) !important;
         color: #F8FAFC !important;
+        transform: translateY(-2px);
     }
+
+    /* Active Tab */
     div[role="radiogroup"] > label[data-checked="true"] {
-        background-color: #3B82F6 !important;
+        background: linear-gradient(135deg, #3B82F6, #2563EB) !important;
         color: white !important;
-        box-shadow: 0 0 20px rgba(59, 130, 246, 0.4) !important;
+        box-shadow: 0 0 25px rgba(59, 130, 246, 0.45) !important;
+        transform: translateY(-2px);
     }
 
     /* 4. KILL THE CHAT BLACK BOX */
@@ -115,9 +129,11 @@ st.markdown("""
         background: transparent !important;
         border: none !important;
     }
+
     [data-testid="stChatInput"] {
         padding-bottom: 20px !important;
     }
+
     [data-testid="stChatInput"] > div:first-child {
         background-color: rgba(15, 23, 42, 0.85) !important;
         border: 1px solid rgba(255,255,255,0.1) !important;
@@ -126,24 +142,38 @@ st.markdown("""
         box-shadow: 0 8px 30px rgba(0,0,0,0.5) !important;
         padding: 5px 10px !important;
     }
-    [data-testid="stChatInputTextArea"] { color: #F8FAFC !important; background-color: transparent !important;}
-    [data-testid="stChatInputSubmitButton"] { color: #3B82F6 !important; }
-    [data-testid="stChatInputSubmitButton"] svg { fill: #3B82F6 !important; }
+
+    [data-testid="stChatInputTextArea"] { 
+        color: #F8FAFC !important; 
+        background-color: transparent !important;
+    }
+
+    [data-testid="stChatInputSubmitButton"] { 
+        color: #3B82F6 !important; 
+    }
+
+    [data-testid="stChatInputSubmitButton"] svg { 
+        fill: #3B82F6 !important; 
+    }
 
     /* 5. CAMERA UI TRANSPARENCY */
+
     [data-testid="stCameraInput"] {
         background-color: transparent !important;
         border: none !important;
     }
+
     [data-testid="stCameraInput"] > div, 
     [data-testid="stCameraInput"] > div > div {
         background-color: transparent !important;
     }
+
     [data-testid="stCameraInput"] video {
         transform: scaleX(-1) !important; 
         border-radius: 20px !important;
         box-shadow: 0 10px 40px rgba(0,0,0,0.5) !important;
     }
+
     [data-testid="stCameraInput"] button {
         width: 65px !important;
         height: 65px !important;
@@ -158,9 +188,12 @@ st.markdown("""
     }
 
     /* 6. TRANSPARENT UPLOAD BOX */
-    [data-testid="stFileUploader"], [data-testid="stFileUploader"] > div {
+
+    [data-testid="stFileUploader"], 
+    [data-testid="stFileUploader"] > div {
         background-color: transparent !important;
     }
+
     [data-testid="stFileUploadDropzone"], 
     [data-testid="stFileUploaderDropzone"] {
         background-color: rgba(255, 255, 255, 0.05) !important;
@@ -169,7 +202,8 @@ st.markdown("""
         backdrop-filter: blur(10px) !important;
     }
 
-    /* 7. GLASS CONTAINERS FOR MAIN CONTENT */
+    /* 7. GLASS CONTAINERS */
+
     div[data-testid="stVerticalBlock"] > div[style*="flex-direction: column;"] {
         background: rgba(15, 23, 42, 0.5);
         border-radius: 20px;
@@ -180,6 +214,7 @@ st.markdown("""
     }
 
     /* 8. TYPOGRAPHY */
+
     .main-title { 
         font-size: 3.2rem; 
         font-weight: 800; 
@@ -190,38 +225,20 @@ st.markdown("""
         -webkit-background-clip: text; 
         -webkit-text-fill-color: transparent; 
     }
-    .sub-title { text-align: center; font-size: 1.1rem; color: #94a3b8; margin-bottom: 30px; }
-    img { border-radius: 12px; }
-    /* 🔥 FORCE CENTER THE TAB CONTAINER */
-div[data-testid="stHorizontalBlock"] {
-    justify-content: center !important;
-}
 
-[data-testid="stRadio"] {
-    display: flex !important;
-    justify-content: center !important;
-    align-items: center !important;
-    width: 100% !important;
-}
+    .sub-title { 
+        text-align: center; 
+        font-size: 1.1rem; 
+        color: #94a3b8; 
+        margin-bottom: 30px; 
+    }
 
-[data-testid="stRadio"] > div {
-    margin-left: auto !important;
-    margin-right: auto !important;
-    width: 100% !important;
-    max-width: 750px !important;
-}
+    img { 
+        border-radius: 12px; 
+    }
 
-/* Extra polish */
-div[role="radiogroup"] {
-    margin: 0 auto !important;
-}
-[data-testid="stRadio"] {
-    margin-top: 20px !important;
-    margin-bottom: 30px !important;
-}
     </style>
 """, unsafe_allow_html=True)
-
 # --- LOAD LOCAL CNN MODEL ---
 MODEL_URL = "https://huggingface.co/Ronit-0/fer2013-emotion-model/resolve/main/final_emotion_model.h5?download=true"
 MODEL_PATH = "final_emotion_model.h5"
