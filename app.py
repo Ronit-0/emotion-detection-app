@@ -59,12 +59,14 @@ footer {visibility: hidden;}
     justify-content: center !important;
     width: 100% !important;
     margin: 25px auto !important;
+    background: transparent !important;
 }
 
 [data-testid="stRadio"] > div {
     width: 100% !important;
     max-width: 650px !important;
     margin: 0 auto !important;
+    background: transparent !important;
 }
 
 div[role="radiogroup"] {
@@ -91,6 +93,7 @@ div[role="radiogroup"] {
 
 /* Tabs */
 div[role="radiogroup"] > label {
+    background-color: transparent !important; /* 🔥 BRINGS THE GLASS BACK! */
     text-align: center !important;
     padding: 12px 10px !important;
     border-radius: 30px !important;
@@ -99,6 +102,7 @@ div[role="radiogroup"] > label {
     color: #94A3B8 !important;
     transition: all 0.25s ease !important;
     white-space: nowrap !important;
+    margin: 0 !important;
 }
 
 /* Hover */
@@ -156,7 +160,7 @@ div[role="radiogroup"] > label[data-checked="true"] {
 }
 
 /* Remove bottom black area */
-[data-testid="stBottom"] {
+[data-testid="stBottom"], [data-testid="stBottom"] > div {
     background: transparent !important;
 }
 
@@ -228,7 +232,7 @@ with colB:
 st.write("") 
 
 # --- THE CUSTOM "ROUTER" TABS (CENTERED VERSION) ---
-tab_col1, tab_col2, tab_col3 = st.columns([1,2,1])
+tab_col1, tab_col2, tab_col3 = st.columns([1, 2.5, 1]) # Made the center column slightly wider for breathing room
 
 with tab_col2:
     selected_tab = st.radio(
