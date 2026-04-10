@@ -261,6 +261,44 @@ div[data-testid="stButton"] > button:hover {
 [data-testid="stChatMessage"]:not(:has(img)) [data-testid="stChatMessageContent"] {
     background: rgba(59,130,246,0.08) !important;
 }
+/* ============================= */
+/* 🔥 REMOVE CHAT MESSAGE BLACK BOX (STRONG FIX) */
+/* ============================= */
+
+[data-testid="stChatMessage"] {
+    background: transparent !important;
+    background-color: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+}
+
+/* Inner container */
+[data-testid="stChatMessage"] > div {
+    background: transparent !important;
+    background-color: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+}
+
+/* Actual message bubble */
+[data-testid="stChatMessageContent"] {
+    background: rgba(255,255,255,0.03) !important;
+    backdrop-filter: blur(10px) !important;
+    border-radius: 16px !important;
+    border: 1px solid rgba(255,255,255,0.08) !important;
+    padding: 12px 16px !important;
+}
+
+/* Remove any nested dark container */
+[data-testid="stChatMessageContent"] > div {
+    background: transparent !important;
+    background-color: transparent !important;
+}
+
+/* Remove markdown dark box */
+[data-testid="stMarkdownContainer"] {
+    background: transparent !important;
+}
 </style>
 """, unsafe_allow_html=True)
 
