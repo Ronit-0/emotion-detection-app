@@ -53,14 +53,17 @@ st.markdown("""
         background-color: transparent !important;
     }
 
-    /* 3. 🔥 THE FIX: CSS GRID FOR PERFECT STRETCHING 🔥 */
+    /* 3. 🔥 THE FIX: CENTERED CSS GRID FOR PERFECT STRETCHING 🔥 */
     [data-testid="stRadio"] {
+        display: flex !important;
+        justify-content: center !important; /* Centers the whole block */
         width: 100% !important;
-        max-width: 850px !important;
         margin: 0 auto 30px auto !important;
     }
     [data-testid="stRadio"] > div {
         width: 100% !important;
+        max-width: 800px !important; /* Keeps it wide, but stops it from touching screen edges */
+        margin: 0 auto !important; /* Perfect centering */
     }
     div[role="radiogroup"] {
         display: grid !important;
@@ -73,6 +76,7 @@ st.markdown("""
         border: 1px solid rgba(255, 255, 255, 0.05) !important;
         box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3) !important;
         backdrop-filter: blur(10px) !important;
+        margin: 0 auto !important; /* Double-layered centering */
     }
     [data-testid="stRadio"] div[role="radiogroup"] > label > div:first-of-type {
         display: none !important; 
@@ -378,7 +382,6 @@ elif selected_tab == "💬 AI Assistant":
             with st.chat_message("assistant", avatar=AI_AVATAR):
                 with st.spinner("Processing..."):
                     try:
-                        # 🚨 UPDATED: Using Groq's new Llama 3.1 model!
                         completion = groq_client.chat.completions.create(
                             model="llama-3.1-8b-instant", 
                             messages=[
@@ -394,3 +397,4 @@ elif selected_tab == "💬 AI Assistant":
                         st.session_state.messages.append({"role": "assistant", "content": response_text})
                     except Exception as e:
                         st.error(f"⚠️ Oops! The Groq chatbot encountered an issue: {e}")
+                        
