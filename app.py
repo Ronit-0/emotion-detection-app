@@ -48,11 +48,10 @@ footer {visibility: hidden;}
 /* 🚀 ADVANCED KEYFRAME ANIMATIONS 🚀 */
 /* ============================= */
 
-/* 1. Liquid Gradient Background */
-@keyframes gradientBG {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
+/* 1. Breathing Glow for selected tab */
+@keyframes tabActiveGlow {
+    0% { box-shadow: 0 0 10px rgba(0, 206, 209, 0.3); }
+    100% { box-shadow: 0 0 25px rgba(0, 206, 209, 0.7); }
 }
 
 /* 2. Sonar Pulse for Upload */
@@ -82,22 +81,17 @@ footer {visibility: hidden;}
     100% { opacity: 1; transform: translateY(0); }
 }
 
-/* --- ANIMATED LIQUID BACKGROUND & SCANLINES --- */
-.stApp {
-    background: linear-gradient(-45deg, #020617, #0f172a, #001219, #050810) !important;
-    background-size: 400% 400% !important;
-    animation: gradientBG 15s ease infinite !important;
-    color: #f8fafc;
+/* Chat Message Pop-In */
+@keyframes popIn {
+    0% { opacity: 0; transform: scale(0.9) translateY(10px); }
+    100% { opacity: 1; transform: scale(1) translateY(0); }
 }
-.stApp::before {
-    content: " ";
-    display: block;
-    position: absolute;
-    top: 0; left: 0; bottom: 0; right: 0;
-    background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
-    z-index: 999;
-    background-size: 100% 4px, 3px 100%;
-    pointer-events: none; /* Lets you click through the scanlines */
+
+/* --- BACKGROUND (Clean Dark Slate Gradient) --- */
+.stApp {
+    background: radial-gradient(circle at center, #1e293b 0%, #0B0F19 100%) !important;
+    background-attachment: fixed !important;
+    color: #f8fafc;
 }
 [data-testid="stAppViewContainer"] { background-color: transparent !important; }
 
@@ -185,12 +179,12 @@ div[role="radiogroup"] > label:has(input:checked) {
     transform: scale(1.05); 
     font-weight: 700 !important;
     box-shadow: 0 5px 20px rgba(0, 255, 255, 0.4) !important;
+    animation: tabActiveGlow 2.5s infinite alternate !important; 
 }
 
 /* ============================= */
-/* 🔥 FLOATING CAMERA & PULSING UPLOAD 🔥 */
+/* ☢️ NUCLEAR CAMERA TRANSPARENCY ☢️ */
 /* ============================= */
-/* Drill down into EVERY Streamlit container for absolute transparency */
 [data-testid="stCameraInput"],
 [data-testid="stCameraInput"] > div,
 [data-testid="stCameraInput"] > div > div,
@@ -221,16 +215,18 @@ div[role="radiogroup"] > label:has(input:checked) {
     animation-play-state: paused !important;
 }
 [data-testid="stCameraInput"] video {
-    background-color: transparent !important;
+    background-color: #000 !important; /* Keep video black when off */
     border-radius: 15px !important;
     transform: scaleX(-1) !important;
-    border: 1px solid rgba(0, 255, 255, 0.2);
+    border: 1px solid rgba(0, 255, 255, 0.3) !important;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5) !important;
 }
 
-/* File Upload Absolute Transparency */
+/* ============================= */
+/* 🔥 PULSING UPLOAD DROPZONE 🔥 */
+/* ============================= */
 [data-testid="stFileUploader"],
 [data-testid="stFileUploader"] > div,
-[data-testid="stFileUploader"] > div > div,
 [data-testid="stFileUploader"] section {
     background: transparent !important;
     background-color: transparent !important;
@@ -238,11 +234,9 @@ div[role="radiogroup"] > label:has(input:checked) {
     box-shadow: none !important;
 }
 
-/* The actual Dropzone with Sonar Pulse */
 [data-testid="stFileUploadDropzone"],
 [data-testid="stFileUploaderDropzone"] {
     background: transparent !important;
-    background-color: transparent !important;
     backdrop-filter: blur(8px) !important;
     border-radius: 15px !important;
     border: 2px dashed rgba(0, 255, 255, 0.4) !important;
@@ -252,7 +246,7 @@ div[role="radiogroup"] > label:has(input:checked) {
 [data-testid="stFileUploadDropzone"]:hover,
 [data-testid="stFileUploaderDropzone"]:hover {
     border-color: rgba(0, 255, 255, 1) !important;
-    background: rgba(0, 255, 255, 0.05) !important; /* Extremely faint hover tint */
+    background: rgba(0, 255, 255, 0.05) !important;
     transform: translateY(-4px);
     animation-play-state: paused !important;
 }
@@ -261,7 +255,7 @@ div[role="radiogroup"] > label:has(input:checked) {
 /* 🔥 SHIMMERING SUGGESTION CARDS 🔥 */
 /* ============================= */
 div.stButton > button {
-    background: transparent !important; /* Transparent */
+    background: transparent !important;
     border: 1px solid rgba(0, 255, 255, 0.2) !important;
     backdrop-filter: blur(10px) !important;
     color: #e2e8f0 !important;
@@ -281,7 +275,7 @@ div.stButton > button::after {
     transition: all 0.5s ease;
 }
 div.stButton > button:hover {
-    background: rgba(0, 255, 255, 0.1) !important; /* Faint hover */
+    background: rgba(0, 255, 255, 0.1) !important;
     border-color: #00FFFF !important;
     color: #ffffff !important;
     transform: translateY(-4px) scale(1.02); 
@@ -300,12 +294,12 @@ div.stButton > button:hover::after {
     color: #f8fafc !important;
     border-radius: 12px !important;
     box-shadow: 0 10px 30px rgba(0,0,0,0.5) !important;
+    animation: floatIdle 6s ease-in-out infinite !important;
 }
 
 /* ============================= */
 /* 🔥 CHAT & INPUT GLASS 🔥 */
 /* ============================= */
-/* Strip all outer boundaries */
 [data-testid="stBottom"],
 [data-testid="stBottom"] > div,
 [data-testid="stBottomBlockContainer"],
@@ -313,14 +307,13 @@ div.stButton > button:hover::after {
     background-color: transparent !important;
     background: transparent !important;
     border: none !important;
-    box-shadow: none !important;
 }
 
-/* The actual glass pill container for chat */
+/* Transparent Chat Input */
 [data-testid="stChatInput"] {
     padding-bottom: 20px !important;
-    background-color: transparent !important;
     background: transparent !important;
+    background-color: transparent !important;
 }
 [data-testid="stChatInput"] > div:first-child {
     background: rgba(10, 15, 25, 0.85) !important;
@@ -341,8 +334,6 @@ div.stButton > button:hover::after {
     color: #FFFFFF !important; 
     background-color: transparent !important;
     background: transparent !important;
-    box-shadow: none !important;
-    border: none !important;
 }
 [data-testid="stChatInputSubmitButton"] { color: #00FFFF !important; transition: transform 0.2s; }
 [data-testid="stChatInputSubmitButton"]:hover { transform: scale(1.2) rotate(10deg); }
@@ -353,7 +344,7 @@ div.stButton > button:hover::after {
 [data-testid="stChatMessage"] > div > div {
     background-color: transparent !important;
     background: transparent !important;
-    animation: fadeSlideUp 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards !important;
+    animation: popIn 0.4s cubic-bezier(0.25, 1, 0.5, 1) forwards !important;
 }
 
 /* ============================= */
@@ -586,460 +577,6 @@ elif selected_tab == "💬 AI Assistant":
                         response_text = completion.choices[0].message.content
                         st.markdown(response_text)
                         st.session_state.messages.append({"role": "assistant", "content": response_text})
-                    except Exception as e:
-                        st.error(f"⚠️ Oops! The Groq chatbot encountered an issue: {e}")    0% { box-shadow: 0 0 15px rgba(59,130,246,0.3); }
-    50% { box-shadow: 0 0 30px rgba(59,130,246,0.7); }
-    100% { box-shadow: 0 0 15px rgba(59,130,246,0.3); }
-}
-
-@keyframes sonarPulse {
-    0% { box-shadow: 0 0 0 0 rgba(0, 255, 255, 0.4); }
-    70% { box-shadow: 0 0 0 15px rgba(0, 255, 255, 0); }
-    100% { box-shadow: 0 0 0 0 rgba(0, 255, 255, 0); }
-}
-
-/* Apply Slide-up transition to dynamic blocks when switching tabs */
-[data-testid="stCameraInput"], 
-[data-testid="stFileUploader"], 
-[data-testid="stChatMessage"],
-.stChatInputContainer,
-div:has(> [data-testid="stAlert"]) {
-    animation: slideUpFade 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards !important;
-}
-
-/* ============================= */
-/* 🔥 YOUR CENTERED GLASS TAB BAR 🔥 */
-/* ============================= */
-[data-testid="stRadio"] {
-    display: flex !important;
-    justify-content: center !important;
-    width: 100% !important;
-    margin: 25px auto !important;
-    background: transparent !important;
-}
-
-[data-testid="stRadio"] > div {
-    width: 100% !important;
-    max-width: 650px !important;
-    margin: 0 auto !important;
-    background: transparent !important;
-}
-
-div[role="radiogroup"] {
-    display: grid !important;
-    grid-template-columns: 1fr 1fr 1fr !important;
-    gap: 8px !important;
-    
-    /* Glass Effect */
-    background: rgba(255,255,255,0.04) !important;
-    backdrop-filter: blur(14px) !important;
-    -webkit-backdrop-filter: blur(14px) !important;
-    
-    border-radius: 40px !important;
-    padding: 8px !important;
-    border: 1px solid rgba(255,255,255,0.08) !important;
-    box-shadow: 0 8px 30px rgba(0,0,0,0.35) !important;
-}
-
-/* Hide radio dot */
-[data-testid="stRadio"] div[role="radiogroup"] > label > div:first-of-type {
-    display: none !important;
-}
-
-/* Tabs */
-div[role="radiogroup"] > label {
-    background-color: transparent !important; 
-    text-align: center !important;
-    padding: 12px 10px !important;
-    border-radius: 30px !important;
-    font-weight: 600 !important;
-    font-size: 1rem !important;
-    color: #94A3B8 !important;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
-    white-space: nowrap !important;
-    margin: 0 !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-}
-
-/* Hover Physics */
-div[role="radiogroup"] > label:hover {
-    background: rgba(255,255,255,0.08) !important;
-    color: #E2E8F0 !important;
-    transform: translateY(-2px) scale(1.02) !important;
-}
-
-/* Active Tab (Breathing Glow) */
-div[role="radiogroup"] > label[data-checked="true"],
-div[role="radiogroup"] > label:has(input:checked) {
-    background: linear-gradient(135deg,#3B82F6,#2563EB) !important;
-    color: white !important;
-    box-shadow: 0 0 20px rgba(59,130,246,0.35) !important;
-    transform: scale(1.05) !important;
-    z-index: 10 !important;
-    animation: breathingGlow 2.5s infinite alternate !important;
-}
-
-/* ============================= */
-/* ☢️ NUCLEAR TRANSPARENCY: CAMERA ☢️ */
-/* ============================= */
-/* Strip all background containers around the camera */
-[data-testid="stCameraInput"], 
-[data-testid="stCameraInput"] > div, 
-[data-testid="stCameraInput"] > div > div,
-[data-testid="stCameraInput"] section {
-    background-color: transparent !important;
-    background: transparent !important;
-    border: none !important;
-    box-shadow: none !important;
-    padding: 0 !important;
-}
-[data-testid="stCameraInput"] video {
-    border-radius: 18px !important;
-    transform: scaleX(-1) !important;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.4) !important;
-}
-[data-testid="stCameraInput"] button {
-    width: 65px !important;
-    height: 65px !important;
-    border-radius: 50% !important;
-    background-color: rgba(255,255,255,0.1) !important;
-    border: 5px solid #ffffff !important;
-    color: transparent !important; /* Hides "Take Photo" text */
-    margin: 15px auto !important;
-    display: block !important;
-    transition: all 0.2s ease !important;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.3) !important;
-}
-[data-testid="stCameraInput"] button:hover {
-    background-color: white !important;
-    transform: scale(1.05) !important;
-}
-
-/* ============================= */
-/* ☢️ TRANSPARENT PULSING UPLOAD ☢️ */
-/* ============================= */
-/* Strip all background containers around the uploader */
-[data-testid="stFileUploader"], 
-[data-testid="stFileUploader"] > div,
-[data-testid="stFileUploader"] section {
-    background-color: transparent !important;
-    background: transparent !important;
-    border: none !important;
-    box-shadow: none !important;
-}
-
-/* Restore the Sonar Pulse and Transparent Glass Dropzone */
-[data-testid="stFileUploadDropzone"], 
-[data-testid="stFileUploaderDropzone"] {
-    background-color: transparent !important;
-    background: transparent !important;
-    backdrop-filter: blur(8px) !important;
-    border-radius: 15px !important;
-    border: 2px dashed rgba(0, 255, 255, 0.4) !important;
-    transition: all 0.3s ease !important;
-    animation: sonarPulse 3s infinite !important; /* Restored! */
-}
-[data-testid="stFileUploadDropzone"]:hover,
-[data-testid="stFileUploaderDropzone"]:hover {
-    border-color: rgba(0, 255, 255, 1) !important;
-    background-color: rgba(0, 255, 255, 0.05) !important;
-    box-shadow: 0 10px 30px rgba(0, 255, 255, 0.15) !important;
-    transform: translateY(-4px) !important;
-    animation-play-state: paused !important;
-}
-
-/* ============================= */
-/* ☢️ NUCLEAR TRANSPARENCY: CHAT ☢️ */
-/* ============================= */
-/* Kill the edge-to-edge bottom bar and wrappers */
-[data-testid="stBottom"],
-[data-testid="stBottom"] > div,
-[data-testid="stBottomBlockContainer"],
-div[class*="stBottom"],
-.stChatInputContainer {
-    background-color: transparent !important;
-    background: transparent !important;
-    border: none !important;
-}
-[data-testid="stChatInput"] {
-    padding-bottom: 20px !important;
-    background-color: transparent !important;
-    background: transparent !important;
-}
-[data-testid="stChatInput"] > div:first-child {
-    background: rgba(15,23,42,0.85) !important;
-    backdrop-filter: blur(12px) !important;
-    border-radius: 30px !important;
-    border: 1px solid rgba(255,255,255,0.08) !important;
-    box-shadow: 0 8px 30px rgba(0,0,0,0.5) !important;
-}
-/* Ensure the typing area inside the pill is transparent */
-[data-testid="stChatInputTextArea"],
-[data-testid="stChatInputTextArea"] > div,
-[data-testid="stChatInputTextArea"] textarea,
-[data-testid="stChatInputDynamicTextarea"] { 
-    color: #F8FAFC !important; 
-    background-color: transparent !important;
-    background: transparent !important;
-}
-[data-testid="stChatInputSubmitButton"] { color: #3B82F6 !important; }
-
-/* Transparent Suggestion Buttons */
-div.stButton > button {
-    background: rgba(255, 255, 255, 0.05) !important;
-    border: 1px solid rgba(255, 255, 255, 0.15) !important;
-    backdrop-filter: blur(10px) !important;
-    color: white !important;
-    border-radius: 15px !important;
-    transition: all 0.3s ease !important;
-}
-div.stButton > button:hover {
-    background: rgba(255, 255, 255, 0.15) !important;
-    border-color: rgba(255, 255, 255, 0.3) !important;
-    transform: translateY(-2px) !important;
-}
-
-/* Transparent Detected Mood Alert */
-[data-testid="stAlert"] {
-    background: rgba(255, 255, 255, 0.05) !important;
-    backdrop-filter: blur(10px) !important;
-    border: 1px solid rgba(255, 255, 255, 0.1) !important;
-    color: white !important;
-    border-radius: 15px !important;
-}
-
-/* Transparent Chat Messages */
-[data-testid="stChatMessage"] {
-    background-color: transparent !important;
-}
-
-/* ============================= */
-/* Typography */
-/* ============================= */
-.main-title {
-    font-size: 3rem;
-    font-weight: 800;
-    text-align: center;
-    background: linear-gradient(to right, #4facfe, #00f2fe);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-}
-.sub-title {
-    text-align: center;
-    color: #94a3b8;
-    margin-bottom: 25px;
-}
-img {
-    border-radius: 12px;
-}
-
-</style>
-""", unsafe_allow_html=True)
-
-# --- LOAD LOCAL CNN MODEL ---
-MODEL_URL = "https://huggingface.co/Ronit-0/fer2013-emotion-model/resolve/main/final_emotion_model.h5?download=true"
-MODEL_PATH = "final_emotion_model.h5"
-
-@st.cache_resource
-def load_emotion_model():
-    if not os.path.exists(MODEL_PATH):
-        with st.spinner("📦 Downloading AI Weights (66MB)... Please wait."):
-            try:
-                urllib.request.urlretrieve(MODEL_URL, MODEL_PATH)
-            except:
-                return None
-    try:
-        return load_model(MODEL_PATH)
-    except:
-        return None
-
-model = load_emotion_model()
-face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
-
-emoji_map = {"Angry": "😠", "Disgusted": "🤢", "Fearful": "😨", "Happy": "😄", "Neutral": "😐", "Sad": "😢", "Surprised": "😲"}
-cnn_emotion_list = ["Angry", "Disgusted", "Fearful", "Happy", "Sad", "Surprised", "Neutral"]
-
-suggestion_dict = {
-    "Happy": ["Give me a happy quote! ☀️", "Recommend an upbeat song 🎵", "Tell me a joke! 😂", "What's a fun fact about happiness?"],
-    "Sad": ["Give me a comforting quote 🌧️", "How can I cheer up? 🫂", "Recommend a calming song 🎧", "Write me a short uplifting poem ✨"],
-    "Angry": ["How to calm down? 🧘", "Give me a peaceful quote 🍃", "Recommend relaxing ambient music 🎶", "Guide me through a breathing exercise 🌬️"],
-    "Fearful": ["Give me a courageous quote 🦁", "How to overcome anxiety? 🛡️", "Recommend a soothing song 🎹", "Tell me an inspiring story of bravery 🦸"],
-    "Surprised": ["Tell me a mind-blowing fact! 🤯", "Recommend an unpredictable movie 🍿", "Give me a fun trivia question 🎲", "What is the universe's biggest mystery? 🌌"],
-    "Disgusted": ["Tell me a funny story to clear my mind! 🤣", "Give me a random weird fact 💡", "Recommend a wholesome video topic 🐶", "How to reset my mood? 🔄"],
-    "Neutral": ["Tell me a fun fact! 🧠", "Give me a motivational quote 🚀", "Recommend a good book 📚", "Teach me something new today 🎓"]
-}
-
-# --- MAIN UI HEADER ---
-st.markdown('<div class="main-title">Facial Emotion Analysis AI</div>', unsafe_allow_html=True)
-st.markdown('<div class="sub-title">Advanced Emotion Recognition & Real-Time AI Companion</div>', unsafe_allow_html=True)
-
-colA, colB, colC = st.columns([1, 2, 1])
-with colB:
-    use_gemini = st.toggle("🚀 Enable High-Accuracy Mode (Gemini Vision AI)", value=False)
-st.write("") 
-
-# --- THE CUSTOM "ROUTER" TABS (CENTERED VERSION) ---
-tab_col1, tab_col2, tab_col3 = st.columns([1,2,1])
-
-with tab_col2:
-    selected_tab = st.radio(
-        "Navigation", 
-        ["📸 Camera", "🖼️ Upload Images", "💬 AI Assistant"], 
-        horizontal=True, 
-        label_visibility="collapsed"
-    )
-
-# --- THE VISION ENGINE ---
-def run_analysis(image_file, file_name="Captured Image"):
-    with st.container(): 
-        st.markdown(f"#### 📄 Analyzing: `{file_name}`")
-        with st.spinner("Processing facial features..."):
-            image = Image.open(image_file) 
-            img_array = np.array(image)
-            
-            if len(img_array.shape) == 3 and img_array.shape[2] == 4:
-                 img_array = cv2.cvtColor(img_array, cv2.COLOR_RGBA2RGB)
-            if len(img_array.shape) == 3:
-                gray = cv2.cvtColor(img_array, cv2.COLOR_RGB2GRAY)
-            else:
-                gray = img_array
-                img_array = cv2.cvtColor(gray, cv2.COLOR_GRAY2RGB)
-
-            gray = cv2.equalizeHist(gray)
-            faces = face_cascade.detectMultiScale(gray, scaleFactor=1.1, minNeighbors=4, minSize=(50, 50))
-
-            if len(faces) == 0:
-                st.warning("No face detected! Please try an image with a clearer face.")
-                st.image(image, use_container_width=True)
-            else:
-                for (x, y, w, h) in faces:
-                    if use_gemini and vision_model is not None:
-                        try:
-                            vision_prompt = "Analyze the facial expression of the primary person in this image. Classify their emotion into exactly one of these words: Angry, Disgusted, Fearful, Happy, Sad, Surprised, Neutral. Also estimate your confidence from 0 to 100. Respond strictly in this format: Emotion,Confidence (Example: Happy,95)"
-                            response = vision_model.generate_content([vision_prompt, image])
-                            
-                            response_text = response.text.strip()
-                            if "," in response_text:
-                                parts = response_text.split(",")
-                                base_emotion = parts[0].strip().capitalize()
-                                confidence_display = f"{parts[1].strip().replace('%', '')}%"
-                            else:
-                                base_emotion = response_text.capitalize()
-                                confidence_display = "99.0%"
-
-                            if base_emotion not in cnn_emotion_list:
-                                base_emotion = "Neutral"
-                                
-                            predicted_emotion_ui = f"{base_emotion} {emoji_map.get(base_emotion, '')}"
-                            model_used_text = "Gemini Vision"
-                            color = (255, 200, 0)
-                            
-                        except Exception as e:
-                            base_emotion = "Neutral"
-                            predicted_emotion_ui = "Neutral 😐"
-                            confidence_display = "N/A"
-                            model_used_text = "API Limit Exceeded"
-                            color = (0, 0, 255)
-                    else:
-                        roi_gray = gray[y:y+h, x:x+w]
-                        roi_gray = cv2.resize(roi_gray, (48, 48)) / 255.0 
-                        roi_gray = np.reshape(roi_gray, (1, 48, 48, 1))
-
-                        if model:
-                            prediction = model.predict(roi_gray, verbose=0)
-                            max_index = int(np.argmax(prediction))
-                            base_emotion = cnn_emotion_list[max_index]
-                            
-                            predicted_emotion_ui = f"{base_emotion} {emoji_map.get(base_emotion, '')}"
-                            confidence_display = f"{(np.max(prediction) * 100):.2f}%"
-                            model_used_text = "Custom CNN"
-                            color = (0, 255, 150)
-                    
-                    st.session_state.current_emotion = base_emotion
-                    
-                    cv2.rectangle(img_array, (x, y), (x+w, y+h), color, 3)
-                    cv2.putText(img_array, base_emotion, (x, y-15), cv2.FONT_HERSHEY_SIMPLEX, 0.9, color, 2)
-
-                col1, col2 = st.columns([1.5, 1], gap="large")
-                with col1:
-                    st.image(img_array, use_container_width=True)
-                with col2:
-                    st.write("") 
-                    st.write("") 
-                    st.metric(label="Primary Emotion", value=predicted_emotion_ui)
-                    st.metric(label=f"Confidence ({model_used_text})", value=confidence_display)
-        st.write("") 
-
-# --- ROUTER LOGIC ---
-if selected_tab == "📸 Camera":
-    st.markdown("<h5 style='text-align: center; color: #94A3B8; font-weight: normal; margin-bottom: 10px;'>Align your face in the center</h5>", unsafe_allow_html=True)
-    camera_img = st.camera_input("Smile for the camera!", label_visibility="collapsed")
-    if camera_img is not None:
-        run_analysis(camera_img, "Webcam Capture")
-
-elif selected_tab == "🖼️ Upload Images":
-    uploaded_imgs = st.file_uploader("Drag and drop images here", type=["jpg", "png", "jpeg"], accept_multiple_files=True, label_visibility="collapsed")
-    if uploaded_imgs:
-        st.success(f"Successfully loaded {len(uploaded_imgs)} image(s) into the pipeline.")
-        for img in uploaded_imgs:
-            run_analysis(img, img.name)
-
-# --- THE CHAT ENGINE (Powered by Groq's Llama 3.1) ---
-elif selected_tab == "💬 AI Assistant":
-    current_mood = st.session_state.current_emotion
-    emoji = emoji_map.get(current_mood, '')
-    
-    st.info(f"### Detected Mood: **{current_mood}** {emoji}")
-    
-    if groq_client is None:
-        st.error("⚠️ Groq API Key missing or invalid! Please check your Streamlit Secrets.")
-    else:
-        st.write("✨ **What would you like to do?**")
-        suggestions = suggestion_dict.get(current_mood, suggestion_dict["Neutral"])
-        
-        suggestion_clicked = None
-        sug_col1, sug_col2 = st.columns(2, gap="small")
-        if sug_col1.button(suggestions[0], use_container_width=True): suggestion_clicked = suggestions[0]
-        if sug_col2.button(suggestions[1], use_container_width=True): suggestion_clicked = suggestions[1]
-        
-        sug_col3, sug_col4 = st.columns(2, gap="small")
-        if sug_col3.button(suggestions[2], use_container_width=True): suggestion_clicked = suggestions[2]
-        if sug_col4.button(suggestions[3], use_container_width=True): suggestion_clicked = suggestions[3]
-        
-        st.write("") 
-
-        for message in st.session_state.messages:
-            avatar = AI_AVATAR if message["role"] == "assistant" else "👤"
-            with st.chat_message(message["role"], avatar=avatar):
-                st.markdown(message["content"])
-
-        prompt = st.chat_input(f"Ask me something about feeling {current_mood}...")
-        
-        if suggestion_clicked:
-            prompt = suggestion_clicked
-
-        if prompt:
-            st.session_state.messages.append({"role": "user", "content": prompt})
-            with st.chat_message("user", avatar="👤"):
-                st.markdown(prompt)
-
-            with st.chat_message("assistant", avatar=AI_AVATAR):
-                with st.spinner("Processing..."):
-                    try:
-                        completion = groq_client.chat.completions.create(
-                            model="llama-3.1-8b-instant", 
-                            messages=[
-                                {"role": "system", "content": f"You are a helpful, empathetic AI assistant. The user's face was just scanned by an emotion detection model, and they are currently feeling: {current_mood}. Keep this mood in mind and tailor your responses, tone, and advice accordingly."},
-                                {"role": "user", "content": prompt}
-                            ],
-                            temperature=0.7,
-                            max_tokens=1024,
-                        )
                         
-                        response_text = completion.choices[0].message.content
-                        st.markdown(response_text)
-                        st.session_state.messages.append({"role": "assistant", "content": response_text})
                     except Exception as e:
                         st.error(f"⚠️ Oops! The Groq chatbot encountered an issue: {e}")
