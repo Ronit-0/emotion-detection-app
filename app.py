@@ -188,12 +188,11 @@ div[role="radiogroup"] > label:has(input:checked) {
 }
 
 /* ============================= */
-/* 🔥 FLOATING CAMERA & PULSING UPLOAD 🔥 */
+/* ☢️ NUCLEAR CAMERA TRANSPARENCY ☢️ */
 /* ============================= */
-/* Fully transparent camera container */
+/* Target the main container and EVERY nested div inside it */
 [data-testid="stCameraInput"],
-[data-testid="stCameraInput"] > div,
-[data-testid="stCameraInput"] section {
+[data-testid="stCameraInput"] div {
     background: transparent !important;
     background-color: transparent !important;
     border: none !important;
@@ -220,22 +219,21 @@ div[role="radiogroup"] > label:has(input:checked) {
     animation-play-state: paused !important;
 }
 [data-testid="stCameraInput"] video {
-    background-color: transparent !important;
+    background-color: #000 !important; /* Keep video black when off */
     border-radius: 15px !important;
     transform: scaleX(-1) !important;
-    border: 1px solid rgba(0, 255, 255, 0.2) !important;
+    border: 1px solid rgba(0, 255, 255, 0.3) !important;
 }
 
-/* File Upload Dropzone (Transparent) */
-[data-testid="stFileUploader"], 
-[data-testid="stFileUploader"] > div,
-[data-testid="stFileUploader"] section {
-    background-color: transparent !important;
+/* ============================= */
+/* 🔥 PULSING UPLOAD DROPZONE 🔥 */
+/* ============================= */
+[data-testid="stFileUploader"] {
     background: transparent !important;
-    border: none !important;
+    background-color: transparent !important;
 }
-[data-testid="stFileUploadDropzone"],
-[data-testid="stFileUploaderDropzone"] {
+[data-testid="stFileUploader"] > div,
+[data-testid="stFileUploadDropzone"] {
     background: transparent !important;
     backdrop-filter: blur(8px) !important;
     border-radius: 15px !important;
@@ -243,10 +241,9 @@ div[role="radiogroup"] > label:has(input:checked) {
     transition: all 0.3s ease;
     animation: sonarPulse 3s infinite !important; /* Emits a radar pulse */
 }
-[data-testid="stFileUploadDropzone"]:hover,
-[data-testid="stFileUploaderDropzone"]:hover {
+[data-testid="stFileUploader"] > div:hover {
     border-color: rgba(0, 255, 255, 1) !important;
-    background: rgba(0, 255, 255, 0.05) !important; /* Extremely faint hover tint */
+    background: rgba(0, 255, 255, 0.05) !important;
     transform: translateY(-4px);
     animation-play-state: paused !important;
 }
@@ -294,7 +291,6 @@ div.stButton > button:hover::after {
     color: #f8fafc !important;
     border-radius: 12px !important;
     box-shadow: 0 10px 30px rgba(0,0,0,0.5) !important;
-    animation: floatIdle 6s ease-in-out infinite !important;
 }
 
 /* ============================= */
@@ -310,10 +306,6 @@ div.stButton > button:hover::after {
 }
 
 /* Transparent Chat Input */
-[data-testid="stChatInput"] {
-    background-color: transparent !important;
-    background: transparent !important;
-}
 [data-testid="stChatInput"] > div:first-child {
     background: transparent !important;
     backdrop-filter: blur(15px) !important;
