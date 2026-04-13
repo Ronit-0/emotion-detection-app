@@ -189,23 +189,20 @@ div[role="radiogroup"] label:hover {
     inset 0 0 0.5px rgba(255,255,255,0.15);
 }
 
-/* Selected Tab */
+/* Selected Tab Glow */
 div[role="radiogroup"] label[data-checked="true"] {
+    
+    background: rgba(59,130,246,0.18) !important;
+    color: #22E3FF !important;
 
-    background: linear-gradient(
-        135deg,
-        rgba(59,130,246,0.9),
-        rgba(37,99,235,0.95)
-    ) !important;
+    border: 1px solid rgba(34,227,255,0.35) !important;
 
-    color: white !important;
+    box-shadow: 
+        0 0 8px rgba(34,227,255,0.35),
+        0 0 16px rgba(34,227,255,0.25),
+        inset 0 0 8px rgba(34,227,255,0.15);
 
     transform: translateY(-1px);
-
-    box-shadow:
-    0 8px 18px rgba(59,130,246,0.35),
-    0 0 20px rgba(59,130,246,0.25),
-    inset 0 0 0.5px rgba(255,255,255,0.25) !important;
 }
 
 /* ============================= */
