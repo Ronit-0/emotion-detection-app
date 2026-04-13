@@ -501,6 +501,90 @@ box-shadow:
 transition: all 0.25s ease;
 }
 
+/* ============================= */
+/* 🔥 Final 10% Premium Polish */
+/* ============================= */
+
+
+/* 1. Ambient Glass Glow Behind Navbar */
+div[role="radiogroup"] {
+position: relative;
+backdrop-filter: blur(18px);
+-webkit-backdrop-filter: blur(18px);
+}
+
+div[role="radiogroup"]::before {
+content: "";
+position: absolute;
+inset: -2px;
+border-radius: 40px;
+
+background: linear-gradient(
+90deg,
+rgba(34,227,255,0.08),
+rgba(59,130,246,0.08),
+rgba(34,227,255,0.08)
+);
+
+filter: blur(10px);
+z-index: -1;
+}
+
+
+/* 2. Micro Hover Glow */
+div[role="radiogroup"] label:hover {
+
+box-shadow:
+0 4px 12px rgba(0,0,0,0.25),
+0 0 10px rgba(34,227,255,0.18);
+
+transform: translateY(-2px) scale(1.02);
+}
+
+
+/* 3. Smooth Tab Switching Animation */
+[data-testid="stVerticalBlock"] {
+animation: fadeSlide 0.35s ease;
+}
+
+@keyframes fadeSlide {
+from {
+opacity:0;
+transform: translateY(8px);
+}
+
+to {
+opacity:1;
+transform: translateY(0);
+}
+}
+
+
+/* 4. Subtle Background Movement */
+.stApp {
+background-size: 120% 120%;
+animation: bgMove 15s ease infinite;
+}
+
+@keyframes bgMove {
+0% { background-position: 0% 50%; }
+50% { background-position: 100% 50%; }
+100% { background-position: 0% 50%; }
+}
+
+
+/* 5. Smooth Glass Floating Effect */
+div[role="radiogroup"] {
+transition: all 0.3s ease;
+}
+
+div[role="radiogroup"]:hover {
+transform: translateY(-2px);
+box-shadow:
+0 10px 35px rgba(0,0,0,0.35),
+0 0 20px rgba(34,227,255,0.08);
+}
+
 </style>
 """, unsafe_allow_html=True)
 
