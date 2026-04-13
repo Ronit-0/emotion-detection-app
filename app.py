@@ -409,6 +409,72 @@ img {
     border-radius: 12px;
 }
 
+/* ============================= */
+/* 🚀 Premium UI Enhancements */
+/* ============================= */
+
+
+/* 1. Sliding Active Indicator Base */
+div[role="radiogroup"] {
+position: relative;
+transition: 0.3s ease;
+
+box-shadow: 
+0 8px 30px rgba(0,0,0,0.35),
+0 0 40px rgba(34,227,255,0.05);
+}
+
+
+/* 2. Floating Navbar Effect */
+div[role="radiogroup"]:hover {
+transform: translateY(-2px);
+}
+
+
+/* 3. Smooth Hover Micro Animation */
+div[role="radiogroup"] label {
+transition: all 0.25s ease !important;
+}
+
+div[role="radiogroup"] label:hover {
+transform: translateY(-2px) scale(1.02);
+}
+
+
+/* 4. Selected Tab Glow Enhancement */
+div[role="radiogroup"] label:has(input:checked) {
+
+background: rgba(34,227,255,0.15) !important;
+color: #22E3FF !important;
+
+border: 1px solid rgba(34,227,255,0.35) !important;
+
+box-shadow:
+0 0 8px rgba(34,227,255,0.35),
+0 0 18px rgba(34,227,255,0.25),
+inset 0 0 8px rgba(34,227,255,0.15);
+
+transform: translateY(-1px);
+}
+
+
+/* 5. Page Fade-In Animation */
+.stApp {
+animation: fadeIn 0.4s ease;
+}
+
+@keyframes fadeIn {
+from {
+opacity:0;
+transform:translateY(10px);
+}
+
+to {
+opacity:1;
+transform:translateY(0);
+}
+}
+
 </style>
 """, unsafe_allow_html=True)
 
