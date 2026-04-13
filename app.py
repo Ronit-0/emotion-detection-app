@@ -45,7 +45,7 @@ footer {visibility: hidden;}
 ::-webkit-scrollbar-thumb:hover { background: rgba(0, 255, 255, 0.8); }
 
 /* --- FIX FOR MONOCHROME EMOJIS --- */
-.emoji {
+span.emoji {
     font-family: "Segoe UI Emoji", "Apple Color Emoji", "Noto Color Emoji", sans-serif !important;
     color: initial !important;
     -webkit-text-fill-color: initial !important;
@@ -117,29 +117,27 @@ footer {visibility: hidden;}
 /* ============================= */
 [data-testid="stRadio"] {
     display: flex !important;
-    justify-content: center !important;
     align-items: center !important;
+    justify-content: center !important;
+    text-align: center !important;
     width: 100% !important;
     margin: 10px auto 40px auto !important;
-    background: transparent !important;
 }
 
 [data-testid="stRadio"] > div {
     display: flex !important;
+    align-items: center !important;
     justify-content: center !important;
     width: 100% !important;
-    max-width: 950px !important;
     margin: 0 auto !important;
-    background: transparent !important;
 }
 
 div[role="radiogroup"] {
-    display: flex !important;
+    display: inline-flex !important;
+    flex-direction: row !important;
     flex-wrap: nowrap !important;
     justify-content: center !important;
-    width: max-content !important;
-    margin: 0 auto !important;
-    gap: 8px !important;
+    gap: 10px !important;
     background: rgba(255, 255, 255, 0.04) !important;
     backdrop-filter: blur(14px) !important;
     -webkit-backdrop-filter: blur(14px) !important;
@@ -147,6 +145,7 @@ div[role="radiogroup"] {
     padding: 8px !important;
     border: 1px solid rgba(255, 255, 255, 0.08) !important;
     box-shadow: 0 8px 30px rgba(0, 0, 0, 0.35) !important;
+    margin: 0 auto !important;
 }
 
 /* Hide radio dot */
@@ -522,49 +521,22 @@ def run_analysis(image_file, file_name="Captured Image"):
 
 if selected_tab == "🏠 Home":
     st.markdown("### <span class='emoji'>🎯</span> Our Mission: Bridging the Emotional Gap", unsafe_allow_html=True)
-    st.markdown("""
-    <div class="card-grid-3">
-        <div class="custom-card">
-            <div class="card-title"><span class="emoji">🧩</span> The Core Problem</div>
-            <div class="card-text">Human emotion is complex and deeply nuanced. In digital spaces, empathy is often lost. Our mission is to build a bridge between human feeling and machine understanding using advanced neural networks.</div>
-        </div>
-        <div class="custom-card">
-            <div class="card-title"><span class="emoji">🤖</span> Real-Time Perception</div>
-            <div class="card-text">By utilizing a Convolutional Neural Network (CNN) trained on the FER2013 dataset, this AI instantly categorizes micro-expressions into 7 core universal human emotions.</div>
-        </div>
-        <div class="custom-card">
-            <div class="card-title"><span class="emoji">🫂</span> Empathetic AI Feedback</div>
-            <div class="card-text">Detection is just step one. The system feeds your detected mood directly into an LLM (Llama 3 / Gemini), ensuring that the AI speaks to you with the appropriate emotional context and empathy.</div>
-        </div>
-    </div>
-    """, unsafe_allow_html=True)
+    st.markdown(
+        "<div class='card-grid-3'>"
+        "<div class='custom-card'><div class='card-title'><span class='emoji'>🧩</span> The Core Problem</div><div class='card-text'>Human emotion is complex and deeply nuanced. In digital spaces, empathy is often lost. Our mission is to build a bridge between human feeling and machine understanding using advanced neural networks.</div></div>"
+        "<div class='custom-card'><div class='card-title'><span class='emoji'>🤖</span> Real-Time Perception</div><div class='card-text'>By utilizing a Convolutional Neural Network (CNN) trained on the FER2013 dataset, this AI instantly categorizes micro-expressions into 7 core universal human emotions.</div></div>"
+        "<div class='custom-card'><div class='card-title'><span class='emoji'>🫂</span> Empathetic AI Feedback</div><div class='card-text'>Detection is just step one. The system feeds your detected mood directly into an LLM (Llama 3 / Gemini), ensuring that the AI speaks to you with the appropriate emotional context and empathy.</div></div>"
+        "</div>", unsafe_allow_html=True
+    )
 
     st.markdown("### <span class='emoji'>🏥</span> Practical Use Cases & Applications", unsafe_allow_html=True)
-    st.markdown("""
-    <div class="card-grid-3">
-        <div class="custom-card">
-            <div class="card-title"><span class="emoji">🧠</span> Mental Health & Wellness</div>
-            <div class="card-text">
-                <i>The Situation:</i> A user opens a wellness app but is unable to articulate how they feel.<br><br>
-                <i>The AI Solution:</i> The camera reads their micro-expressions, logging them as "Sad" or "Fearful," automatically triggering comforting workflows, breathing exercises, or crisis hotlines.
-            </div>
-        </div>
-        <div class="custom-card">
-            <div class="card-title"><span class="emoji">🛒</span> Customer Experience</div>
-            <div class="card-text">
-                <i>The Situation:</i> A frustrated customer is navigating a self-checkout kiosk.<br><br>
-                <i>The AI Solution:</i> The system detects "Angry" or "Disgusted" expressions, instantly bypassing automated menus to connect them with a human representative to de-escalate the situation.
-            </div>
-        </div>
-        <div class="custom-card">
-            <div class="card-title"><span class="emoji">🎮</span> Adaptive Gaming</div>
-            <div class="card-text">
-                <i>The Situation:</i> A player is getting bored or stressed during a game.<br><br>
-                <i>The AI Solution:</i> By monitoring facial cues for "Neutral" (boredom) or "Surprised," the game engine dynamically adjusts difficulty, lighting, or music to keep the player engaged.
-            </div>
-        </div>
-    </div>
-    """, unsafe_allow_html=True)
+    st.markdown(
+        "<div class='card-grid-3'>"
+        "<div class='custom-card'><div class='card-title'><span class='emoji'>🧠</span> Mental Health & Wellness</div><div class='card-text'><i>The Situation:</i> A user opens a wellness app but is unable to articulate how they feel.<br><br><i>The AI Solution:</i> The camera reads their micro-expressions, logging them as \"Sad\" or \"Fearful,\" automatically triggering comforting workflows, breathing exercises, or crisis hotlines.</div></div>"
+        "<div class='custom-card'><div class='card-title'><span class='emoji'>🛒</span> Customer Experience</div><div class='card-text'><i>The Situation:</i> A frustrated customer is navigating a self-checkout kiosk.<br><br><i>The AI Solution:</i> The system detects \"Angry\" or \"Disgusted\" expressions, instantly bypassing automated menus to connect them with a human representative to de-escalate the situation.</div></div>"
+        "<div class='custom-card'><div class='card-title'><span class='emoji'>🎮</span> Adaptive Gaming</div><div class='card-text'><i>The Situation:</i> A player is getting bored or stressed during a game.<br><br><i>The AI Solution:</i> By monitoring facial cues for \"Neutral\" (boredom) or \"Surprised,\" the game engine dynamically adjusts difficulty, lighting, or music to keep the player engaged.</div></div>"
+        "</div>", unsafe_allow_html=True
+    )
 
 elif selected_tab == "📸 Camera":
     st.markdown("<h5 style='text-align: center; color: #94A3B8; font-weight: normal; margin-bottom: 10px;'>Align your face in the center</h5>", unsafe_allow_html=True)
@@ -583,7 +555,7 @@ elif selected_tab == "💬 Chat":
     current_mood = st.session_state.current_emotion
     emoji = emoji_map.get(current_mood, '')
     
-    st.info(f"### Detected Mood: **{current_mood}** {emoji}")
+    st.info(f"### Detected Mood: **{current_mood}** <span class='emoji'>{emoji}</span>", icon="✨")
     
     if groq_client is None:
         st.error("⚠️ Groq API Key missing or invalid! Please check your Streamlit Secrets.")
@@ -638,68 +610,29 @@ elif selected_tab == "💬 Chat":
 
 elif selected_tab == "📊 Analytics":
     st.markdown("### <span class='emoji'>📊</span> Detailed Model Analytics", unsafe_allow_html=True)
-    st.markdown("""
-    <div class="card-grid-3">
-        <div class="custom-card">
-            <div class="card-title"><span class="emoji">🛠️</span> Fine-Tuning Methodology</div>
-            <div class="card-text">This model leverages a custom Convolutional Neural Network (CNN) trained from scratch. The architecture consists of multiple stacked Conv2D layers for spatial feature extraction, paired with MaxPooling to downsample spatial dimensions. Dropout layers (0.25 to 0.5) were implemented aggressively to prevent model overfitting.</div>
-        </div>
-        <div class="custom-card">
-            <div class="card-title"><span class="emoji">📁</span> The FER2013 Dataset</div>
-            <div class="card-text">The network was trained on the industry-standard FER2013 dataset, which contains over 35,000 grayscale images of faces standardized to 48x48 pixels. The classes are heavily imbalanced (e.g., 'Happy' has many more samples than 'Disgust'), requiring strict categorical weighting during backpropagation.</div>
-        </div>
-        <div class="custom-card">
-            <div class="card-title"><span class="emoji">🤖</span> LLM Integration Pipeline</div>
-            <div class="card-text">Unlike standard classifiers, this app features a dual-pipeline. The visual CNN extracts the mood state and injects it as a hidden context variable into the system prompt of an LLM (Groq Llama-3.1 or Gemini Flash). This bridges computer vision and generative text seamlessly.</div>
-        </div>
-    </div>
-    """, unsafe_allow_html=True)
+    st.markdown(
+        "<div class='card-grid-3'>"
+        "<div class='custom-card'><div class='card-title'><span class='emoji'>🛠️</span> Fine-Tuning Methodology</div><div class='card-text'>This model leverages a custom Convolutional Neural Network (CNN) trained from scratch. The architecture consists of multiple stacked Conv2D layers for spatial feature extraction, paired with MaxPooling to downsample spatial dimensions. Dropout layers (0.25 to 0.5) were implemented aggressively to prevent model overfitting.</div></div>"
+        "<div class='custom-card'><div class='card-title'><span class='emoji'>📁</span> The FER2013 Dataset</div><div class='card-text'>The network was trained on the industry-standard FER2013 dataset, which contains over 35,000 grayscale images of faces standardized to 48x48 pixels. The classes are heavily imbalanced (e.g., 'Happy' has many more samples than 'Disgust'), requiring strict categorical weighting during backpropagation.</div></div>"
+        "<div class='custom-card'><div class='card-title'><span class='emoji'>🤖</span> LLM Integration Pipeline</div><div class='card-text'>Unlike standard classifiers, this app features a dual-pipeline. The visual CNN extracts the mood state and injects it as a hidden context variable into the system prompt of an LLM (Groq Llama-3.1 or Gemini Flash). This bridges computer vision and generative text seamlessly.</div></div>"
+        "</div>", unsafe_allow_html=True
+    )
     
     st.markdown("### <span class='emoji'>📈</span> CNN Training Metrics", unsafe_allow_html=True)
-    st.markdown("""
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; margin-bottom: 30px;">
-        
-        <div class="custom-card" style="display: flex; flex-direction: column; align-items: center; justify-content: flex-start; padding: 25px;">
-            <div class="kpi-value">68.5%</div>
-            <div class="kpi-label"><span class="emoji">🎯</span> Base Accuracy</div>
-            <div style="margin-top: 15px; font-size: 0.95rem; color: #94A3B8; line-height: 1.6; text-align: left; padding-top: 15px; border-top: 1px solid rgba(0,255,255,0.1);">
-                <b>Why 68.5%?</b> Human emotion is highly subjective. In the original FER2013 study, human-level agreement was only ~65%. Our CNN surpasses this human baseline, acting as a reliable, instant filter for raw pixel patterns.
-            </div>
-        </div>
-        
-        <div class="custom-card" style="display: flex; flex-direction: column; align-items: center; justify-content: flex-start; padding: 25px;">
-            <div class="kpi-value">99.0%</div>
-            <div class="kpi-label"><span class="emoji">🚀</span> Gemini Accuracy</div>
-            <div style="margin-top: 15px; font-size: 0.95rem; color: #94A3B8; line-height: 1.6; text-align: left; padding-top: 15px; border-top: 1px solid rgba(0,255,255,0.1);">
-                <b>Why 99.0%?</b> By enabling High-Accuracy Mode, the system bypasses the local CNN and routes the image to Google's state-of-the-art multimodal AI (Gemini 2.5 Flash), which possesses near-perfect contextual emotional understanding.
-            </div>
-        </div>
-        
-        <div class="custom-card" style="display: flex; flex-direction: column; align-items: center; justify-content: flex-start; padding: 25px;">
-            <div class="kpi-value">7</div>
-            <div class="kpi-label"><span class="emoji">🧠</span> Emotion Classes</div>
-            <div style="margin-top: 15px; font-size: 0.95rem; color: #94A3B8; line-height: 1.6; text-align: left; padding-top: 15px; border-top: 1px solid rgba(0,255,255,0.1);">
-                <b>The Spectrum:</b> The AI classifies micro-expressions into seven universal categories: Angry <span class="emoji">😠</span>, Disgust <span class="emoji">🤢</span>, Fear <span class="emoji">😨</span>, Happy <span class="emoji">😄</span>, Sad <span class="emoji">😢</span>, Surprise <span class="emoji">😲</span>, and Neutral <span class="emoji">😐</span>.
-            </div>
-        </div>
-
-    </div>
-    """, unsafe_allow_html=True)
+    st.markdown(
+        "<div style='display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; margin-bottom: 30px;'>"
+        "<div class='custom-card' style='display: flex; flex-direction: column; align-items: center; justify-content: flex-start; padding: 25px;'><div class='kpi-value'>68.5%</div><div class='kpi-label'><span class='emoji'>🎯</span> Base Accuracy</div><div style='margin-top: 15px; font-size: 0.95rem; color: #94A3B8; line-height: 1.6; text-align: left; padding-top: 15px; border-top: 1px solid rgba(0,255,255,0.1);'><b>Why 68.5%?</b> Human emotion is highly subjective. In the original FER2013 study, human-level agreement was only ~65%. Our CNN surpasses this human baseline, acting as a reliable, instant filter for raw pixel patterns.</div></div>"
+        "<div class='custom-card' style='display: flex; flex-direction: column; align-items: center; justify-content: flex-start; padding: 25px;'><div class='kpi-value'>99.0%</div><div class='kpi-label'><span class='emoji'>🚀</span> Gemini Accuracy</div><div style='margin-top: 15px; font-size: 0.95rem; color: #94A3B8; line-height: 1.6; text-align: left; padding-top: 15px; border-top: 1px solid rgba(0,255,255,0.1);'><b>Why 99.0%?</b> By enabling High-Accuracy Mode, the system bypasses the local CNN and routes the image to Google\'s state-of-the-art multimodal AI (Gemini 2.5 Flash), which possesses near-perfect contextual emotional understanding.</div></div>"
+        "<div class='custom-card' style='display: flex; flex-direction: column; align-items: center; justify-content: flex-start; padding: 25px;'><div class='kpi-value'>7</div><div class='kpi-label'><span class='emoji'>🧠</span> Emotion Classes</div><div style='margin-top: 15px; font-size: 0.95rem; color: #94A3B8; line-height: 1.6; text-align: left; padding-top: 15px; border-top: 1px solid rgba(0,255,255,0.1);'><b>The Spectrum:</b> The AI classifies micro-expressions into seven universal categories: Angry <span class='emoji'>😠</span>, Disgust <span class='emoji'>🤢</span>, Fear <span class='emoji'>😨</span>, Happy <span class='emoji'>😄</span>, Sad <span class='emoji'>😢</span>, Surprise <span class='emoji'>😲</span>, and Neutral <span class='emoji'>😐</span>.</div></div>"
+        "</div>", unsafe_allow_html=True
+    )
 
 elif selected_tab == "📖 Docs":
     st.markdown("### <span class='emoji'>📃</span> Documentation & FAQs", unsafe_allow_html=True)
     
-    st.markdown("""
-    <div class="custom-card" style="margin-bottom: 30px;">
-        <div class="card-title"><span class="emoji">❔</span> 1. Why is the baseline CNN accuracy ~68%?</div>
-        <div class="card-text">Human emotion is highly subjective. In the FER2013 dataset, even human experts only agree on the emotion in an image about 65% of the time. Our CNN achieves 68.5%, placing it above human-level baseline for this specific grayscale 48x48 dataset. For near-perfect accuracy, toggle the <b>Gemini Vision AI</b> switch at the top.</div>
-    </div>
-    <div class="custom-card" style="margin-bottom: 30px;">
-        <div class="card-title"><span class="emoji">❔</span> 2. What happens to my image data?</div>
-        <div class="card-text">Privacy is paramount. If you are using the baseline CNN, the image is processed entirely in your browser/local session using OpenCV and the loaded `.h5` model. The images are never saved to a database. If you enable Gemini Vision, the image is sent securely via API for a one-time inference and then discarded.</div>
-    </div>
-    <div class="custom-card" style="margin-bottom: 30px;">
-        <div class="card-title"><span class="emoji">❔</span> 3. How does the AI Assistant know my mood?</div>
-        <div class="card-text">We use <i>Context Injection</i>. When the camera reads your face as "Happy," the backend silently prepends a system instruction to the Llama 3.1 LLM: <code>"The user is currently feeling: Happy. Tailor your responses to this mood."</code> This makes the text-generation empathetic to your physical state.</div>
-    </div>
-    """, unsafe_allow_html=True)
+    st.markdown(
+        "<div class='custom-card' style='margin-bottom: 30px;'><div class='card-title'><span class='emoji'>❔</span> 1. Why is the baseline CNN accuracy ~68%?</div><div class='card-text'>Human emotion is highly subjective. In the FER2013 dataset, even human experts only agree on the emotion in an image about 65% of the time. Our CNN achieves 68.5%, placing it above human-level baseline for this specific grayscale 48x48 dataset. For near-perfect accuracy, toggle the <b>Gemini Vision AI</b> switch at the top.</div></div>"
+        "<div class='custom-card' style='margin-bottom: 30px;'><div class='card-title'><span class='emoji'>❔</span> 2. What happens to my image data?</div><div class='card-text'>Privacy is paramount. If you are using the baseline CNN, the image is processed entirely in your browser/local session using OpenCV and the loaded `.h5` model. The images are never saved to a database. If you enable Gemini Vision, the image is sent securely via API for a one-time inference and then discarded.</div></div>"
+        "<div class='custom-card' style='margin-bottom: 30px;'><div class='card-title'><span class='emoji'>❔</span> 3. How does the AI Assistant know my mood?</div><div class='card-text'>We use <i>Context Injection</i>. When the camera reads your face as \"Happy,\" the backend silently prepends a system instruction to the Llama 3.1 LLM: <code>\"The user is currently feeling: Happy. Tailor your responses to this mood.\"</code> This makes the text-generation empathetic to your physical state.</div></div>", 
+        unsafe_allow_html=True
+    )
