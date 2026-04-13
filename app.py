@@ -189,17 +189,18 @@ div[role="radiogroup"] label:hover {
     inset 0 0 0.5px rgba(255,255,255,0.15);
 }
 
-/* Selected Tab Glow */
-div[role="radiogroup"] label[data-checked="true"] {
+/* 🔥 Selected Tab Effect (Reliable Fix) */
+
+div[role="radiogroup"] label:has(input:checked) {
     
-    background: rgba(59,130,246,0.18) !important;
+    background: rgba(34,227,255,0.15) !important;
     color: #22E3FF !important;
 
     border: 1px solid rgba(34,227,255,0.35) !important;
 
-    box-shadow: 
+    box-shadow:
         0 0 8px rgba(34,227,255,0.35),
-        0 0 16px rgba(34,227,255,0.25),
+        0 0 18px rgba(34,227,255,0.25),
         inset 0 0 8px rgba(34,227,255,0.15);
 
     transform: translateY(-1px);
