@@ -601,16 +601,6 @@ animation: tabPop 0.25s ease;
 }
 
 
-/* 2. Floating Glass Cards */
-[data-testid="stVerticalBlock"] > div {
-transition: all 0.3s ease;
-}
-
-[data-testid="stVerticalBlock"] > div:hover {
-transform: translateY(-2px);
-}
-
-
 /* 3. Cursor Hover Glow */
 button:hover,
 label:hover {
