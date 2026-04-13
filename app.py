@@ -114,51 +114,59 @@ span.emoji {
 }
 
 /* ============================= */
-/* 🔥 PERFECT CENTERED GLASS TABS */
+/* 🔥 CENTERED GLASS NAV TABS */
 /* ============================= */
 
 [data-testid="stRadio"] {
     display: flex !important;
     justify-content: center !important;
+    align-items: center !important;
     width: 100% !important;
     margin-top: 25px !important;
     margin-bottom: 35px !important;
 }
 
-/* Hide radio circles */
+/* shrink container */
+[data-testid="stRadio"] > div {
+    width: auto !important;
+}
+
+/* Hide radio circle */
 [data-testid="stRadio"] label > div:first-child {
     display: none !important;
 }
 
-/* Container */
+/* Glass Container */
 div[role="radiogroup"] {
-    display: flex !important;
+    display: inline-flex !important;
     justify-content: center !important;
+    align-items: center !important;
     gap: 10px !important;
-    
-    width: fit-content !important;
+
     margin: 0 auto !important;
+    width: fit-content !important;
 
     background: rgba(255,255,255,0.04) !important;
-    backdrop-filter: blur(14px) !important;
-    
+    backdrop-filter: blur(16px) !important;
+
     padding: 8px !important;
     border-radius: 40px !important;
-    
+
     border: 1px solid rgba(255,255,255,0.08) !important;
-    box-shadow: 0 8px 30px rgba(0,0,0,0.35) !important;
+    box-shadow: 0 10px 35px rgba(0,0,0,0.35) !important;
 }
 
-/* Tab buttons */
+/* Tabs */
 div[role="radiogroup"] label {
-    padding: 10px 18px !important;
+    padding: 10px 20px !important;
     border-radius: 30px !important;
+
     color: #94A3B8 !important;
     font-weight: 600 !important;
     font-size: 1rem !important;
-    
+
     background: transparent !important;
-    
+
     transition: all 0.25s ease !important;
     cursor: pointer !important;
 }
@@ -170,11 +178,16 @@ div[role="radiogroup"] label:hover {
     transform: translateY(-1px);
 }
 
-/* Active tab */
+/* Selected tab */
 div[role="radiogroup"] label[data-checked="true"] {
-    background: #3B82F6 !important;
+    background: linear-gradient(135deg,#3B82F6,#2563EB) !important;
     color: white !important;
-    box-shadow: 0 0 20px rgba(59,130,246,0.35) !important;
+
+    box-shadow: 
+    0 4px 15px rgba(59,130,246,0.35),
+    0 0 20px rgba(59,130,246,0.25) !important;
+
+    transform: translateY(-1px);
 }
 /* ============================= */
 /* 🔥 PNEUMONIALENS CARD SYSTEM 🔥 */
