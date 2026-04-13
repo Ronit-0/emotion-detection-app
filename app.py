@@ -114,7 +114,7 @@ span.emoji {
 }
 
 /* ============================= */
-/* 🔥 CENTERED GLASS NAV TABS */
+/* 🔥 PERFECT CENTERED GLASS TABS */
 /* ============================= */
 
 [data-testid="stRadio"] {
@@ -126,69 +126,88 @@ span.emoji {
     margin-bottom: 35px !important;
 }
 
-/* shrink container */
+/* Fix Streamlit container width */
 [data-testid="stRadio"] > div {
-    width: auto !important;
+    width: fit-content !important;
+    margin: 0 auto !important;
 }
 
-/* Hide radio circle */
+/* Hide radio circles */
 [data-testid="stRadio"] label > div:first-child {
     display: none !important;
 }
 
 /* Glass Container */
 div[role="radiogroup"] {
-    display: inline-flex !important;
+    display: flex !important;
     justify-content: center !important;
     align-items: center !important;
-    gap: 10px !important;
+    gap: 12px !important;
 
     margin: 0 auto !important;
-    width: fit-content !important;
+    padding: 8px !important;
 
     background: rgba(255,255,255,0.04) !important;
     backdrop-filter: blur(16px) !important;
 
-    padding: 8px !important;
     border-radius: 40px !important;
-
     border: 1px solid rgba(255,255,255,0.08) !important;
-    box-shadow: 0 10px 35px rgba(0,0,0,0.35) !important;
+
+    box-shadow: 
+    0 8px 30px rgba(0,0,0,0.35),
+    inset 0 0 0.5px rgba(255,255,255,0.08) !important;
 }
 
-/* Tabs */
+/* Tab Buttons */
 div[role="radiogroup"] label {
-    padding: 10px 20px !important;
+    padding: 11px 22px !important;
     border-radius: 30px !important;
 
     color: #94A3B8 !important;
     font-weight: 600 !important;
-    font-size: 1rem !important;
+    font-size: 0.95rem !important;
 
     background: transparent !important;
 
-    transition: all 0.25s ease !important;
+    transition: 
+    all 0.25s ease,
+    transform 0.18s ease,
+    box-shadow 0.25s ease !important;
+
     cursor: pointer !important;
 }
 
-/* Hover effect */
+/* Hover Animation */
 div[role="radiogroup"] label:hover {
     background: rgba(255,255,255,0.08) !important;
     color: #ffffff !important;
-    transform: translateY(-1px);
-}
 
-/* Selected tab */
-div[role="radiogroup"] label[data-checked="true"] {
-    background: linear-gradient(135deg,#3B82F6,#2563EB) !important;
-    color: white !important;
+    transform: translateY(-2px);
 
     box-shadow: 
-    0 4px 15px rgba(59,130,246,0.35),
-    0 0 20px rgba(59,130,246,0.25) !important;
+    0 6px 14px rgba(0,0,0,0.25),
+    inset 0 0 0.5px rgba(255,255,255,0.15);
+}
+
+/* Selected Tab */
+div[role="radiogroup"] label[data-checked="true"] {
+
+    background: linear-gradient(
+        135deg,
+        rgba(59,130,246,0.9),
+        rgba(37,99,235,0.95)
+    ) !important;
+
+    color: white !important;
 
     transform: translateY(-1px);
+
+    box-shadow:
+    0 8px 18px rgba(59,130,246,0.35),
+    0 0 20px rgba(59,130,246,0.25),
+    inset 0 0 0.5px rgba(255,255,255,0.25) !important;
 }
+
 /* ============================= */
 /* 🔥 PNEUMONIALENS CARD SYSTEM 🔥 */
 /* ============================= */
