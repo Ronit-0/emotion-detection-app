@@ -114,78 +114,40 @@ span.emoji {
 }
 
 /* ============================= */
-/* 🔥 CENTERED MAGNETIC TAB BAR 🔥 */
+/* 🔥 PERFECT CENTERED TAB BAR 🔥 */
 /* ============================= */
-[data-testid="stRadio"] {
+
+div[data-testid="stRadio"] {
     display: flex !important;
     justify-content: center !important;
     align-items: center !important;
     width: 100% !important;
-    margin: 10px auto 40px auto !important;
-    background: transparent !important;
+    margin: 25px 0 40px 0 !important;
 }
 
-[data-testid="stRadio"] > div {
-    display: flex !important;
-    justify-content: center !important;
-    width: fit-content !important;
-    margin: 0 auto !important;
-    background: transparent !important;
+/* shrink wrapper */
+div[data-testid="stRadio"] > div {
+    width: auto !important;
+    flex-grow: 0 !important;
 }
 
+/* actual tab container */
 div[role="radiogroup"] {
     display: inline-flex !important;
-    flex-direction: row !important;
     justify-content: center !important;
-    width: max-content !important;
+    align-items: center !important;
     margin: 0 auto !important;
+    width: fit-content !important;
     gap: 8px !important;
-    background: rgba(255, 255, 255, 0.04) !important;
+    
+    background: rgba(255,255,255,0.04) !important;
     backdrop-filter: blur(14px) !important;
-    -webkit-backdrop-filter: blur(14px) !important;
+    
     border-radius: 40px !important;
     padding: 8px !important;
-    border: 1px solid rgba(255, 255, 255, 0.08) !important;
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.35) !important;
-}
-
-/* Hide radio dot */
-[data-testid="stRadio"] div[role="radiogroup"] > label > div:first-of-type { display: none !important; }
-
-/* Tabs Base */
-div[role="radiogroup"] > label {
-    flex: 0 0 auto !important; 
-    background-color: transparent !important; 
-    text-align: center !important;
-    padding: 12px 20px !important;
-    border-radius: 30px !important;
-    font-weight: 600 !important;
-    font-size: 0.95rem !important;
-    color: #94A3B8 !important;
-    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
-    white-space: nowrap !important;
-    margin: 0 !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-}
-
-/* Hover Physics */
-div[role="radiogroup"] > label:hover {
-    background: rgba(255, 255, 255, 0.08) !important;
-    color: #e2e8f0 !important;
-    transform: translateY(-2px) scale(1.02) !important;
-}
-
-/* Active Tab */
-div[role="radiogroup"] > label[data-checked="true"],
-div[role="radiogroup"] > label:has(input:checked) {
-    background: linear-gradient(135deg, #00ced1, #008080) !important;
-    color: black !important; 
-    transform: scale(1.05) !important; 
-    z-index: 10 !important;
-    font-weight: 700 !important;
-    animation: tabActiveGlow 2.5s infinite alternate !important; 
+    
+    border: 1px solid rgba(255,255,255,0.08) !important;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.35) !important;
 }
 
 /* ============================= */
