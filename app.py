@@ -190,6 +190,15 @@ div[role="radiogroup"] > label:has(input:checked) {
 /* ============================= */
 /* 🔥 FLOATING CAMERA & PULSING UPLOAD 🔥 */
 /* ============================= */
+/* Fully transparent camera container */
+[data-testid="stCameraInput"],
+[data-testid="stCameraInput"] > div,
+[data-testid="stCameraInput"] section {
+    background: transparent !important;
+    background-color: transparent !important;
+    border: none !important;
+}
+
 [data-testid="stCameraInput"] button {
     width: 70px !important;
     height: 70px !important;
@@ -210,15 +219,20 @@ div[role="radiogroup"] > label:has(input:checked) {
     animation-play-state: paused !important;
 }
 [data-testid="stCameraInput"] video {
+    background-color: transparent !important;
     border-radius: 15px !important;
     transform: scaleX(-1) !important;
     border: 1px solid rgba(0, 255, 255, 0.2);
 }
 
-/* File Upload Dropzone */
+/* File Upload Dropzone (Transparent) */
+[data-testid="stFileUploader"] {
+    background: transparent !important;
+    background-color: transparent !important;
+}
 [data-testid="stFileUploader"] > div,
 [data-testid="stFileUploadDropzone"] {
-    background: rgba(15, 23, 42, 0.3) !important;
+    background: transparent !important;
     backdrop-filter: blur(8px) !important;
     border-radius: 15px !important;
     border: 2px dashed rgba(0, 255, 255, 0.4) !important;
@@ -227,7 +241,7 @@ div[role="radiogroup"] > label:has(input:checked) {
 }
 [data-testid="stFileUploader"] > div:hover {
     border-color: rgba(0, 255, 255, 1) !important;
-    background: rgba(0, 255, 255, 0.1) !important;
+    background: rgba(0, 255, 255, 0.05) !important; /* Extremely faint hover tint */
     transform: translateY(-4px);
     animation-play-state: paused !important;
 }
@@ -236,7 +250,7 @@ div[role="radiogroup"] > label:has(input:checked) {
 /* 🔥 SHIMMERING SUGGESTION CARDS 🔥 */
 /* ============================= */
 div.stButton > button {
-    background: rgba(15, 23, 42, 0.5) !important;
+    background: transparent !important; /* Transparent */
     border: 1px solid rgba(0, 255, 255, 0.2) !important;
     backdrop-filter: blur(10px) !important;
     color: #e2e8f0 !important;
@@ -256,7 +270,7 @@ div.stButton > button::after {
     transition: all 0.5s ease;
 }
 div.stButton > button:hover {
-    background: rgba(0, 255, 255, 0.1) !important;
+    background: rgba(0, 255, 255, 0.1) !important; /* Faint hover */
     border-color: #00FFFF !important;
     color: #ffffff !important;
     transform: translateY(-4px) scale(1.02); 
@@ -266,9 +280,9 @@ div.stButton > button:hover::after {
     left: 200%; /* Shimmer slides across */
 }
 
-/* Mood Info Box */
+/* Mood Info Box (Transparent) */
 [data-testid="stAlert"] {
-    background: rgba(15, 23, 42, 0.6) !important;
+    background: transparent !important;
     backdrop-filter: blur(15px) !important;
     border: 1px solid rgba(0, 255, 255, 0.2) !important;
     border-left: 5px solid #00FFFF !important;
@@ -289,8 +303,9 @@ div.stButton > button:hover::after {
     border: none !important;
 }
 
+/* Transparent Chat Input */
 [data-testid="stChatInput"] > div:first-child {
-    background: rgba(10, 15, 25, 0.85) !important;
+    background: transparent !important;
     backdrop-filter: blur(15px) !important;
     border-radius: 30px !important;
     border: 1px solid rgba(0, 255, 255, 0.15) !important;
@@ -312,9 +327,10 @@ div.stButton > button:hover::after {
 [data-testid="stChatInputSubmitButton"] { color: #00FFFF !important; transition: transform 0.2s; }
 [data-testid="stChatInputSubmitButton"]:hover { transform: scale(1.2) rotate(10deg); }
 
-/* Chat Message Bubbles */
+/* Chat Message Bubbles (Transparent) */
 [data-testid="stChatMessage"] {
     background-color: transparent !important;
+    background: transparent !important;
     animation: fadeSlideUp 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards !important;
 }
 
