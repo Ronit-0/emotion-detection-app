@@ -114,42 +114,68 @@ span.emoji {
 }
 
 /* ============================= */
-/* 🔥 PERFECT CENTERED TAB BAR 🔥 */
+/* 🔥 PERFECT CENTERED GLASS TABS */
 /* ============================= */
 
-div[data-testid="stRadio"] {
+[data-testid="stRadio"] {
     display: flex !important;
     justify-content: center !important;
-    align-items: center !important;
     width: 100% !important;
-    margin: 25px 0 40px 0 !important;
+    margin-top: 25px !important;
+    margin-bottom: 35px !important;
 }
 
-/* shrink wrapper */
-div[data-testid="stRadio"] > div {
-    width: auto !important;
-    flex-grow: 0 !important;
+/* Hide radio circles */
+[data-testid="stRadio"] label > div:first-child {
+    display: none !important;
 }
 
-/* actual tab container */
+/* Container */
 div[role="radiogroup"] {
-    display: inline-flex !important;
+    display: flex !important;
     justify-content: center !important;
-    align-items: center !important;
-    margin: 0 auto !important;
-    width: fit-content !important;
-    gap: 8px !important;
+    gap: 10px !important;
     
+    width: fit-content !important;
+    margin: 0 auto !important;
+
     background: rgba(255,255,255,0.04) !important;
     backdrop-filter: blur(14px) !important;
     
-    border-radius: 40px !important;
     padding: 8px !important;
+    border-radius: 40px !important;
     
     border: 1px solid rgba(255,255,255,0.08) !important;
     box-shadow: 0 8px 30px rgba(0,0,0,0.35) !important;
 }
 
+/* Tab buttons */
+div[role="radiogroup"] label {
+    padding: 10px 18px !important;
+    border-radius: 30px !important;
+    color: #94A3B8 !important;
+    font-weight: 600 !important;
+    font-size: 1rem !important;
+    
+    background: transparent !important;
+    
+    transition: all 0.25s ease !important;
+    cursor: pointer !important;
+}
+
+/* Hover effect */
+div[role="radiogroup"] label:hover {
+    background: rgba(255,255,255,0.08) !important;
+    color: #ffffff !important;
+    transform: translateY(-1px);
+}
+
+/* Active tab */
+div[role="radiogroup"] label[data-checked="true"] {
+    background: #3B82F6 !important;
+    color: white !important;
+    box-shadow: 0 0 20px rgba(59,130,246,0.35) !important;
+}
 /* ============================= */
 /* 🔥 PNEUMONIALENS CARD SYSTEM 🔥 */
 /* ============================= */
