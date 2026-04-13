@@ -585,6 +585,96 @@ box-shadow:
 0 0 20px rgba(34,227,255,0.08);
 }
 
+/* ============================= */
+/* 🔥 Final Ultra Premium Polish */
+/* ============================= */
+
+
+/* 1. Tab Icon Pop Animation */
+div[role="radiogroup"] label:has(input:checked) {
+animation: tabPop 0.25s ease;
+}
+
+@keyframes tabPop {
+0% { transform: scale(0.96); }
+100% { transform: scale(1); }
+}
+
+
+/* 2. Floating Glass Cards */
+[data-testid="stVerticalBlock"] > div {
+transition: all 0.3s ease;
+}
+
+[data-testid="stVerticalBlock"] > div:hover {
+transform: translateY(-2px);
+}
+
+
+/* 3. Cursor Hover Glow */
+button:hover,
+label:hover {
+filter: brightness(1.08);
+}
+
+
+/* 4. Smooth Scroll */
+html {
+scroll-behavior: smooth;
+}
+
+
+/* 5. Soft Divider Glow */
+hr {
+border: none;
+height: 1px;
+
+background: linear-gradient(
+90deg,
+transparent,
+rgba(34,227,255,0.3),
+transparent
+);
+}
+
+
+/* 6. Loading Spinner Glow */
+[data-testid="stSpinner"] {
+filter: drop-shadow(
+0 0 6px rgba(34,227,255,0.4)
+);
+}
+
+
+/* 7. Title Glow */
+.main-title {
+text-shadow:
+0 0 10px rgba(34,227,255,0.15),
+0 0 20px rgba(34,227,255,0.08);
+}
+
+
+/* 8. Micro Smooth Transitions */
+* {
+transition: 
+background 0.25s ease,
+color 0.25s ease,
+box-shadow 0.25s ease;
+}
+
+
+/* 9. Slight Hover Elevation */
+button:hover {
+transform: translateY(-1px);
+}
+
+
+/* 10. Subtle Glass Enhancement */
+[data-testid="stVerticalBlock"] > div {
+box-shadow:
+0 8px 25px rgba(0,0,0,0.25);
+}
+
 </style>
 """, unsafe_allow_html=True)
 
