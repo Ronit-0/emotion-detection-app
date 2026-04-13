@@ -475,6 +475,32 @@ transform:translateY(0);
 }
 }
 
+/* Smooth Active Pill Animation */
+div[role="radiogroup"] label {
+position: relative;
+overflow: hidden;
+}
+
+/* Active tab stronger pill */
+div[role="radiogroup"] label:has(input:checked) {
+
+background: linear-gradient(
+135deg,
+rgba(34,227,255,0.18),
+rgba(59,130,246,0.18)
+) !important;
+
+backdrop-filter: blur(10px);
+
+border: 1px solid rgba(34,227,255,0.35);
+
+box-shadow:
+0 0 12px rgba(34,227,255,0.35),
+0 0 22px rgba(34,227,255,0.20);
+
+transition: all 0.25s ease;
+}
+
 </style>
 """, unsafe_allow_html=True)
 
