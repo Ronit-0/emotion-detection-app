@@ -659,12 +659,6 @@ transform: translateY(-1px);
 }
 
 
-/* 10. Subtle Glass Enhancement */
-[data-testid="stVerticalBlock"] > div {
-box-shadow:
-0 8px 25px rgba(0,0,0,0.25);
-}
-
 </style>
 """, unsafe_allow_html=True)
 
